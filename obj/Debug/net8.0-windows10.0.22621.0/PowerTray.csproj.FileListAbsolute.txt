@@ -9,11 +9,12 @@ C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\runtim
 C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\Microsoft.Windows.SDK.NET.dll
 C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\WinRT.Runtime.dll
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.csproj.AssemblyReference.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\MainWindow.g.cs
+C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\BatInfo.g.cs
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\App.g.cs
+C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray_Content.g.cs
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray_MarkupCompile.cache
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray_MarkupCompile.lref
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\MainWindow.baml
+C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\BatInfo.baml
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.g.resources
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.AssemblyInfoInputs.cache
@@ -25,4 +26,5 @@ C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\refint
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.pdb
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray.genruntimeconfig.cache
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\ref\PowerTray.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerTray_Content.g.cs
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\Wpf.Ui.dll
+C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\App.baml

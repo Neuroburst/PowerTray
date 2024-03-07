@@ -49,9 +49,17 @@
         "net8.0-windows10.0.22621": {
           "targetAlias": "net8.0-windows10.0.22621.0",
           "dependencies": {
+            "Hardcodet.NotifyIcon.Wpf": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "System.Management": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "WPF-UI": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             }
           },
           "imports": [

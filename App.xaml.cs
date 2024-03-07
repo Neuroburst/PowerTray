@@ -30,13 +30,16 @@ using Microsoft.Win32;
 
 namespace PowerTray
 {
+    public partial class App : System.Windows.Application
+    {
+    }
     public class Program
     {
         [STAThread]
         static void Main()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            //System.Windows.Forms.Application.EnableVisualStyles();
+            //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             _ = new Program();
             System.Windows.Forms.Application.Run();
         }
@@ -46,7 +49,7 @@ namespace PowerTray
         private readonly NotifyIcon trayIcon;
 
         // Params ---
-        static int trayFontSize = 11;
+        static int trayFontSize = 10;
         static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
@@ -65,7 +68,7 @@ namespace PowerTray
         static int lowAmount = 0;
         // ---
 
-        static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier);
+        static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
 
         public Program()
         {
@@ -256,9 +259,8 @@ namespace PowerTray
         }
         private void CreateInfoWindow(object sender, System.EventArgs e)
         {
-            //BatInfo dialog = new BatInfo();
-            
-            //dialog.ShowDialog();
+            BatInfo dialog = new BatInfo();
+            dialog.ShowDialog();
         }
 
         public static bool[] checkDarkMode()

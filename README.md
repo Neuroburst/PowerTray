@@ -4,7 +4,7 @@ The tooltip also displays useful information.
 You can get even more information by Right clicking the tray button>Battery Info.
 
 ## Creation
-This is an open-source project created with Visual Studio, based off of kas/percentage.
+This is an open-source project created with Visual Studio.
 It was made using the .NET framework.
 
 Made for Windows 10 & 11, but 8 and 7 may not work as expected and are unsupported.
