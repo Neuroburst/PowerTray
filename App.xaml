@@ -4,7 +4,9 @@
              xmlns:local="clr-namespace:PowerTray"
              
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             StartupUri="BatInfo.xaml">
+             Startup="App_Startup"
+             ShutdownMode="OnExplicitShutdown">
+             <!--StartupUri="MainWindow.xaml">-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

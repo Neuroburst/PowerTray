@@ -7,6 +7,17 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="Battery Info and Statistics" Height="384" Width="605">
-    <ui:Button Content="frog paste" Margin="237,207,0,0" VerticalAlignment="Top"/>
+        Title="Battery Info and Statistics" Height="500" Width="250"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        WindowCornerPreference="Round"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <!--<ui:DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"/>-->
+
+        <ui:TitleBar
+            Title="Battery Info and Statistics"
+            Grid.Row="0"
+            Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
+    </Grid>
 </ui:FluentWindow>

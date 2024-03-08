@@ -9,7 +9,7 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<ApplicationIcon>BatteryFullFluentDark.ico</ApplicationIcon>
-	<StartupObject>PowerTray.Program</StartupObject>
+	<StartupObject>PowerTray.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

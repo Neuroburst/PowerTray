@@ -28,3 +28,4 @@ C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\PowerT
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\ref\PowerTray.dll
 C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\Wpf.Ui.dll
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\App.baml
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\Hardcodet.NotifyIcon.Wpf.dll

@@ -12,50 +12,39 @@ using System.Runtime;
 using Windows.Devices.Power;
 using Windows.System.Power;
 using Microsoft.Win32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 // TODO:
-// add back battery info menu
+// aggregate battery updates too slowly && add charge calc to tooltip
 
-// add settings menu (for global options)
+// add back battery info menu and make it auto-darkmode
 // make option to switch tray view
-// add option for better discharge calculation
+// add settings menu (for public options like update speed, auto-update, better discharge calc, and default tray view)
 
+// remove winform dependency completely
 // make tray font size bigger and look better
 
 // Important: Support Situations in which:
 // No System Battery
 // Multiple Batteries
-// Unknown Battery Condition
-
 
 namespace PowerTray
 {
     public partial class App : System.Windows.Application
     {
-    }
-    public class Program
-    {
-        [STAThread]
-        static void Main()
-        {
-            //System.Windows.Forms.Application.EnableVisualStyles();
-            //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            _ = new Program();
-            System.Windows.Forms.Application.Run();
-        }
-        // import dll for battery data
+        // import dll
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern bool DestroyIcon(IntPtr handle);
-        private readonly NotifyIcon trayIcon;
-
         // Params ---
         static int trayFontSize = 10;
-        static String trayFontType = "Segoe UI";
+        public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
+
+        public static int remainChargeHistorySize = 600;
 
         public static int trayRefreshRate = 500;
         public static int batInfoRefreshRate = 250;
-        static public bool batInfoAutoRefresh = false;
+        public static bool batInfoAutoRefresh = true;
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -63,14 +52,20 @@ namespace PowerTray
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
 
-        static int highAmount = 50;
-        static int mediumAmount = 30;
-        static int lowAmount = 0;
+        public static int highAmount = 50;
+        public static int mediumAmount = 30;
+        public static int lowAmount = 0;
         // ---
 
+        public static int[] remainChargeHistory = new int[remainChargeHistorySize];
+        public static long[] chargeHistoryTime = new long[remainChargeHistorySize];
+        static int bufferSize = 0;
+        static int bufferEndIdx = 0;
+
+        static NotifyIcon trayIcon;
         static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
 
-        public Program()
+        private void App_Startup(object sender, StartupEventArgs e)
         {
             // Create Context Menu
             ContextMenuStrip contextMenu = new ContextMenuStrip();
@@ -80,7 +75,7 @@ namespace PowerTray
             ToolStripItem settings = contextMenu.Items.Add("Settings");
             //settings.Click += 
             ToolStripItem exit = contextMenu.Items.Add("Exit");
-            exit.Click += new System.EventHandler(MenuItemClick);
+            exit.Click += new System.EventHandler(Quit);
 
             // Create tray button
             trayIcon = new NotifyIcon();
@@ -94,7 +89,7 @@ namespace PowerTray
             timer.Tick += new EventHandler(UpdateTray);
             timer.Start();
         }
-
+        
         private void UpdateTray(object sender, EventArgs e)
         {
             // check if dark mode is enabled ---
@@ -102,10 +97,40 @@ namespace PowerTray
             // ---
 
             var bat_info = GetBatteryInfo();
+            Debug.Print(bat_info.ToString());
+            int fullChargeCapMwh = bat_info["fullChargeCapMwh"];
+            int remainChargeCapMwh = bat_info["remainChargeCapMwh"];
+            int chargeRateMwh = bat_info["chargeRateMwh"];
 
-            var fullChargeCapMwh = bat_info["fullChargeCapMwh"];
-            var remainChargeCapMwh = bat_info["remainChargeCapMwh"];
-            var chargeRateMwh = bat_info["chargeRateMwh"];
+            // update remainChargeHistory ---
+            long timeStamp = DateTime.Now.Ticks;
+            remainChargeHistory.SetValue(remainChargeCapMwh, bufferEndIdx);
+            chargeHistoryTime.SetValue(timeStamp, bufferEndIdx);
+            // ---
+            
+            // calculate charge rate ---
+            int start_idx = bufferEndIdx - bufferSize;
+            long time_delta_ms = (chargeHistoryTime[bufferEndIdx] - chargeHistoryTime[start_idx]) / 10000;
+            long charge_delta = (long)(remainChargeHistory[bufferEndIdx] - remainChargeHistory[start_idx]);
+            long calcChargeRateMwh = 0;
+
+            if (time_delta_ms != 0)
+            {
+                calcChargeRateMwh = charge_delta / time_delta_ms;
+            }
+
+            Debug.Print(remainChargeCapMwh.ToString());
+
+            if (bufferSize < remainChargeHistorySize)
+            {
+                bufferSize += 1;
+            }
+            bufferEndIdx += 1;
+            if (bufferEndIdx >= remainChargeHistorySize)
+            {
+                bufferEndIdx = 0;
+            }
+            // ---
 
             double batteryPercent = (remainChargeCapMwh / (double)fullChargeCapMwh) * 100;
 
@@ -223,6 +248,21 @@ namespace PowerTray
             }
             //---
         }
+        private static Color LightenColor(Color color)
+        {
+            var amount = 30;
+            Color lightColor = Color.FromArgb(color.A,
+                Math.Min((int)(color.R + amount), 255), Math.Min((int)(color.G + amount), 255), Math.Min((int)(color.B + amount), 255));
+            return lightColor;
+        }
+
+        // Tray Icon Helper Functions ---
+        private void Quit(object sender, EventArgs e) // check if the exit button was pressed
+        {
+            trayIcon.Visible = false;
+            trayIcon.Dispose();
+            System.Windows.Application.Current.Shutdown();
+        }
 
         private string CreateTooltipText(object sender, EventArgs e)
         {
@@ -260,7 +300,7 @@ namespace PowerTray
         private void CreateInfoWindow(object sender, System.EventArgs e)
         {
             BatInfo dialog = new BatInfo();
-            dialog.ShowDialog();
+            dialog.Show();
         }
 
         public static bool[] checkDarkMode()
@@ -316,22 +356,6 @@ namespace PowerTray
             //t.GetField("text", hidden).SetValue(ni, text);
             //if ((bool)t.GetField("added", hidden).GetValue(ni))
             //    t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
-        }
-
-        public static Color LightenColor(Color color)
-        {
-            var amount = 30;
-            Color lightColor = Color.FromArgb(color.A,
-                Math.Min((int)(color.R + amount), 255), Math.Min((int)(color.G + amount), 255), Math.Min((int)(color.B + amount), 255));
-            return lightColor;
-        }
-
-        // Tray Icon Helper Functions ---
-        private void MenuItemClick(object sender, EventArgs e) // check if the exit button was pressed
-        {
-            trayIcon.Visible = false;
-            trayIcon.Dispose();
-            System.Windows.Forms.Application.Exit();
         }
         T ExecuteWithRetry<T>(Func<T> function, bool throwWhenFail = true)
         {
