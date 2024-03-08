@@ -58,7 +58,7 @@ namespace PowerTray {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PowerTray;component/batinfo.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PowerTray;V1.0.0.0;component/batinfo.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\BatInfo.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

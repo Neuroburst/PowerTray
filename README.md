@@ -10,6 +10,8 @@ It was made using the .NET framework.
 Made for Windows 10 & 11, but 8 and 7 may not work as expected and are unsupported.
 
 ## Installation
+### Make sure you have .NET 8.0 is installed on your computer!
+
 1. Download the latest release
 2. To get to your startup folder, press Windows+R, type "shell:startup", then press enter
 3. Put PowerTray.exe in that folder

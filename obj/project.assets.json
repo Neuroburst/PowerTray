@@ -75,6 +75,75 @@
           "Microsoft.WindowsDesktop.App.WPF"
         ]
       }
+    },
+    "net8.0-windows10.0.22621/win-x64": {
+      "Hardcodet.NotifyIcon.Wpf/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App"
+        ]
+      },
+      "System.CodeDom/8.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "System.Management/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.CodeDom": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/System.Management.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "runtimes/win/lib/net8.0/System.Management.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "WPF-UI/3.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0-windows7.0/Wpf.Ui.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0-windows7.0/Wpf.Ui.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
+      }
     }
   },
   "libraries": {
@@ -289,6 +358,11 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "win-x64": {
+        "#import": []
       }
     }
   }

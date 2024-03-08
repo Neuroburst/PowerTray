@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "App.xaml.cs",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
-              "ViewState": "AQIAACsBAAAAAAAAAAA8wHsBAAABAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T21:26:01.766Z",
               "IsPinned": true,
@@ -53,8 +53,7 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T21:25:37.715Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
