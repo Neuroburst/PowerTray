@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,7 +11,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Windows.Management.Update;
+using Windows.UI.Core;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Input;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace PowerTray
 {
@@ -18,44 +23,60 @@ namespace PowerTray
     /// </summary>
     public partial class BatInfo : FluentWindow
     {
-        private static StackPanel dataStack;
-        private static StackPanel valuesStack;
+        public class Info
+        {
+            public string Name { get; set; }
+            public string Value { get; set; }
+        }
+        private static ObservableCollection<Info> DataCollection { get; set; }
+        private static dynamic This;
+        
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private static void ResetBuffer(object sender, RoutedEventArgs e)
+        {
+            App.ResetBuffer();
+            UpdateData(null, null);
+        }
+
         public BatInfo()
         {
             InitializeComponent();
-            dataStack = this.Data;
-            valuesStack = this.Values;
+            This = this;
+            this.CloseButton.Click += CloseWindow;
+            this.ResetButton.Click += ResetBuffer;
+            //this.SettingsButton.Click += ;
         }
 
         public static void UpdateData(object sender, EventArgs e)
         {
-            var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
-
-            dataStack.Children.Clear();
-            valuesStack.Children.Clear();
-            foreach (KeyValuePair<string, dynamic>item in data)
+            if (This == null)
             {
-                var margin = new Thickness();
-                margin.Bottom = 5;
-                margin.Top = 5;
-                
-                Card itemcard = new Card();
-                Card valuecard = new Card();
-                itemcard.Margin = margin;
-                valuecard.Margin = margin;
-
-                itemcard.Content = (item.Key.ToString().EndsWith("mWh") ? item.Key.Remove(item.Key.Length-3, 3) : item.Key);
-                valuecard.Content = item.Value.ToString() + (item.Key.ToString().EndsWith("mWh") ? " mWh" : "");
-                if (item.Key.Contains("Health"))
-                {
-                    valuecard.Content = item.Value.ToString().Substring(0, 5) + "%";
-                }
-
-                dataStack.Children.Add(itemcard);
-                valuesStack.Children.Add(valuecard);
+                return;
             }
-            dataStack.UpdateLayout();
-            valuesStack.UpdateLayout();
+            var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
+            data.Insert(4, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
+            DataCollection = new ObservableCollection<Info> { };
+            foreach (DictionaryEntry item in data)
+            {
+                string key = (string)item.Key;
+
+                string name = (key.ToString().EndsWith("mWh") ? key.Remove(key.Length-3, 3) : (key.ToString().EndsWith("mW") ? key.Remove(key.Length - 2, 2) : key));
+                string value = item.Value.ToString() + (key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "");
+                if (key.Contains("Health") || key.Contains("Percent"))
+                {
+                    value = item.Value.ToString().Substring(0, 10) + "%";
+                }
+                else if (key.Contains("Volt"))
+                {
+                    value = item.Value.ToString() + " volts";
+                }
+                DataCollection.Add(new Info { Name = name, Value = value });
+            }
+            This.Data.ItemsSource = DataCollection;
         }
     }
 }

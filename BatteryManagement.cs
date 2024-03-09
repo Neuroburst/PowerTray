@@ -9,37 +9,36 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Power;
+using System.Collections;
+using System.Collections.Specialized;
 
 namespace PowerTray
 {
     internal class BatteryManagement
     {
-        public static Dictionary<string, dynamic> GetBatteryInfo(uint batteryTag, SafeFileHandle batteryHandle) // MOVE TO BATTERY MANAGEMENTTNTIT
+        public static OrderedDictionary GetBatteryInfo(uint batteryTag, SafeFileHandle batteryHandle) // MOVE TO BATTERY MANAGEMENTTNTIT
         {
             var batteryReport = Battery.AggregateBattery.GetReport(); // get battery info (slow)
 
-            var batteries = new ManagementObjectSearcher("SELECT * FROM CIM_Battery").Get(); //get advanced battery info
-            ManagementObject main_battery = new ManagementObject();
-            //gets the first battery using the dumbest way possible :) USE INDEX INSTEAD
-            foreach (ManagementObject battery in batteries)
-            {
-                Debug.Print(battery.ToString());
-                main_battery = battery;
-                break;
-            };
+            //var batteries = new ManagementObjectSearcher("SELECT * FROM CIM_Battery").Get(); //get advanced battery info
+            //ManagementObject main_battery = new ManagementObject();
+            ////gets the first battery using the dumbest way possible :) USE INDEX INSTEAD
+            //foreach (ManagementObject battery in batteries)
+            //{
+            //    Debug.Print(battery.ToString());
+            //    main_battery = battery;
+            //    break;
+            //};
 
-            var dataDict = new Dictionary<string, dynamic>
-            {
-                { "Design Capacity mWh", batteryReport.DesignCapacityInMilliwattHours },
-                { "Charge Capacity mWh", batteryReport.FullChargeCapacityInMilliwattHours },
-                { "Battery Health mWh", (double)batteryReport.FullChargeCapacityInMilliwattHours/(double)batteryReport.DesignCapacityInMilliwattHours },
-                //{ "remainChargeCapMwh", batteryReport.RemainingCapacityInMilliwattHours },
-                //{ "chargeRateMwh", batteryReport.ChargeRateInMilliwatts },
-                { "Status", batteryReport.Status },
-            };
+            var dataDict = new OrderedDictionary { };
+            
             Kernel32.BATTERY_WAIT_STATUS bws = default;
             bws.BatteryTag = batteryTag;
             Kernel32.BATTERY_STATUS batteryStatus = default;
+
+            int remainChargeCapMwh = 0;
+            int chargeRate = 0;
+            int voltage = 0;
             if (Kernel32.DeviceIoControl(batteryHandle,
                                          Kernel32.IOCTL.IOCTL_BATTERY_QUERY_STATUS,
                                          ref bws,
@@ -49,10 +48,19 @@ namespace PowerTray
                                          out _,
                                          IntPtr.Zero))
             {
-                dataDict.Add("Remaining Charge mWh", (int)Convert.ToSingle(batteryStatus.Capacity));
-                dataDict.Add("Charge Rate mWh", (int)batteryStatus.Rate);
-                dataDict.Add("Voltage", (int)Convert.ToSingle(batteryStatus.Voltage) / 1000f);
+                remainChargeCapMwh = (int)batteryStatus.Capacity;
+                chargeRate = (int)batteryStatus.Rate;
+                voltage = (int)batteryStatus.Voltage / 1000;
             }
+            dataDict.Add("Status", batteryReport.Status);
+            dataDict.Add("Percent Remaining", (remainChargeCapMwh / (double)batteryReport.FullChargeCapacityInMilliwattHours) * 100);
+            dataDict.Add("Remaining Charge mWh", remainChargeCapMwh);
+            dataDict.Add("Charge Rate mW", chargeRate);
+
+            dataDict.Add("Battery Health", (double)batteryReport.FullChargeCapacityInMilliwattHours / (double)batteryReport.DesignCapacityInMilliwattHours);
+            dataDict.Add("Battery Capacity mWh", batteryReport.FullChargeCapacityInMilliwattHours);
+            dataDict.Add("Design Capacity mWh", batteryReport.DesignCapacityInMilliwattHours);
+            dataDict.Add("Voltage", voltage);
 
             //dataDict.Add("----", "----");
             //foreach (PropertyData property in main_battery.Properties)

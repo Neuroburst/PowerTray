@@ -24,10 +24,10 @@ using Wpf.Ui.Input;
 using System.Windows.Input;
 using System.Security.AccessControl;
 using System.Xml.Linq;
+using System.Collections.Specialized;
 
 // TODO:
-// add back battery info menu
-
+// scroll is too sensitive
 // make tooltip stay open somehow
 
 // INFORMATION GATHERING
@@ -52,7 +52,7 @@ namespace PowerTray
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int remainChargeHistorySize = 10;
+        public static int remainChargeHistorySize = 20;
 
         public static int trayRefreshRate = 1000; // in milliseconds
         public static int batInfoRefreshRate = 1000;
@@ -75,7 +75,7 @@ namespace PowerTray
         public static long[] chargeHistoryTime = new long[remainChargeHistorySize];
         static int bufferSize = 0;
         static int bufferEndIdx = 0;
-        long calcChargeRateMwh = 0;
+        public static long calcChargeRateMw = 0;
 
         //static bool tooltipPinned = false;
         static TaskbarIcon trayIcon;
@@ -86,6 +86,14 @@ namespace PowerTray
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
         //private static ICommand toggleTooltipPin = new RelayCommand<dynamic>(action => togglePin(), canExecute => true);
 
+        public static void ResetBuffer()
+        {
+            remainChargeHistory = new int[remainChargeHistorySize];
+            chargeHistoryTime = new long[remainChargeHistorySize];
+            bufferSize = 0;
+            bufferEndIdx = 0;
+            calcChargeRateMw = 0;
+        }
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // get battery tag from info
@@ -161,9 +169,9 @@ namespace PowerTray
             // ---
 
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
-            int fullChargeCapMwh = bat_info["Charge Capacity mWh"];
-            int remainChargeCapMwh = bat_info["Remaining Charge mWh"];
-            int chargeRateMwh = bat_info["Charge Rate mWh"];
+            int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
+            int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
+            int chargeRateMw = (int)bat_info["Charge Rate mW"];
 
 
             // update remainChargeHistory ---
@@ -172,7 +180,7 @@ namespace PowerTray
             {
                 oldIndex += remainChargeHistorySize;
             }
-            if (remainChargeHistory[oldIndex] != remainChargeCapMwh)
+            if (true)//remainChargeHistory[oldIndex] != remainChargeCapMwh)
             {
                 long timeStamp = DateTime.Now.Ticks;
                 remainChargeHistory.SetValue(remainChargeCapMwh, bufferEndIdx);
@@ -192,7 +200,7 @@ namespace PowerTray
 
                 if (time_delta_s != 0)
                 {
-                    calcChargeRateMwh = charge_delta_Mws / time_delta_s;
+                    calcChargeRateMw = charge_delta_Mws / time_delta_s;
                 }
 
                 bufferEndIdx += 1;
@@ -203,17 +211,17 @@ namespace PowerTray
             }
             // ---
 
-            double batteryPercent = (remainChargeCapMwh / (double)fullChargeCapMwh) * 100;
+            double batteryPercent = (double)bat_info["Percent Remaining"];
 
             double timeLeft = 0;
-            if (chargeRateMwh < 0)
+            if (chargeRateMw < 0)
             {
-                timeLeft = (remainChargeCapMwh / -(double)chargeRateMwh) * 60;
+                timeLeft = (remainChargeCapMwh / -(double)chargeRateMw) * 60;
             }
 
-            if (chargeRateMwh > 0)
+            if (chargeRateMw > 0)
             {
-                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMwh) * 60;
+                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMw) * 60;
             }
             // ---
 
@@ -222,7 +230,7 @@ namespace PowerTray
 
             Color statusColor = highColor;
 
-            if (chargeRateMwh > 0)
+            if (chargeRateMw > 0)
             {
                 statusColor = chargingColor;
             }
@@ -334,35 +342,35 @@ namespace PowerTray
             System.Windows.Application.Current.Shutdown();
         }
 
-        private string CreateTooltipText(Dictionary<string, dynamic> bat_info)
+        private string CreateTooltipText(OrderedDictionary bat_info)
         {
             // use battery info
-            bool isCharging = bat_info["Status"] == BatteryStatus.Charging;
+            bool isCharging = (BatteryStatus)bat_info["Status"] == BatteryStatus.Charging;
 
-            var fullChargeCapMwh = bat_info["Charge Capacity mWh"];
-            var remainChargeCapMwh = bat_info["Remaining Charge mWh"];
-            var chargeRateMwh = bat_info["Charge Rate mWh"];
+            int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
+            int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
+            int chargeRateMw = (int)bat_info["Charge Rate mW"];
 
-            double batteryPercent = (remainChargeCapMwh / (double)fullChargeCapMwh) * 100;
+            double batteryPercent = (double)bat_info["Percent Remaining"];
 
             double timeLeft = 0;
-            if (chargeRateMwh < 0)
+            if (chargeRateMw < 0)
             {
-                timeLeft = (remainChargeCapMwh / -(double)chargeRateMwh) * 60;
+                timeLeft = (remainChargeCapMwh / -(double)chargeRateMw) * 60;
             }
 
-            if (chargeRateMwh > 0)
+            if (chargeRateMw > 0)
             {
-                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMwh) * 60;
+                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMw) * 60;
 
             }
             String toolTipText =
                 Math.Round(batteryPercent, 3).ToString() + "% " + (isCharging ? "connected to AC" : "on battery\n" +
                 EasySecondsToTime((int)timeLeft) + " remaining") +
-                (chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
+                (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
                 "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
-                "\n" + (chargeRateMwh > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs((int)chargeRateMwh).ToString() + " mWh" +
-                "\n" + (calcChargeRateMwh > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMwh).ToString() + " mWh";
+                "\n" + (chargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
+                "\n" + (calcChargeRateMw > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW";
                 //"\n\n(click on the tray icon to " + (tooltipPinned? "unpin" : "pin") + " this tooltip)";
             return toolTipText;
         }
