@@ -3,47 +3,50 @@ using System.Data;
 using System.Windows;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Drawing.Text;
-using System.Reflection;
-using System.Runtime;
 
 using Windows.Devices.Power;
 using Windows.System.Power;
 using Microsoft.Win32;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Management;
+using Windows.Foundation.Collections;
+using Windows.Devices.Enumeration;
+using Microsoft.Win32.SafeHandles;
+using System.Reflection;
 
 // TODO:
-// aggregate battery updates too slowly (avg. 76-80 sec) & increase buffer size after update rate improved
-// fix tooltip information temp removal (due to max of 128 chars)
 
+// REWORKS
+// Switch to hardcotet notifyicon to fix tooltip information temp removal (due to max of 128 chars) AND MAKE TOOLTIP UPDATE LIVE
+// remove winform dependency completely
+
+// INFORMATION GATHERING
+// figure out how to use win32 API to make it give weird information (and use same battery as kernel)
+// make option for multiple batteries besides the auto-selected one
+
+// MORE MENUS AND OPTIONS
 // add back battery info menu and make it auto-darkmode
 // make option to switch tray info
-// add settings menu (for public options like update speed, auto-update, better discharge calc, and default tray view)
-
-// remove winform dependency completely
-// make tray font size bigger and look better
-
-// Important: Support Situations in which:
-// No System Battery
-// Multiple Batteries
+// add settings menu (for public options and update speed, auto-update, better discharge calc, and default tray view)
+// graph calcDischarge rate and other things
 
 namespace PowerTray
 {
     public partial class App : System.Windows.Application
     {
-        // import dll
+        // import dlls
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+
         static extern bool DestroyIcon(IntPtr handle);
         // Params ---
         static int trayFontSize = 10;
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int remainChargeHistorySize = 2;
+        public static int remainChargeHistorySize = 60;
 
-        public static int trayRefreshRate = 500;
+        public static int trayRefreshRate = 1000;
         public static int batInfoRefreshRate = 250;
         public static bool batInfoAutoRefresh = true;
 
@@ -57,6 +60,8 @@ namespace PowerTray
         public static int mediumAmount = 30;
         public static int lowAmount = 0;
         // ---
+        public static uint batteryTag = 0;
+        public static SafeFileHandle batteryHandle = null;
 
         public static int[] remainChargeHistory = new int[remainChargeHistorySize];
         public static long[] chargeHistoryTime = new long[remainChargeHistorySize];
@@ -69,13 +74,18 @@ namespace PowerTray
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            // get battery tag from info
+            var info  = BatteryManagement.GetBatteryTag();
+            batteryHandle = info[0];
+            batteryTag = info[1];
+
             // Create Context Menu
             ContextMenuStrip contextMenu = new ContextMenuStrip();
 
             ToolStripItem batteryInfo = contextMenu.Items.Add("Battery Info");
             batteryInfo.Click += new System.EventHandler(CreateInfoWindow);
             ToolStripItem settings = contextMenu.Items.Add("Settings");
-            //settings.Click += 
+            //settings.Click += new System.EventHandler(CreateSettingsWindow);
             ToolStripItem exit = contextMenu.Items.Add("Exit");
             exit.Click += new System.EventHandler(Quit);
 
@@ -98,7 +108,7 @@ namespace PowerTray
             bool darkModeEnabled = checkDarkMode()[0];
             // ---
 
-            var bat_info = GetBatteryInfo();
+            var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
             int fullChargeCapMwh = bat_info["fullChargeCapMwh"];
             int remainChargeCapMwh = bat_info["remainChargeCapMwh"];
             int chargeRateMwh = bat_info["chargeRateMwh"];
@@ -132,11 +142,6 @@ namespace PowerTray
                 {
                     calcChargeRateMwh = charge_delta_Mws / time_delta_s;
                 }
-                Debug.Print(charge_delta_Mws.ToString());
-                Debug.Print(time_delta_s.ToString());
-                Debug.Print(remainChargeCapMwh.ToString());
-
-                Debug.Print(calcChargeRateMwh.ToString());
 
                 bufferEndIdx += 1;
                 if (bufferEndIdx >= remainChargeHistorySize)
@@ -195,7 +200,7 @@ namespace PowerTray
                     statusColor = LightenColor(statusColor);
                 }
             }
-            var toolTipText = CreateTooltipText(calcChargeRateMwh);
+            var toolTipText = CreateTooltipText(bat_info);
             // Tray Icon ---
             String trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
             SolidBrush trayFontColor = new SolidBrush(statusColor);
@@ -279,10 +284,8 @@ namespace PowerTray
             System.Windows.Application.Current.Shutdown();
         }
 
-        private string CreateTooltipText(long calcChargeRateMwh)
+        private string CreateTooltipText(Dictionary<string, dynamic> bat_info)
         {
-            var bat_info = GetBatteryInfo();
-
             // use battery info
             bool isPlugged = SystemInformation.PowerStatus.PowerLineStatus == System.Windows.Forms.PowerLineStatus.Online;
             bool isCharging = bat_info["Status"] == BatteryStatus.Charging;
@@ -306,9 +309,9 @@ namespace PowerTray
             }
             String toolTipText =
                 Math.Round(batteryPercent, 3).ToString() + "% " + (isPlugged ? "connected to AC" : "on battery\n" +
-            EasySecondsToTime((int)timeLeft) + " remaining") +
-                (chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
-                //"\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
+                EasySecondsToTime((int)timeLeft) + " remaining") +
+                //(chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
+                "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
                 "\n" + (chargeRateMwh > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs((int)chargeRateMwh).ToString() + " mWh" + 
                 "\n" + (calcChargeRateMwh > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMwh).ToString() + " mWh";
             return toolTipText;
@@ -351,29 +354,9 @@ namespace PowerTray
             return time;
         }
 
-        public static Dictionary<string, dynamic> GetBatteryInfo()
-        {
-            //var batteries = Battery.GetDeviceSelector();
-
-            var dataDict = new Dictionary<string, dynamic>();
-            var batteryReport = Battery.AggregateBattery.GetReport(); // get battery info
-            dataDict.Add("designChargeCapMwh", batteryReport.DesignCapacityInMilliwattHours);
-            dataDict.Add("fullChargeCapMwh", batteryReport.FullChargeCapacityInMilliwattHours);
-            dataDict.Add("remainChargeCapMwh", batteryReport.RemainingCapacityInMilliwattHours);
-            dataDict.Add("chargeRateMwh", batteryReport.ChargeRateInMilliwatts);
-            dataDict.Add("Status", batteryReport.Status);
-
-            return dataDict;
-        }
         public static void SetNotifyIconText(NotifyIcon ni, string text) // bypass 63 character limit for tooltips
         {
             ni.Text = text;
-            //if (text.Length >= 128) throw new ArgumentOutOfRangeException("Text limited to 127 characters");
-            //Type t = typeof(NotifyIcon);
-            //BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
-            //t.GetField("text", hidden).SetValue(ni, text);
-            //if ((bool)t.GetField("added", hidden).GetValue(ni))
-            //    t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
         }
         T ExecuteWithRetry<T>(Func<T> function, bool throwWhenFail = true)
         {

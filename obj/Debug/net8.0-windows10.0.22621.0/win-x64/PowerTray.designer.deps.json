@@ -14,7 +14,6 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.2": {},
       "System.CodeDom/8.0.0": {
         "runtime": {
           "lib/net8.0/System.CodeDom.dll": {
@@ -51,13 +50,6 @@
       "sha512": "sha512-FFEkdRSidMrbMfQVwhCzq6KtSyR1qQojqtiUrkCyjnOOuMf7W3TNQkzFnBBxYxFe7uLk5mz7M38wFh1qdWyfvg==",
       "path": "hardcodet.notifyicon.wpf/1.1.0",
       "hashPath": "hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512"
-    },
-    "Microsoft.NET.ILLink.Tasks/8.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hKTrehpfVzOhAz0mreaTAZgbz0DrMEbWq4n3hAo8Ks6WdxdqQhNPvzOqn9VygKuWf1bmxPdraqzTaXriO/sn0A==",
-      "path": "microsoft.net.illink.tasks/8.0.2",
-      "hashPath": "microsoft.net.illink.tasks.8.0.2.nupkg.sha512"
     },
     "System.CodeDom/8.0.0": {
       "type": "package",

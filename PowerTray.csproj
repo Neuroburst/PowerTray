@@ -12,6 +12,7 @@
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	<StartupObject>PowerTray.App</StartupObject>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	 <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
