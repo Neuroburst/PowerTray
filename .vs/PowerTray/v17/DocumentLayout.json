@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|c:\\users\\agpan\\programming\\powertray\\batterymanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\batterymanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:batterymanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "App.xaml.cs",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAABkAAABDAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABsAAABIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T21:26:01.766Z",
               "IsPinned": true,
@@ -50,7 +50,7 @@
               "RelativeDocumentMoniker": "BatteryManagement.cs",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\BatteryManagement.cs",
               "RelativeToolTip": "BatteryManagement.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAAwAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-09T03:21:39.999Z",
               "IsPinned": true,

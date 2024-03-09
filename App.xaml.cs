@@ -3,7 +3,6 @@ using System.Data;
 using System.Windows;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Drawing.Text;
 
 using Windows.Devices.Power;
@@ -14,19 +13,25 @@ using Windows.Foundation.Collections;
 using Windows.Devices.Enumeration;
 using Microsoft.Win32.SafeHandles;
 using System.Reflection;
+using System.Drawing;
+
+using Windows.Foundation.Diagnostics;
+using System.Windows.Controls;
+using Wpf.Ui.Controls;
+using Hardcodet.Wpf.TaskbarNotification;
+using Wpf.Ui.Input;
+using System.Windows.Input;
 
 // TODO:
+// add back battery info menu and make it and all ui auto-darkmode
 
-// REWORKS
-// Switch to hardcotet notifyicon to fix tooltip information temp removal (due to max of 128 chars) AND MAKE TOOLTIP UPDATE LIVE
-// remove winform dependency completely
+// make tooltip not go away [try adding keybind {show keybind in tooltip}]
 
 // INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
 
 // MORE MENUS AND OPTIONS
-// add back battery info menu and make it auto-darkmode
 // make option to switch tray info
 // add settings menu (for public options and update speed, auto-update, better discharge calc, and default tray view)
 // graph calcDischarge rate and other things
@@ -46,7 +51,7 @@ namespace PowerTray
 
         public static int remainChargeHistorySize = 60;
 
-        public static int trayRefreshRate = 1000;
+        public static int trayRefreshRate = 1; // in seconds
         public static int batInfoRefreshRate = 250;
         public static bool batInfoAutoRefresh = true;
 
@@ -69,7 +74,8 @@ namespace PowerTray
         static int bufferEndIdx = 0;
         long calcChargeRateMwh = 0;
 
-        static NotifyIcon trayIcon;
+        static TaskbarIcon trayIcon;
+        static ToolTip toolTip;
         static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
 
         private void App_Startup(object sender, StartupEventArgs e)
@@ -79,31 +85,59 @@ namespace PowerTray
             batteryHandle = info[0];
             batteryTag = info[1];
 
-            // Create Context Menu
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            var batteryInfo = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Battery Info",
+                //Icon = new FontIcon() { Glyph = CommonGlyphs.Settings },
+                //Command = PowerTray.App.CreateInfoWindow,
+            };
 
-            ToolStripItem batteryInfo = contextMenu.Items.Add("Battery Info");
-            batteryInfo.Click += new System.EventHandler(CreateInfoWindow);
-            ToolStripItem settings = contextMenu.Items.Add("Settings");
-            //settings.Click += new System.EventHandler(CreateSettingsWindow);
-            ToolStripItem exit = contextMenu.Items.Add("Exit");
-            exit.Click += new System.EventHandler(Quit);
+            var settings = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Settings",
+                //Icon = new FontIcon() { Glyph = CommonGlyphs.Settings },
+                //Command = CreateInfoWindow;
+            };
 
-            // Create tray button
-            trayIcon = new NotifyIcon();
-            trayIcon.ContextMenuStrip = contextMenu;
-            trayIcon.Visible = true;
+            var exit = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Exit",
+                //Icon = new FontIcon() { Glyph = CommonGlyphs.PowerButton },
+                //Command = CommonCommands.ExitAppCommand
+            };
+
+            var contextMenu = new ContextMenu()
+            {
+                Items = { batteryInfo, settings, exit }
+            };
+
+            toolTip = new ToolTip();
+            
+            trayIcon = new TaskbarIcon()
+            {
+                TrayToolTip = toolTip,
+                ContextMenu = contextMenu,
+                //DoubleClickCommand = CommonCommands.OpenSettingsWindowCommand
+            };
             //trayIcon.Click += new System.EventHandler(CreateInfoWindow); // weirdly also inputs right clicks and context menu clicks
 
             // Create Update Timer for tray icon
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = trayRefreshRate;
+            System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, trayRefreshRate);
             timer.Tick += new EventHandler(UpdateTray);
             timer.Start();
         }
         
         private void UpdateTray(object sender, EventArgs e)
         {
+            if (trayIcon.IsMouseOver == true)
+            {
+                Debug.Print("frog");
+            }
+            if (Mouse.DirectlyOver != null)
+            {
+                Debug.Print(Mouse.DirectlyOver.ToString());
+            }
             // check if dark mode is enabled ---
             bool darkModeEnabled = checkDarkMode()[0];
             // ---
@@ -250,13 +284,8 @@ namespace PowerTray
                 System.IntPtr intPtr = bitmap.GetHicon();
                 try
                 {
-                    using (Icon icon = Icon.FromHandle(intPtr))
-                    {
-                        trayIcon.Icon?.Dispose();
-                        trayIcon.Icon = icon;
-                        SetNotifyIconText(trayIcon, toolTipText);
-                        //trayIcon.Text = toolTipText;
-                    }
+                    trayIcon.Icon = Icon.FromHandle(intPtr);
+                    toolTip.Content = toolTipText;
                 }
                 finally
                 {
@@ -279,7 +308,6 @@ namespace PowerTray
         // Tray Icon Helper Functions ---
         private void Quit(object sender, EventArgs e) // check if the exit button was pressed
         {
-            trayIcon.Visible = false;
             trayIcon.Dispose();
             System.Windows.Application.Current.Shutdown();
         }
@@ -287,7 +315,6 @@ namespace PowerTray
         private string CreateTooltipText(Dictionary<string, dynamic> bat_info)
         {
             // use battery info
-            bool isPlugged = SystemInformation.PowerStatus.PowerLineStatus == System.Windows.Forms.PowerLineStatus.Online;
             bool isCharging = bat_info["Status"] == BatteryStatus.Charging;
 
             var fullChargeCapMwh = bat_info["fullChargeCapMwh"];
@@ -308,14 +335,15 @@ namespace PowerTray
 
             }
             String toolTipText =
-                Math.Round(batteryPercent, 3).ToString() + "% " + (isPlugged ? "connected to AC" : "on battery\n" +
+                Math.Round(batteryPercent, 3).ToString() + "% " + (isCharging ? "connected to AC" : "on battery\n" +
                 EasySecondsToTime((int)timeLeft) + " remaining") +
-                //(chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
+                (chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
                 "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
                 "\n" + (chargeRateMwh > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs((int)chargeRateMwh).ToString() + " mWh" + 
                 "\n" + (calcChargeRateMwh > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMwh).ToString() + " mWh";
             return toolTipText;
         }
+
         private void CreateInfoWindow(object sender, System.EventArgs e)
         {
             BatInfo dialog = new BatInfo();
@@ -352,11 +380,6 @@ namespace PowerTray
                 time = "Unknown minutes";
             }
             return time;
-        }
-
-        public static void SetNotifyIconText(NotifyIcon ni, string text) // bypass 63 character limit for tooltips
-        {
-            ni.Text = text;
         }
         T ExecuteWithRetry<T>(Func<T> function, bool throwWhenFail = true)
         {
