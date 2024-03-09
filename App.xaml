@@ -5,8 +5,9 @@
              
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Startup="App_Startup"
+             StartupUri="BatInfo.xaml"
              ShutdownMode="OnExplicitShutdown">
-             <!--StartupUri="MainWindow.xaml">-->
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

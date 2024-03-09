@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,32 +18,25 @@ namespace PowerTray
         {
             var batteryReport = Battery.AggregateBattery.GetReport(); // get battery info (slow)
 
-            //var batteries = new ManagementObjectSearcher("SELECT * FROM CIM_Battery").Get(); //get advanced battery info
-            //ManagementObject main_battery = new ManagementObject();
-            ////gets the first battery using the dumbest way possible :) USE INDEX INSTEAD
-            //foreach (ManagementObject battery in batteries)
-            //{
-            //    Debug.Print(battery.ToString());
-            //    main_battery = battery;
-            //    break;
-            //};
-            //foreach (PropertyData property in main_battery.Properties)
-            //{
-            //    if (property.Value != null)
-            //    {
-            //        dataDict.Add(property.Name, property.Value);
-            //    }
-            //}
+            var batteries = new ManagementObjectSearcher("SELECT * FROM CIM_Battery").Get(); //get advanced battery info
+            ManagementObject main_battery = new ManagementObject();
+            //gets the first battery using the dumbest way possible :) USE INDEX INSTEAD
+            foreach (ManagementObject battery in batteries)
+            {
+                Debug.Print(battery.ToString());
+                main_battery = battery;
+                break;
+            };
 
             var dataDict = new Dictionary<string, dynamic>
             {
-                { "designChargeCapMwh", batteryReport.DesignCapacityInMilliwattHours },
-                { "fullChargeCapMwh", batteryReport.FullChargeCapacityInMilliwattHours },
+                { "Design Capacity mWh", batteryReport.DesignCapacityInMilliwattHours },
+                { "Charge Capacity mWh", batteryReport.FullChargeCapacityInMilliwattHours },
+                { "Battery Health mWh", (double)batteryReport.FullChargeCapacityInMilliwattHours/(double)batteryReport.DesignCapacityInMilliwattHours },
                 //{ "remainChargeCapMwh", batteryReport.RemainingCapacityInMilliwattHours },
                 //{ "chargeRateMwh", batteryReport.ChargeRateInMilliwatts },
-                { "Status", batteryReport.Status }
+                { "Status", batteryReport.Status },
             };
-            
             Kernel32.BATTERY_WAIT_STATUS bws = default;
             bws.BatteryTag = batteryTag;
             Kernel32.BATTERY_STATUS batteryStatus = default;
@@ -55,10 +49,19 @@ namespace PowerTray
                                          out _,
                                          IntPtr.Zero))
             {
-                dataDict.Add("remainChargeCapMwh", (int)Convert.ToSingle(batteryStatus.Capacity));
-                dataDict.Add("chargeRateMwh", (int)batteryStatus.Rate);
+                dataDict.Add("Remaining Charge mWh", (int)Convert.ToSingle(batteryStatus.Capacity));
+                dataDict.Add("Charge Rate mWh", (int)batteryStatus.Rate);
                 dataDict.Add("Voltage", (int)Convert.ToSingle(batteryStatus.Voltage) / 1000f);
             }
+
+            //dataDict.Add("----", "----");
+            //foreach (PropertyData property in main_battery.Properties)
+            //{
+            //    if (property.Value != null)
+            //    {
+            //        dataDict.Add(property.Name, property.Value);
+            //    }
+            //}
 
             return dataDict;
         }

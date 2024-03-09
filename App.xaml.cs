@@ -18,14 +18,17 @@ using System.Drawing;
 using Windows.Foundation.Diagnostics;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Appearance;
 using Hardcodet.Wpf.TaskbarNotification;
 using Wpf.Ui.Input;
 using System.Windows.Input;
+using System.Security.AccessControl;
+using System.Xml.Linq;
 
 // TODO:
-// add back battery info menu and make it and all ui auto-darkmode
+// add back battery info menu
 
-// make tooltip not go away [try adding keybind {show keybind in tooltip}]
+// make tooltip stay open somehow
 
 // INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
@@ -49,10 +52,10 @@ namespace PowerTray
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int remainChargeHistorySize = 60;
+        public static int remainChargeHistorySize = 10;
 
-        public static int trayRefreshRate = 1; // in seconds
-        public static int batInfoRefreshRate = 250;
+        public static int trayRefreshRate = 1000; // in milliseconds
+        public static int batInfoRefreshRate = 1000;
         public static bool batInfoAutoRefresh = true;
 
         static Color chargingColor = Color.Green;
@@ -61,8 +64,8 @@ namespace PowerTray
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
 
-        public static int highAmount = 50;
-        public static int mediumAmount = 30;
+        public static int highAmount = 30;
+        public static int mediumAmount = 20;
         public static int lowAmount = 0;
         // ---
         public static uint batteryTag = 0;
@@ -74,9 +77,14 @@ namespace PowerTray
         static int bufferEndIdx = 0;
         long calcChargeRateMwh = 0;
 
+        //static bool tooltipPinned = false;
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
         static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
+
+        private static ICommand BatInfoOpen = new RelayCommand<dynamic>(action => CreateInfoWindow(), canExecute => true);
+        private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
+        //private static ICommand toggleTooltipPin = new RelayCommand<dynamic>(action => togglePin(), canExecute => true);
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -88,22 +96,22 @@ namespace PowerTray
             var batteryInfo = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Battery Info",
-                //Icon = new FontIcon() { Glyph = CommonGlyphs.Settings },
-                //Command = PowerTray.App.CreateInfoWindow,
+                Icon = new SymbolIcon(SymbolRegular.Info20, 14, false),
+                Command = BatInfoOpen,
             };
 
             var settings = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Settings",
-                //Icon = new FontIcon() { Glyph = CommonGlyphs.Settings },
-                //Command = CreateInfoWindow;
+                Icon = new SymbolIcon(SymbolRegular.Settings20, 14, false),
+                //Command = SettingsOpen;
             };
 
             var exit = new Wpf.Ui.Controls.MenuItem()
             {
-                Header = "Exit",
-                //Icon = new FontIcon() { Glyph = CommonGlyphs.PowerButton },
-                //Command = CommonCommands.ExitAppCommand
+                Header = "Quit",
+                Icon = new SymbolIcon(SymbolRegular.Power20, 14, false),
+                Command = QuitProgram
             };
 
             var contextMenu = new ContextMenu()
@@ -112,40 +120,50 @@ namespace PowerTray
             };
 
             toolTip = new ToolTip();
-            
             trayIcon = new TaskbarIcon()
             {
                 TrayToolTip = toolTip,
                 ContextMenu = contextMenu,
+                //LeftClickCommand = toggleTooltipPin,
                 //DoubleClickCommand = CommonCommands.OpenSettingsWindowCommand
             };
-            //trayIcon.Click += new System.EventHandler(CreateInfoWindow); // weirdly also inputs right clicks and context menu clicks
 
             // Create Update Timer for tray icon
-            System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, trayRefreshRate);
-            timer.Tick += new EventHandler(UpdateTray);
-            timer.Start();
+            System.Windows.Threading.DispatcherTimer tray_timer = new System.Windows.Threading.DispatcherTimer();
+            tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
+            tray_timer.Tick += new EventHandler(UpdateTray);
+            tray_timer.Start();
+
+            System.Windows.Threading.DispatcherTimer info_timer = new System.Windows.Threading.DispatcherTimer();
+            info_timer.Interval = new TimeSpan(0, 0, 0, 0, batInfoRefreshRate);
+            info_timer.Tick += new EventHandler(BatInfo.UpdateData);
+            info_timer.Start();
+
+            
         }
         
         private void UpdateTray(object sender, EventArgs e)
         {
-            if (trayIcon.IsMouseOver == true)
-            {
-                Debug.Print("frog");
-            }
-            if (Mouse.DirectlyOver != null)
-            {
-                Debug.Print(Mouse.DirectlyOver.ToString());
-            }
+            //if (tooltipPinned)
+            //{
+            //    toolTip.IsOpen = true;
+            //}
+            //toolTip.StaysOpen = tooltipPinned;
+
             // check if dark mode is enabled ---
             bool darkModeEnabled = checkDarkMode()[0];
+
+            ApplicationThemeManager.Apply(
+                  (checkDarkMode()[1] ? ApplicationTheme.Dark : ApplicationTheme.Light),   // Theme type
+                  WindowBackdropType.Mica, // Background type
+                  true                    // Whether to change accents automatically
+            );
             // ---
 
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
-            int fullChargeCapMwh = bat_info["fullChargeCapMwh"];
-            int remainChargeCapMwh = bat_info["remainChargeCapMwh"];
-            int chargeRateMwh = bat_info["chargeRateMwh"];
+            int fullChargeCapMwh = bat_info["Charge Capacity mWh"];
+            int remainChargeCapMwh = bat_info["Remaining Charge mWh"];
+            int chargeRateMwh = bat_info["Charge Rate mWh"];
 
 
             // update remainChargeHistory ---
@@ -306,7 +324,11 @@ namespace PowerTray
         }
 
         // Tray Icon Helper Functions ---
-        private void Quit(object sender, EventArgs e) // check if the exit button was pressed
+        //private static void togglePin()
+        //{
+        //    tooltipPinned = !tooltipPinned;
+        //}
+        private static void Quit() // check if the exit button was pressed
         {
             trayIcon.Dispose();
             System.Windows.Application.Current.Shutdown();
@@ -317,9 +339,9 @@ namespace PowerTray
             // use battery info
             bool isCharging = bat_info["Status"] == BatteryStatus.Charging;
 
-            var fullChargeCapMwh = bat_info["fullChargeCapMwh"];
-            var remainChargeCapMwh = bat_info["remainChargeCapMwh"];
-            var chargeRateMwh = bat_info["chargeRateMwh"];
+            var fullChargeCapMwh = bat_info["Charge Capacity mWh"];
+            var remainChargeCapMwh = bat_info["Remaining Charge mWh"];
+            var chargeRateMwh = bat_info["Charge Rate mWh"];
 
             double batteryPercent = (remainChargeCapMwh / (double)fullChargeCapMwh) * 100;
 
@@ -339,12 +361,13 @@ namespace PowerTray
                 EasySecondsToTime((int)timeLeft) + " remaining") +
                 (chargeRateMwh > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
                 "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
-                "\n" + (chargeRateMwh > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs((int)chargeRateMwh).ToString() + " mWh" + 
+                "\n" + (chargeRateMwh > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs((int)chargeRateMwh).ToString() + " mWh" +
                 "\n" + (calcChargeRateMwh > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMwh).ToString() + " mWh";
+                //"\n\n(click on the tray icon to " + (tooltipPinned? "unpin" : "pin") + " this tooltip)";
             return toolTipText;
         }
 
-        private void CreateInfoWindow(object sender, System.EventArgs e)
+        private static void CreateInfoWindow()
         {
             BatInfo dialog = new BatInfo();
             dialog.Show();
@@ -353,14 +376,14 @@ namespace PowerTray
         public static bool[] checkDarkMode()
         {
             string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\";
-            int appDarkKey = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", -1);
-            int trayDarkKey = (int)Registry.GetValue(RegistryKey, "SystemUsesLightTheme", -1);
-
-            bool appdark = !Convert.ToBoolean(appDarkKey == -1 ? true : appDarkKey);
-            bool traydark = !Convert.ToBoolean(trayDarkKey == -1 ? false : trayDarkKey);
-
+            int appLightKey = (int)Registry.GetValue(RegistryKey, "AppsUseLightTheme", -1);
+            int trayLightKey = (int)Registry.GetValue(RegistryKey, "SystemUsesLightTheme", -1);
+            
+            bool appdark = !Convert.ToBoolean(appLightKey == -1 ? true : appLightKey);
+            bool traydark = !Convert.ToBoolean(trayLightKey == -1 ? false : trayLightKey);
+            
             // zero is taskbar, one is system
-            return [true, true];
+            return [traydark, appdark];
         }
         public static String EasySecondsToTime(int seconds) // Convert seconds to a readable format
         {

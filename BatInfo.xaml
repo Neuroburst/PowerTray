@@ -7,17 +7,51 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="Battery Info and Statistics" Height="500" Width="250"
+        Title="Battery Info and Statistics" Height="410" Width="320" MinHeight="160" MinWidth="195"
+        Topmost="True"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <!--<ui:DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"/>-->
-
+    
+    <Grid x:Name="Window">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <ui:TitleBar
             Title="Battery Info and Statistics"
             Grid.Row="0"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
+        
+        <ui:DynamicScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid x:Name="InfoGrid" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column ="0" x:Name="ItemGrid" Margin="0,0,5,0">
+                    <StackPanel x:Name="Data" VerticalAlignment="Center">
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column ="1" x:Name="ValueGrid" Margin="5,0,0,0">
+                    <StackPanel x:Name="Values" VerticalAlignment="Center">
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ui:DynamicScrollViewer>
+        
+        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Width ="100" HorizontalAlignment="Center">Settings</Button>
+            <Button Grid.Column="1" Width ="100" HorizontalAlignment="Center">Close</Button>
+        </Grid>
+        
     </Grid>
 </ui:FluentWindow>
