@@ -1,15 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Devices.Power;
-using System.Collections;
 using System.Collections.Specialized;
 
 namespace PowerTray
@@ -53,11 +45,11 @@ namespace PowerTray
                 voltage = (int)batteryStatus.Voltage / 1000;
             }
             dataDict.Add("Status", batteryReport.Status);
-            dataDict.Add("Percent Remaining", (remainChargeCapMwh / (double)batteryReport.FullChargeCapacityInMilliwattHours) * 100);
+            dataDict.Add("Percent Remaining", ((double)remainChargeCapMwh / (double)batteryReport.FullChargeCapacityInMilliwattHours) * 100);
             dataDict.Add("Remaining Charge mWh", remainChargeCapMwh);
             dataDict.Add("Charge Rate mW", chargeRate);
 
-            dataDict.Add("Battery Health", (double)batteryReport.FullChargeCapacityInMilliwattHours / (double)batteryReport.DesignCapacityInMilliwattHours);
+            dataDict.Add("Battery Health", ((double)batteryReport.FullChargeCapacityInMilliwattHours / (double)batteryReport.DesignCapacityInMilliwattHours) * 100);
             dataDict.Add("Battery Capacity mWh", batteryReport.FullChargeCapacityInMilliwattHours);
             dataDict.Add("Design Capacity mWh", batteryReport.DesignCapacityInMilliwattHours);
             dataDict.Add("Voltage", voltage);

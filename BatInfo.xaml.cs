@@ -1,20 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Windows.Management.Update;
-using Windows.UI.Core;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Input;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace PowerTray
 {
@@ -36,6 +23,12 @@ namespace PowerTray
             this.Close();
         }
 
+        private void OpenSettings(object sender, RoutedEventArgs e)
+        {
+            App.CreateSettingsWindow();
+            this.Close();
+        }
+
         private static void ResetBuffer(object sender, RoutedEventArgs e)
         {
             App.ResetBuffer();
@@ -47,6 +40,7 @@ namespace PowerTray
             InitializeComponent();
             This = this;
             this.CloseButton.Click += CloseWindow;
+            this.SettingsButton.Click += OpenSettings;
             this.ResetButton.Click += ResetBuffer;
             //this.SettingsButton.Click += ;
         }
@@ -68,7 +62,7 @@ namespace PowerTray
                 string value = item.Value.ToString() + (key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "");
                 if (key.Contains("Health") || key.Contains("Percent"))
                 {
-                    value = item.Value.ToString().Substring(0, 10) + "%";
+                    value = item.Value.ToString().Substring(0, 5) + "%";
                 }
                 else if (key.Contains("Volt"))
                 {

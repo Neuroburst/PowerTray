@@ -1,32 +1,24 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-using System.Diagnostics;
+﻿using System.Windows;
 using System.Runtime.InteropServices;
 using System.Drawing.Text;
 
 using Windows.Devices.Power;
 using Windows.System.Power;
 using Microsoft.Win32;
-using System.Management;
-using Windows.Foundation.Collections;
-using Windows.Devices.Enumeration;
 using Microsoft.Win32.SafeHandles;
-using System.Reflection;
 using System.Drawing;
 
-using Windows.Foundation.Diagnostics;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Appearance;
 using Hardcodet.Wpf.TaskbarNotification;
 using Wpf.Ui.Input;
 using System.Windows.Input;
-using System.Security.AccessControl;
-using System.Xml.Linq;
 using System.Collections.Specialized;
 
 // TODO:
+// fix weird spike when collected battery buffer info
+
 // scroll is too sensitive
 // make tooltip stay open somehow
 
@@ -35,7 +27,7 @@ using System.Collections.Specialized;
 // make option for multiple batteries besides the auto-selected one
 
 // MORE MENUS AND OPTIONS
-// make option to switch tray info
+// make option to switch tray info displayed on the icon
 // add settings menu (for public options and update speed, auto-update, better discharge calc, and default tray view)
 // graph calcDischarge rate and other things
 
@@ -48,14 +40,14 @@ namespace PowerTray
 
         static extern bool DestroyIcon(IntPtr handle);
         // Params ---
-        static int trayFontSize = 10;
+        static float trayFontSize = 11.5f;
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int remainChargeHistorySize = 20;
+        public static int remainChargeHistorySize = 60;
 
         public static int trayRefreshRate = 1000; // in milliseconds
-        public static int batInfoRefreshRate = 1000;
+        public static int batInfoRefreshRate = 500;
         public static bool batInfoAutoRefresh = true;
 
         static Color chargingColor = Color.Green;
@@ -64,8 +56,8 @@ namespace PowerTray
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
 
-        public static int highAmount = 30;
-        public static int mediumAmount = 20;
+        public static int highAmount = 40;
+        public static int mediumAmount = 30;
         public static int lowAmount = 0;
         // ---
         public static uint batteryTag = 0;
@@ -77,14 +69,13 @@ namespace PowerTray
         static int bufferEndIdx = 0;
         public static long calcChargeRateMw = 0;
 
-        //static bool tooltipPinned = false;
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
         static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
 
         private static ICommand BatInfoOpen = new RelayCommand<dynamic>(action => CreateInfoWindow(), canExecute => true);
+        private static ICommand SettingsOpen = new RelayCommand<dynamic>(action => CreateSettingsWindow(), canExecute => true);
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
-        //private static ICommand toggleTooltipPin = new RelayCommand<dynamic>(action => togglePin(), canExecute => true);
 
         public static void ResetBuffer()
         {
@@ -112,7 +103,7 @@ namespace PowerTray
             {
                 Header = "Settings",
                 Icon = new SymbolIcon(SymbolRegular.Settings20, 14, false),
-                //Command = SettingsOpen;
+                Command = SettingsOpen,
             };
 
             var exit = new Wpf.Ui.Controls.MenuItem()
@@ -152,12 +143,6 @@ namespace PowerTray
         
         private void UpdateTray(object sender, EventArgs e)
         {
-            //if (tooltipPinned)
-            //{
-            //    toolTip.IsOpen = true;
-            //}
-            //toolTip.StaysOpen = tooltipPinned;
-
             // check if dark mode is enabled ---
             bool darkModeEnabled = checkDarkMode()[0];
 
@@ -180,7 +165,7 @@ namespace PowerTray
             {
                 oldIndex += remainChargeHistorySize;
             }
-            if (true)//remainChargeHistory[oldIndex] != remainChargeCapMwh)
+            if (remainChargeHistory[oldIndex] != remainChargeCapMwh)
             {
                 long timeStamp = DateTime.Now.Ticks;
                 remainChargeHistory.SetValue(remainChargeCapMwh, bufferEndIdx);
@@ -195,12 +180,12 @@ namespace PowerTray
                 {
                     start_idx += remainChargeHistorySize;
                 }
-                long time_delta_s = (chargeHistoryTime[bufferEndIdx] - chargeHistoryTime[start_idx]) / 10000000;
+                long time_delta_ms = (chargeHistoryTime[bufferEndIdx] - chargeHistoryTime[start_idx]) / 10000;
                 long charge_delta_Mws = (long)(remainChargeHistory[bufferEndIdx] - remainChargeHistory[start_idx]) * 3600;
 
-                if (time_delta_s != 0)
+                if (time_delta_ms != 0)
                 {
-                    calcChargeRateMw = charge_delta_Mws / time_delta_s;
+                    calcChargeRateMw = charge_delta_Mws * 1000 / time_delta_ms;
                 }
 
                 bufferEndIdx += 1;
@@ -332,10 +317,6 @@ namespace PowerTray
         }
 
         // Tray Icon Helper Functions ---
-        //private static void togglePin()
-        //{
-        //    tooltipPinned = !tooltipPinned;
-        //}
         private static void Quit() // check if the exit button was pressed
         {
             trayIcon.Dispose();
@@ -378,6 +359,12 @@ namespace PowerTray
         private static void CreateInfoWindow()
         {
             BatInfo dialog = new BatInfo();
+            dialog.Show();
+        }
+
+        public static void CreateSettingsWindow()
+        {
+            Settings dialog = new Settings();
             dialog.Show();
         }
 
