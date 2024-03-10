@@ -15,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:settings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|c:\\users\\agpan\\programming\\powertray\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
@@ -44,7 +44,7 @@
               "RelativeDocumentMoniker": "App.xaml.cs",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
-              "ViewState": "AQIAAKgBAAAAAAAAAAAswMMBAABUAAAA",
+              "ViewState": "AQIAAIkBAAAAAAAAAAAiwMMBAABUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T21:26:01.766Z",
               "IsPinned": true,
@@ -61,8 +61,7 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAF0AAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-09T16:24:55.579Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -73,8 +72,7 @@
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\BatInfo.xaml",
               "RelativeToolTip": "BatInfo.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-03-09T22:14:14.474Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T22:14:14.474Z"
             },
             {
               "$type": "Document",
@@ -86,8 +84,7 @@
               "RelativeToolTip": "Settings.xaml.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-09T22:13:57.907Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T22:13:57.907Z"
             },
             {
               "$type": "Document",
@@ -98,8 +95,7 @@
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\Settings.xaml",
               "RelativeToolTip": "Settings.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-03-09T22:13:59.961Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T22:13:59.961Z"
             },
             {
               "$type": "Document",
@@ -110,8 +106,7 @@
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-03-10T17:07:48.513Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-10T17:07:48.513Z"
             }
           ]
         }
