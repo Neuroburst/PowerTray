@@ -63,11 +63,11 @@ namespace PowerTray
         public static uint batteryTag = 0;
         public static SafeFileHandle batteryHandle = null;
 
-        public static int[] remainChargeHistory = new int[remainChargeHistorySize];
-        public static long[] chargeHistoryTime = new long[remainChargeHistorySize];
-        static int bufferSize = 0;
-        static int bufferEndIdx = 0;
+        public static bool firstTime = false;
+        public static List<int>remainChargeHistory = new List<int>();
+        public static List<long> chargeHistoryTime = new List<long>();
         public static long calcChargeRateMw = 0;
+        public static long calcTimeDelta = 0;
 
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
@@ -79,11 +79,11 @@ namespace PowerTray
 
         public static void ResetBuffer()
         {
-            remainChargeHistory = new int[remainChargeHistorySize];
-            chargeHistoryTime = new long[remainChargeHistorySize];
-            bufferSize = 0;
-            bufferEndIdx = 0;
+            firstTime = true;
+            remainChargeHistory = new List<int>();
+            chargeHistoryTime = new List<long>();
             calcChargeRateMw = 0;
+            calcTimeDelta = 0;
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -123,8 +123,8 @@ namespace PowerTray
             {
                 TrayToolTip = toolTip,
                 ContextMenu = contextMenu,
-                //LeftClickCommand = toggleTooltipPin,
-                //DoubleClickCommand = CommonCommands.OpenSettingsWindowCommand
+                LeftClickCommand = BatInfoOpen,
+                DoubleClickCommand = SettingsOpen,
             };
 
             // Create Update Timer for tray icon
@@ -160,38 +160,34 @@ namespace PowerTray
 
 
             // update remainChargeHistory ---
-            int oldIndex = bufferEndIdx - 1;
-            if (oldIndex < 0)
-            {
-                oldIndex += remainChargeHistorySize;
-            }
-            if (remainChargeHistory[oldIndex] != remainChargeCapMwh)
+            var historyLength = remainChargeHistory.Count;
+            if (historyLength == 0 || remainChargeHistory[historyLength - 1] != remainChargeCapMwh)
             {
                 long timeStamp = DateTime.Now.Ticks;
-                remainChargeHistory.SetValue(remainChargeCapMwh, bufferEndIdx);
-                chargeHistoryTime.SetValue(timeStamp, bufferEndIdx);
+                remainChargeHistory.Add(remainChargeCapMwh);
+                chargeHistoryTime.Add(timeStamp);
+                
+                // cleanup yucky slurpy paste (misleading data point)
+                if (firstTime && historyLength == 1)
+                {
+                    firstTime = false;
+                    remainChargeHistory.RemoveAt(0);
+                    chargeHistoryTime.RemoveAt(0);
+                }
+
                 // calculate charge rate ---
-                if (bufferSize < remainChargeHistorySize)
-                {
-                    bufferSize += 1;
-                }
-                int start_idx = bufferEndIdx - bufferSize + 1;
-                if (start_idx < 0)
-                {
-                    start_idx += remainChargeHistorySize;
-                }
-                long time_delta_ms = (chargeHistoryTime[bufferEndIdx] - chargeHistoryTime[start_idx]) / 10000;
-                long charge_delta_Mws = (long)(remainChargeHistory[bufferEndIdx] - remainChargeHistory[start_idx]) * 3600;
+                long charge_delta_Mws = (long)(remainChargeCapMwh - remainChargeHistory[0]) * 3600;
+                calcTimeDelta = (timeStamp - chargeHistoryTime[0]) / 10000; // milliseconds
 
-                if (time_delta_ms != 0)
+                if (calcTimeDelta != 0)
                 {
-                    calcChargeRateMw = charge_delta_Mws * 1000 / time_delta_ms;
+                    calcChargeRateMw = charge_delta_Mws * 1000 / calcTimeDelta;
                 }
 
-                bufferEndIdx += 1;
-                if (bufferEndIdx >= remainChargeHistorySize)
+                if (historyLength + 1 > remainChargeHistorySize)
                 {
-                    bufferEndIdx = 0;
+                    remainChargeHistory.RemoveAt(0);
+                    chargeHistoryTime.RemoveAt(0);
                 }
             }
             // ---

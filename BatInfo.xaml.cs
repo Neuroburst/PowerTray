@@ -53,24 +53,37 @@ namespace PowerTray
             }
             var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
             data.Insert(4, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
+            data.Insert(5, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
+
             DataCollection = new ObservableCollection<Info> { };
             foreach (DictionaryEntry item in data)
             {
                 string key = (string)item.Key;
 
-                string name = (key.ToString().EndsWith("mWh") ? key.Remove(key.Length-3, 3) : (key.ToString().EndsWith("mW") ? key.Remove(key.Length - 2, 2) : key));
-                string value = item.Value.ToString() + (key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "");
+                string name = DeleteInString(key.ToString(), ["mWh", "mW", "sec"]);
+
+                string value = item.Value.ToString() + ((key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "") + (key.Contains("Volt") ? " volts" : "") + 
+                    (key.EndsWith("sec") ? " sec" : ""));
+
                 if (key.Contains("Health") || key.Contains("Percent"))
                 {
                     value = item.Value.ToString().Substring(0, 5) + "%";
                 }
-                else if (key.Contains("Volt"))
-                {
-                    value = item.Value.ToString() + " volts";
-                }
                 DataCollection.Add(new Info { Name = name, Value = value });
             }
             This.Data.ItemsSource = DataCollection;
+        }
+
+        public static string DeleteInString(string source, string[] strings)
+        {
+            string modded_source = source;
+
+            foreach (string item in strings)
+            {
+                modded_source = modded_source.Replace(item, "");
+            }
+
+            return modded_source;
         }
     }
 }
