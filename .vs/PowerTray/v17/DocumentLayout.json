@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\agpan\\Programming\\PowerTray\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\settings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|c:\\users\\agpan\\programming\\powertray\\settings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:settings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\settings.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:settings.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|c:\\users\\agpan\\programming\\powertray\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F672D10-D263-4E68-BC90-C657EDD6A2F0}|PowerTray.csproj|C:\\Users\\agpan\\Programming\\PowerTray\\batinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,17 +30,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "App.xaml.cs",
               "DocumentMoniker": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml.cs",
               "RelativeDocumentMoniker": "App.xaml.cs",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
-              "ViewState": "AQIAAJgAAAAAAAAAAAAIwLMAAABbAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAACoAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-06T21:26:01.766Z",
               "IsPinned": true,
@@ -57,12 +57,11 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-09T16:24:55.579Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Settings.xaml.cs",
               "DocumentMoniker": "C:\\Users\\agpan\\Programming\\PowerTray\\Settings.xaml.cs",
               "RelativeDocumentMoniker": "Settings.xaml.cs",
@@ -70,12 +69,11 @@
               "RelativeToolTip": "Settings.xaml.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-09T22:13:57.907Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T22:13:57.907Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Settings.xaml",
               "DocumentMoniker": "C:\\Users\\agpan\\Programming\\PowerTray\\Settings.xaml",
               "RelativeDocumentMoniker": "Settings.xaml",
@@ -87,15 +85,14 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "BatInfo.xaml",
               "DocumentMoniker": "C:\\Users\\agpan\\Programming\\PowerTray\\BatInfo.xaml",
               "RelativeDocumentMoniker": "BatInfo.xaml",
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\BatInfo.xaml",
               "RelativeToolTip": "BatInfo.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-03-09T22:14:14.474Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T22:14:14.474Z"
             }
           ]
         }

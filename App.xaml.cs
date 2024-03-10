@@ -40,7 +40,7 @@ namespace PowerTray
 
         static extern bool DestroyIcon(IntPtr handle);
         // Params ---
-        static float trayFontSize = 11.5f;
+        static float trayFontSize = 11f;
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
