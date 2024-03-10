@@ -16,8 +16,9 @@ using Wpf.Ui.Input;
 using System.Windows.Input;
 using System.Collections.Specialized;
 
+using System.Diagnostics;
+
 // TODO:
-// fix weird spike when collected battery buffer info
 
 // scroll is too sensitive
 // make tooltip stay open somehow
@@ -28,27 +29,29 @@ using System.Collections.Specialized;
 
 // MORE MENUS AND OPTIONS
 // make option to switch tray info displayed on the icon
-// add settings menu (for public options and update speed, auto-update, better discharge calc, and default tray view)
 // graph calcDischarge rate and other things
 
 namespace PowerTray
 {
     public partial class App : System.Windows.Application
     {
-        // import dlls
+        // import dll for destroy icon
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-
         static extern bool DestroyIcon(IntPtr handle);
+
+        public enum DisplayedInfo { percentage, chargeRate, calcChargeRate };
+
         // Params ---
+        public static DisplayedInfo tray_display = DisplayedInfo.percentage;
+
         static float trayFontSize = 11f;
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int remainChargeHistorySize = 60;
+        public static int maxChargeHistoryLength = 60000; // in milliseconds
 
         public static int trayRefreshRate = 1000; // in milliseconds
-        public static int batInfoRefreshRate = 500;
-        public static bool batInfoAutoRefresh = true;
+        public static int batInfoRefreshRate = 500; // in milliseconds
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -57,7 +60,7 @@ namespace PowerTray
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
 
         public static int highAmount = 40;
-        public static int mediumAmount = 30;
+        public static int mediumAmount = 25;
         public static int lowAmount = 0;
         // ---
         public static uint batteryTag = 0;
@@ -69,6 +72,11 @@ namespace PowerTray
         public static long calcChargeRateMw = 0;
         public static long calcTimeDelta = 0;
 
+        public static bool windowDarkMode = false;
+
+        public static FluentWindow batteryInfoWindow;
+        public static FluentWindow settingsWindow;
+
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
         static Font trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, System.Drawing.FontStyle.Bold);
@@ -76,6 +84,7 @@ namespace PowerTray
         private static ICommand BatInfoOpen = new RelayCommand<dynamic>(action => CreateInfoWindow(), canExecute => true);
         private static ICommand SettingsOpen = new RelayCommand<dynamic>(action => CreateSettingsWindow(), canExecute => true);
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
+        private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
 
         public static void ResetBuffer()
         {
@@ -85,12 +94,76 @@ namespace PowerTray
             calcChargeRateMw = 0;
             calcTimeDelta = 0;
         }
+
+        // ERROR HANDLING
+        void ShowUnhandledException(Exception e, string unhandledExceptionType, bool promptUserForShutdown)
+        {
+            var messageBoxTitle = $"Unexpected Error Occurred: {unhandledExceptionType}";
+            var messageBoxMessage = $"The following exception occurred:\n\n{e}";
+            var messageBoxButtons = System.Windows.MessageBoxButton.OK;
+
+            if (promptUserForShutdown)
+            {
+                messageBoxMessage += "\n\nNormally the app would die now. Should we let it die?";
+                messageBoxButtons = System.Windows.MessageBoxButton.YesNo;
+            }
+
+            // Let the user decide if the app should die or not (if applicable).
+            if (System.Windows.MessageBox.Show(messageBoxMessage, messageBoxTitle, messageBoxButtons) == System.Windows.MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+        private void SetupUnhandledExceptionHandling()
+        {
+            // Catch exceptions from all threads in the AppDomain.
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                ShowUnhandledException(args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException", false);
+
+            // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+                ShowUnhandledException(args.Exception, "TaskScheduler.UnobservedTaskException", false);
+
+            // Catch exceptions from a single specific UI dispatcher thread.
+            Dispatcher.UnhandledException += (sender, args) =>
+            {
+                // If we are debugging, let Visual Studio handle the exception and take us to the code that threw it.
+                if (!Debugger.IsAttached)
+                {
+                    args.Handled = true;
+                    ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
+                }
+            };
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            // debug
+            SetupUnhandledExceptionHandling();
+
+            batteryInfoWindow = new BatInfo();
+            settingsWindow = new Settings();
+
+            // apply theme
+            ApplicationThemeManager.Apply(
+                  (checkDarkMode()[1] ? ApplicationTheme.Dark : ApplicationTheme.Light), // Theme type
+                  WindowBackdropType.Mica, // Background type
+                  true                    // Whether to change accents automatically
+            );
+            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(batteryInfoWindow);
+
             // get battery tag from info
             var info  = BatteryManagement.GetBatteryTag();
             batteryHandle = info[0];
             batteryTag = info[1];
+
+            var switchInfo = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Switch Tray Data",
+                Icon = new SymbolIcon(SymbolRegular.DataBarVertical20, 14, false),
+                ToolTip = "Switch the information displayed on the tray",
+                Command = TraySwitch,
+            };
 
             var batteryInfo = new Wpf.Ui.Controls.MenuItem()
             {
@@ -115,7 +188,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = { batteryInfo, settings, exit }
+                Items = { switchInfo, batteryInfo, settings, exit }
             };
 
             toolTip = new ToolTip();
@@ -140,17 +213,19 @@ namespace PowerTray
 
             
         }
-        
+
         private void UpdateTray(object sender, EventArgs e)
         {
             // check if dark mode is enabled ---
             bool darkModeEnabled = checkDarkMode()[0];
+            bool appdarkMode = checkDarkMode()[1];
 
-            ApplicationThemeManager.Apply(
-                  (checkDarkMode()[1] ? ApplicationTheme.Dark : ApplicationTheme.Light),   // Theme type
-                  WindowBackdropType.Mica, // Background type
-                  true                    // Whether to change accents automatically
-            );
+            if (appdarkMode != windowDarkMode)
+            {
+                windowDarkMode = appdarkMode;
+                ApplicationThemeManager.Apply(
+                      (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
+            }
             // ---
 
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
@@ -182,12 +257,13 @@ namespace PowerTray
                 if (calcTimeDelta != 0)
                 {
                     calcChargeRateMw = charge_delta_Mws * 1000 / calcTimeDelta;
-                }
 
-                if (historyLength + 1 > remainChargeHistorySize)
-                {
-                    remainChargeHistory.RemoveAt(0);
-                    chargeHistoryTime.RemoveAt(0);
+                    while (calcTimeDelta > maxChargeHistoryLength)
+                    {
+                        remainChargeHistory.RemoveAt(0);
+                        chargeHistoryTime.RemoveAt(0);
+                        calcTimeDelta = (timeStamp - chargeHistoryTime[0]) / 10000; // milliseconds
+                    }
                 }
             }
             // ---
@@ -243,7 +319,21 @@ namespace PowerTray
             }
             var toolTipText = CreateTooltipText(bat_info);
             // Tray Icon ---
-            String trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
+            String trayIconText = "!!";
+            
+            if (tray_display == DisplayedInfo.percentage)
+            {
+                trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
+            }else if (tray_display == DisplayedInfo.chargeRate)
+            {
+                trayIconText = ((int)Math.Abs(chargeRateMw / 1000)).ToString();
+            }
+            else if (tray_display == DisplayedInfo.calcChargeRate)
+            {
+                trayIconText = ((int)Math.Abs(calcChargeRateMw / 1000)).ToString();
+            }
+
+
             SolidBrush trayFontColor = new SolidBrush(statusColor);
 
             float dpi;
@@ -304,6 +394,17 @@ namespace PowerTray
             //---
         }
 
+        public static void SwitchTrayInfo()
+        {
+            if ((int)tray_display + 1 > Enum.GetValues(typeof(DisplayedInfo)).Length - 1)
+            {
+                tray_display = (DisplayedInfo)0;
+            }
+            else
+            {
+                tray_display = (DisplayedInfo)((int)tray_display + 1);
+            }
+        }
         private static Color LightenColor(Color color)
         {
             var amount = 30;
@@ -347,21 +448,22 @@ namespace PowerTray
                 (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
                 "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
                 "\n" + (chargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
-                "\n" + (calcChargeRateMw > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW";
-                //"\n\n(click on the tray icon to " + (tooltipPinned? "unpin" : "pin") + " this tooltip)";
+                "\n" + (calcChargeRateMw > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW" +
+                "\n" + "Calculated Charge Rate Delta " + ((int)(calcTimeDelta / 1000)).ToString() + " sec" + 
+                "\n\n(The tray is currently displaying " + tray_display.ToString() + ")";
             return toolTipText;
         }
 
         private static void CreateInfoWindow()
         {
-            BatInfo dialog = new BatInfo();
-            dialog.Show();
+            batteryInfoWindow = new BatInfo();
+            batteryInfoWindow.Show();
         }
 
         public static void CreateSettingsWindow()
         {
-            Settings dialog = new Settings();
-            dialog.Show();
+            settingsWindow = new Settings();
+            settingsWindow.Show();
         }
 
         public static bool[] checkDarkMode()

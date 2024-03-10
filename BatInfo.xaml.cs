@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Appearance;
 
 namespace PowerTray
 {
@@ -26,7 +27,7 @@ namespace PowerTray
         private void OpenSettings(object sender, RoutedEventArgs e)
         {
             App.CreateSettingsWindow();
-            this.Close();
+            CloseWindow(null, null);
         }
 
         private static void ResetBuffer(object sender, RoutedEventArgs e)
@@ -42,7 +43,6 @@ namespace PowerTray
             this.CloseButton.Click += CloseWindow;
             this.SettingsButton.Click += OpenSettings;
             this.ResetButton.Click += ResetBuffer;
-            //this.SettingsButton.Click += ;
         }
 
         public static void UpdateData(object sender, EventArgs e)
@@ -54,7 +54,6 @@ namespace PowerTray
             var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
             data.Insert(4, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
             data.Insert(5, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
-
             DataCollection = new ObservableCollection<Info> { };
             foreach (DictionaryEntry item in data)
             {
@@ -67,7 +66,15 @@ namespace PowerTray
 
                 if (key.Contains("Health") || key.Contains("Percent"))
                 {
-                    value = item.Value.ToString().Substring(0, 5) + "%";
+                    if (item.Value.ToString().Length > 5)
+                    {
+                        value = item.Value.ToString().Substring(0, 5);
+                    }
+                    else
+                    {
+                        value = item.Value.ToString();
+                    }
+                    value += "%";
                 }
                 DataCollection.Add(new Info { Name = name, Value = value });
             }

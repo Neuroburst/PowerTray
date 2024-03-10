@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="BatteryTray Settings" Height="300" Width="300" MinHeight="160" MinWidth="195"
+        Title="PowerTray Settings" Height="450" Width="380" MinHeight="160" MinWidth="195"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -16,23 +16,69 @@
     <Grid x:Name="Window">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ui:TitleBar
-            Title="BatteryTray Settings"
+            Title=""
             Grid.Row="0"
             Height="30"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
-        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,5,0,5">
+        <TextBlock FontSize="20" FontWeight="Bold" Grid.Row="1" Margin="10,0,10,10" Text="PowerTray Settings"></TextBlock>
+        
+        <ui:DynamicScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel x:Name="Names" Margin="10" Grid.Column="0" HorizontalAlignment="Center" Orientation="Vertical">
+                    <Label Margin="0,0,0,0">Tray Font Size</Label>
+                    <Label Margin="0,21,0,0">Calculated Charge History (ms)</Label>
+                    <Label Margin="0,21,0,0">Tray Info Refresh Rate</Label>
+                    <Label Margin="0,21,0,0">Battery Info Refresh Rate</Label>
+                    <Label Margin="0,21,0,0">Medium Battery Charge</Label>
+                    <Label Margin="0,21,0,0">Low Battery Charge</Label>
+                    <Label Margin="0,21,0,0">Default Tray View</Label>
+                </StackPanel>
+
+                <StackPanel x:Name = "Values" Margin="10" Grid.Column="1" HorizontalAlignment="Center" Orientation="Vertical">
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,-10,0,0">
+                        11
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,10,0,0">
+                        60000
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,10,0,0">
+                        1000
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,10,0,0">
+                        500
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,10,0,0">
+                        40
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Margin="0,10,0,0">
+                        25
+                    </ui:TextBox>
+                    <ui:DropDownButton Margin="0,10,0,0">
+                        ChargeAmount
+                    </ui:DropDownButton>
+                </StackPanel>
+            </Grid>
+        </ui:DynamicScrollViewer>
+        
+        <Grid x:Name="BottomControls" Grid.Row ="3" Margin="0,5,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="CloseButton" Grid.Column="2" Width ="100" HorizontalAlignment="Center">Close</Button>
+            <Button x:Name="CloseButton" Grid.Column="2" Width ="100" HorizontalAlignment="Center" Click="CloseButton_Click">Close</Button>
         </Grid>
     </Grid>
 </ui:FluentWindow>
