@@ -17,24 +17,29 @@ using System.Windows.Input;
 using System.Collections.Specialized;
 
 using System.Diagnostics;
+using System.Windows.Media.Imaging;
 
-// TODO:
+using System.Windows.Interop;
 
+using System.Configuration;
+
+/// TODO NOW:
+// graph calcDischarge rate and other things
+
+/// LATER:
 // scroll is too sensitive
 // make tooltip stay open somehow
+// make icon auto-darkmode (doesn't work on publish)
 
 // INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
 
-// MORE MENUS AND OPTIONS
-// make option to switch tray info displayed on the icon
-// graph calcDischarge rate and other things
-
 namespace PowerTray
 {
     public partial class App : System.Windows.Application
     {
+
         // import dll for destroy icon
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern bool DestroyIcon(IntPtr handle);
@@ -42,16 +47,16 @@ namespace PowerTray
         public enum DisplayedInfo { percentage, chargeRate, calcChargeRate };
 
         // Params ---
-        public static DisplayedInfo tray_display = DisplayedInfo.percentage;
+        public static DisplayedInfo tray_display = DisplayedInfo.percentage; // (CHANGEABLE)
 
-        static float trayFontSize = 11f;
+        static float trayFontSize = 11f; // (CHANGEABLE)
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int maxChargeHistoryLength = 60000; // in milliseconds
+        public static int maxChargeHistoryLength = 60000; // in milliseconds (CHANGEABLE)
 
-        public static int trayRefreshRate = 1000; // in milliseconds
-        public static int batInfoRefreshRate = 500; // in milliseconds
+        public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
+        public static int batInfoRefreshRate = 500; // in milliseconds (CHANGEABLE)
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -59,8 +64,8 @@ namespace PowerTray
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
 
-        public static int highAmount = 40;
-        public static int mediumAmount = 25;
+        public static int highAmount = 40; // (CHANGEABLE)
+        public static int mediumAmount = 25; // (CHANGEABLE)
         public static int lowAmount = 0;
         // ---
         public static uint batteryTag = 0;
@@ -74,8 +79,13 @@ namespace PowerTray
 
         public static bool windowDarkMode = false;
 
-        public static FluentWindow batteryInfoWindow;
-        public static FluentWindow settingsWindow;
+        public static BatInfo batteryInfoWindow;
+        public static Settings settingsWindow;
+        
+        public static bool aot = true; // always on top
+
+        static System.Windows.Threading.DispatcherTimer tray_timer = new System.Windows.Threading.DispatcherTimer();
+        static System.Windows.Threading.DispatcherTimer info_timer = new System.Windows.Threading.DispatcherTimer();
 
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
@@ -104,7 +114,7 @@ namespace PowerTray
 
             if (promptUserForShutdown)
             {
-                messageBoxMessage += "\n\nNormally the app would die now. Should we let it die?";
+                messageBoxMessage += "\n\nNormally the program would DIE now. Should we let it die painlessly, or let it suffer?";
                 messageBoxButtons = System.Windows.MessageBoxButton.YesNo;
             }
 
@@ -136,13 +146,39 @@ namespace PowerTray
             };
         }
 
+
+        public static void LoadSettings()
+        {
+            var settings = (Options)settingsWindow.AppConfig.Sections["Options"];
+            aot = settings.AlwaysOnTop;
+            batteryInfoWindow.Topmost = aot;
+            trayFontSize = settings.FontSize;
+            maxChargeHistoryLength = settings.BufferSize;
+
+            trayRefreshRate = settings.TrayRefreshRate;
+            tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
+            batInfoRefreshRate = settings.BatInfoRefreshRate;
+            info_timer.Interval = new TimeSpan(0, 0, 0, 0, batInfoRefreshRate);
+
+            highAmount = settings.MediumCharge;
+            mediumAmount = settings.LowCharge;
+
+            tray_display = settings.TrayText;
+
+            // reset trayfont
+            trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, settings.FontStyle);
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             // debug
             SetupUnhandledExceptionHandling();
 
             batteryInfoWindow = new BatInfo();
+            batteryInfoWindow.Topmost = aot;
             settingsWindow = new Settings();
+
+            LoadSettings();
 
             // apply theme
             ApplicationThemeManager.Apply(
@@ -153,7 +189,7 @@ namespace PowerTray
             Wpf.Ui.Appearance.SystemThemeWatcher.Watch(batteryInfoWindow);
 
             // get battery tag from info
-            var info  = BatteryManagement.GetBatteryTag();
+            var info = BatteryManagement.GetBatteryTag();
             batteryHandle = info[0];
             batteryTag = info[1];
 
@@ -201,12 +237,10 @@ namespace PowerTray
             };
 
             // Create Update Timer for tray icon
-            System.Windows.Threading.DispatcherTimer tray_timer = new System.Windows.Threading.DispatcherTimer();
             tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
             tray_timer.Tick += new EventHandler(UpdateTray);
             tray_timer.Start();
 
-            System.Windows.Threading.DispatcherTimer info_timer = new System.Windows.Threading.DispatcherTimer();
             info_timer.Interval = new TimeSpan(0, 0, 0, 0, batInfoRefreshRate);
             info_timer.Tick += new EventHandler(BatInfo.UpdateData);
             info_timer.Start();
@@ -216,6 +250,10 @@ namespace PowerTray
 
         private void UpdateTray(object sender, EventArgs e)
         {
+            var info = BatteryManagement.GetBatteryTag(); // prevent data 
+            batteryHandle = info[0];
+            batteryTag = info[1];
+
             // check if dark mode is enabled ---
             bool darkModeEnabled = checkDarkMode()[0];
             bool appdarkMode = checkDarkMode()[1];
@@ -226,6 +264,19 @@ namespace PowerTray
                 ApplicationThemeManager.Apply(
                       (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
             }
+
+            // switch between dark and light icons (for taskbar)
+            if (darkModeEnabled)
+            {
+                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+            }
+            else
+            {
+                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+            }
+
             // ---
 
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
@@ -269,18 +320,6 @@ namespace PowerTray
             // ---
 
             double batteryPercent = (double)bat_info["Percent Remaining"];
-
-            double timeLeft = 0;
-            if (chargeRateMw < 0)
-            {
-                timeLeft = (remainChargeCapMwh / -(double)chargeRateMw) * 60;
-            }
-
-            if (chargeRateMw > 0)
-            {
-                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMw) * 60;
-            }
-            // ---
 
 
             int roundPercent = (int)Math.Round(batteryPercent, 0);
@@ -326,11 +365,11 @@ namespace PowerTray
                 trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
             }else if (tray_display == DisplayedInfo.chargeRate)
             {
-                trayIconText = ((int)Math.Abs(chargeRateMw / 1000)).ToString();
+                trayIconText = string.Format("{0:F1}", Math.Abs(chargeRateMw / 1000f));
             }
             else if (tray_display == DisplayedInfo.calcChargeRate)
             {
-                trayIconText = ((int)Math.Abs(calcChargeRateMw / 1000)).ToString();
+                trayIconText = string.Format("{0:F1}", Math.Abs(calcChargeRateMw / 1000f));
             }
 
 
@@ -457,6 +496,7 @@ namespace PowerTray
         private static void CreateInfoWindow()
         {
             batteryInfoWindow = new BatInfo();
+            batteryInfoWindow.Topmost = aot;
             batteryInfoWindow.Show();
         }
 
@@ -478,6 +518,17 @@ namespace PowerTray
             // zero is taskbar, one is system
             return [traydark, appdark];
         }
+
+        public static System.Windows.Media.ImageSource ToImageSource(Icon icon)
+        {
+            System.Windows.Media.ImageSource imageSource = Imaging.CreateBitmapSourceFromHIcon(
+                icon.Handle,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+
+            return imageSource;
+        }
+
         public static String EasySecondsToTime(int seconds) // Convert seconds to a readable format
         {
             String time = "_";

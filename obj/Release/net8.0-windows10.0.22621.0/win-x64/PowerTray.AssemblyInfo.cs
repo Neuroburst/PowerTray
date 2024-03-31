@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PowerTray")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cdda8606a2f85c22a1b913d13889c8fa58ebd88")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+647ecbb5bff05d23501270b56aeefe9f39652699")]
 [assembly: System.Reflection.AssemblyProductAttribute("PowerTray")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PowerTray")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

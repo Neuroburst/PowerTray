@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "2Y7XzRIk/G+maKJN4f6EKuaTRkmxgaw2PAoPRkILRT5jj5okHCC8OZFa8FiMCwlHA8zU6gwgBUe8YYx4BIYh6A==",
+  "dgSpecHash": "RSK+PiD6IE4tYORAa+2GfuKWCABdWe6yJ0cmXhkTNabpcmF/a2/LdaWM4KrLRAaChWZOIWbG+03PRH4DGKwaoA==",
   "success": true,
   "projectFilePath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\agpan\\.nuget\\packages\\hardcodet.notifyicon.wpf\\1.1.0\\hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512",
-    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.2\\microsoft.net.illink.tasks.8.0.2.nupkg.sha512",
+    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.3\\microsoft.net.illink.tasks.8.0.3.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\wpf-ui\\3.0.0\\wpf-ui.3.0.0.nupkg.sha512",

@@ -38,14 +38,7 @@
           }
         }
       },
-      "System.CodeDom/8.0.0": {
-        "runtime": {
-          "lib/net8.0/System.CodeDom.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.23.53103"
-          }
-        }
-      },
+      "System.CodeDom/8.0.0": {},
       "System.Management/8.0.0": {
         "dependencies": {
           "System.CodeDom": "8.0.0"
