@@ -27,9 +27,9 @@ using System.Configuration;
 // graph calcDischarge rate and other things
 
 /// LATER:
-// scroll is too sensitive
-// make tooltip stay open somehow
+/// // make tooltip stay open somehow
 // make icon auto-darkmode (doesn't work on publish)
+// scroll is too sensitive
 
 // INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
@@ -282,7 +282,7 @@ namespace PowerTray
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
             int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
-            int chargeRateMw = (int)bat_info["Charge Rate mW"];
+            int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
 
 
             // update remainChargeHistory ---
@@ -359,17 +359,18 @@ namespace PowerTray
             var toolTipText = CreateTooltipText(bat_info);
             // Tray Icon ---
             String trayIconText = "!!";
+
             
             if (tray_display == DisplayedInfo.percentage)
             {
                 trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
             }else if (tray_display == DisplayedInfo.chargeRate)
             {
-                trayIconText = string.Format("{0:F1}", Math.Abs(chargeRateMw / 1000f));
+                trayIconText = string.Format("{0:F" + (Math.Abs(chargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(chargeRateMw / 1000f));
             }
             else if (tray_display == DisplayedInfo.calcChargeRate)
             {
-                trayIconText = string.Format("{0:F1}", Math.Abs(calcChargeRateMw / 1000f));
+                trayIconText = string.Format("{0:F" + (Math.Abs(calcChargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(calcChargeRateMw / 1000f));
             }
 
 
@@ -459,6 +460,22 @@ namespace PowerTray
             System.Windows.Application.Current.Shutdown();
         }
 
+        public static string GetCalculatedTimeLeft(int remainChargeCapMwh, int fullChargeCapMwh)
+        {
+            double ctimeLeft = 0;
+            if (calcChargeRateMw < 0)
+            {
+                ctimeLeft = (remainChargeCapMwh / -(double)calcChargeRateMw) * 60;
+            }
+
+            if (calcChargeRateMw > 0)
+            {
+                ctimeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)calcChargeRateMw) * 60;
+
+            }
+            return EasySecondsToTime((int)ctimeLeft);
+        }
+
         private string CreateTooltipText(OrderedDictionary bat_info)
         {
             // use battery info
@@ -466,29 +483,33 @@ namespace PowerTray
 
             int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
-            int chargeRateMw = (int)bat_info["Charge Rate mW"];
+            int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
 
             double batteryPercent = (double)bat_info["Percent Remaining"];
 
-            double timeLeft = 0;
-            if (chargeRateMw < 0)
-            {
-                timeLeft = (remainChargeCapMwh / -(double)chargeRateMw) * 60;
-            }
+            string rtimeLeft = (string)bat_info["Reported Time Left"];
 
-            if (chargeRateMw > 0)
-            {
-                timeLeft = ((fullChargeCapMwh - remainChargeCapMwh) / (double)chargeRateMw) * 60;
+            string reported_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + rtimeLeft
+                + " until fully charged" : "\nnot charging") + "" : rtimeLeft + " remaining");
 
-            }
+            string ctimeLeft = GetCalculatedTimeLeft(remainChargeCapMwh, fullChargeCapMwh);
+
+            string calculated_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + ctimeLeft
+                + " until fully charged" : "\nnot charging") + "" : ctimeLeft + " remaining");
+
             String toolTipText =
-                Math.Round(batteryPercent, 3).ToString() + "% " + (isCharging ? "connected to AC" : "on battery\n" +
-                EasySecondsToTime((int)timeLeft) + " remaining") +
-                (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + EasySecondsToTime((int)timeLeft) + " until fully charged" : "\nnot charging") + "" : "") +
-                "\n\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
-                "\n" + (chargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
-                "\n" + (calcChargeRateMw > 0 ? "Calculated Charge Rate: " : "Calculated Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW" +
-                "\n" + "Calculated Charge Rate Delta " + ((int)(calcTimeDelta / 1000)).ToString() + " sec" + 
+                Math.Round(batteryPercent, 3).ToString() + "% " + 
+                (isCharging ? "connected to AC" : "on battery\n") +
+                "\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
+                
+                "\n\nReported Data:\n" + 
+                reported_charge_time_text + 
+                "\n" + (chargeRateMw > 0 ? "Reported Charge Rate: " : "Reported Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
+
+                "\n\nCalulated Data:\n" +
+                calculated_charge_time_text +
+                "\n" + (calcChargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW" +
+                "\n" + "Buffer Size: " + ((int)(calcTimeDelta / 1000)).ToString() + " sec" + 
                 "\n\n(The tray is currently displaying " + tray_display.ToString() + ")";
             return toolTipText;
         }
@@ -535,16 +556,16 @@ namespace PowerTray
 
             if (seconds < 60)
             {
-                time = seconds.ToString() + " minutes";
+                time = seconds.ToString() + " mins";
             }
             else
             {
-                time = (seconds / 60).ToString() + " Hour" + (seconds / 60 == 1 ? "" : "s") + " and " + (seconds % 60).ToString() + " Minutes";
+                time = (seconds / 60).ToString() + " hr" + (seconds / 60 == 1 ? "" : "s") + " and " + (seconds % 60).ToString() + " mins";
             }
 
             if (seconds == -1 || seconds == 0)
             {
-                time = "Unknown minutes";
+                time = "Unknown";
             }
             return time;
         }

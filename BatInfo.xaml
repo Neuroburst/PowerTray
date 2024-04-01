@@ -41,8 +41,13 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ui:Card Content="{Binding Name}" Margin="10,5,5,5" />
-                            <ui:Card Content="{Binding Value}" Margin="5,5,10,5" Grid.Column="1"/>
+                            <ui:Badge Height="40" Margin="10,5,5,5" Appearance="Transparent">
+                                <Label Content="{Binding Name}" VerticalAlignment="Center"/>
+                            </ui:Badge>
+
+                            <ui:Badge Height="40" Margin="10,5,5,5" Grid.Column="1" Appearance="Transparent">
+                                <Label Content="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold"/>
+                            </ui:Badge>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

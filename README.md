@@ -16,7 +16,7 @@ You can also right click on the icon>Click "Battery Info" to see even more infor
 This is an open-source project created with Visual Studio.
 It was made using the .NET framework and WPF.
 
-Supports for Windows 10 & 11
+Support for Windows 10 & 11
 
 I used some components from LibreHardware Monitor to detect more battery information.
 

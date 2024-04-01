@@ -52,8 +52,11 @@ namespace PowerTray
                 return;
             }
             var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
-            data.Insert(4, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
-            data.Insert(5, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
+
+            data.Insert(5, "Calculated Time Left", App.GetCalculatedTimeLeft((int)data["Remaining Charge mWh"], (int)data["Battery Capacity mWh"]));
+            data.Insert(6, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
+            data.Insert(7, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
+
             DataCollection = new ObservableCollection<Info> { };
             foreach (DictionaryEntry item in data)
             {

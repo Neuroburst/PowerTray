@@ -47,7 +47,20 @@ namespace PowerTray
             dataDict.Add("Status", batteryReport.Status);
             dataDict.Add("Percent Remaining", ((double)remainChargeCapMwh / (double)batteryReport.FullChargeCapacityInMilliwattHours) * 100);
             dataDict.Add("Remaining Charge mWh", remainChargeCapMwh);
-            dataDict.Add("Charge Rate mW", chargeRate);
+
+            double rtimeLeft = 0;
+            if (chargeRate < 0)
+            {
+                rtimeLeft = (remainChargeCapMwh / -(double)chargeRate) * 60;
+            }
+
+            if (chargeRate > 0)
+            {
+                rtimeLeft = (((int)batteryReport.FullChargeCapacityInMilliwattHours - remainChargeCapMwh) / (double)chargeRate) * 60;
+            }
+
+            dataDict.Add("Reported Time Left", App.EasySecondsToTime((int)rtimeLeft));
+            dataDict.Add("Reported Charge Rate mW", chargeRate);
 
             dataDict.Add("Battery Health", ((double)batteryReport.FullChargeCapacityInMilliwattHours / (double)batteryReport.DesignCapacityInMilliwattHours) * 100);
             dataDict.Add("Battery Capacity mWh", batteryReport.FullChargeCapacityInMilliwattHours);
