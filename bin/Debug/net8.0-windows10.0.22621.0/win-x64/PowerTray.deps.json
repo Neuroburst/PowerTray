@@ -12,7 +12,7 @@
           "Hardcodet.NotifyIcon.Wpf": "1.1.0",
           "LiveCharts.Wpf": "0.9.7",
           "System.Management": "9.0.0-preview.2.24128.5",
-          "WPF-UI": "3.0.3",
+          "WPF-UI": "3.0.1",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22621.31"
         },
         "runtime": {
@@ -77,11 +77,11 @@
           }
         }
       },
-      "WPF-UI/3.0.3": {
+      "WPF-UI/3.0.1": {
         "runtime": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
-            "assemblyVersion": "3.0.3.0",
-            "fileVersion": "3.0.3.0"
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
           }
         }
       }
@@ -133,12 +133,12 @@
       "path": "system.management/9.0.0-preview.2.24128.5",
       "hashPath": "system.management.9.0.0-preview.2.24128.5.nupkg.sha512"
     },
-    "WPF-UI/3.0.3": {
+    "WPF-UI/3.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Nm6Q5StLWxs74eFcqTwNJTGpA6xbTF1BXLniy5HMwnowvjiEa6Wa26/eI3e4/KbD56YF4nZidn69G/lY7t+aNg==",
-      "path": "wpf-ui/3.0.3",
-      "hashPath": "wpf-ui.3.0.3.nupkg.sha512"
+      "sha512": "sha512-kV42QrpQoWcL0oM5Ke546aqyn/9sHwDK94XpKZShY1tbaGB0dlJz7cNJwUph8GcTblWlqdP7i6j7UeH7zKDoWQ==",
+      "path": "wpf-ui/3.0.1",
+      "hashPath": "wpf-ui.3.0.1.nupkg.sha512"
     }
   }
 }

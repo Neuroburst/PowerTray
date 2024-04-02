@@ -94,7 +94,7 @@
           }
         }
       },
-      "WPF-UI/3.0.3": {
+      "WPF-UI/3.0.1": {
         "type": "package",
         "compile": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
@@ -198,7 +198,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "WPF-UI/3.0.3": {
+      "WPF-UI/3.0.1": {
         "type": "package",
         "compile": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
@@ -388,10 +388,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "WPF-UI/3.0.3": {
-      "sha512": "Nm6Q5StLWxs74eFcqTwNJTGpA6xbTF1BXLniy5HMwnowvjiEa6Wa26/eI3e4/KbD56YF4nZidn69G/lY7t+aNg==",
+    "WPF-UI/3.0.1": {
+      "sha512": "kV42QrpQoWcL0oM5Ke546aqyn/9sHwDK94XpKZShY1tbaGB0dlJz7cNJwUph8GcTblWlqdP7i6j7UeH7zKDoWQ==",
       "type": "package",
-      "path": "wpf-ui/3.0.3",
+      "path": "wpf-ui/3.0.1",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -410,7 +410,7 @@
         "lib/net8.0-windows7.0/Wpf.Ui.dll",
         "lib/net8.0-windows7.0/Wpf.Ui.xml",
         "tools/VisualStudioToolsManifest.xml",
-        "wpf-ui.3.0.3.nupkg.sha512",
+        "wpf-ui.3.0.1.nupkg.sha512",
         "wpf-ui.nuspec",
         "wpfui.png"
       ]
@@ -422,7 +422,7 @@
       "LiveCharts.Wpf >= 0.9.7",
       "Microsoft.NET.ILLink.Tasks >= 8.0.3",
       "System.Management >= 9.0.0-preview.2.24128.5",
-      "WPF-UI >= 3.0.3"
+      "WPF-UI >= 3.0.1"
     ]
   },
   "packageFolders": {
@@ -494,7 +494,7 @@
           },
           "WPF-UI": {
             "target": "Package",
-            "version": "[3.0.3, )"
+            "version": "[3.0.1, )"
           }
         },
         "imports": [
@@ -510,20 +510,8 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-            "version": "[8.0.3, 8.0.3]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Runtime.win-x64",
-            "version": "[8.0.3, 8.0.3]"
-          },
-          {
             "name": "Microsoft.Windows.SDK.NET.Ref",
             "version": "[10.0.22621.31, 10.0.22621.31]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-            "version": "[8.0.3, 8.0.3]"
           }
         ],
         "frameworkReferences": {

@@ -55,7 +55,8 @@
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\Graph.xaml",
               "RelativeToolTip": "Graph.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-04-01T17:22:18.256Z"
+              "WhenOpened": "2024-04-01T17:22:18.256Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -67,7 +68,8 @@
               "RelativeToolTip": "Graph.xaml.cs",
               "ViewState": "AQIAABQAAAAAAAAAAAAcwDMAAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T17:22:31.742Z"
+              "WhenOpened": "2024-04-01T17:22:31.742Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -79,7 +81,8 @@
               "RelativeToolTip": "BatInfo.xaml.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T17:36:38.294Z"
+              "WhenOpened": "2024-04-01T17:36:38.294Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -90,7 +93,8 @@
               "ToolTip": "C:\\Users\\agpan\\Programming\\PowerTray\\BatInfo.xaml",
               "RelativeToolTip": "BatInfo.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-04-01T17:36:33.948Z"
+              "WhenOpened": "2024-04-01T17:36:33.948Z",
+              "EditorCaption": ""
             }
           ]
         }

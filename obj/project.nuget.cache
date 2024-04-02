@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Fnja6v1dr0e8rTR8Eb4aCerTNsKVeGncpEPDWhIBVQAMksI6929F18LIR0BjZx7m0m9LXALKMFU8LzYMUow26g==",
+  "dgSpecHash": "/MyRKEvYvokD91D1Af6z3lSEWQRgrkjmPsLT4nEiIx8t+h1iQNL1d1qypI7dyG6BtKtIHNZfmgeQ1Zu6wQF/Hw==",
   "success": true,
   "projectFilePath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,7 @@
     "C:\\Users\\agpan\\.nuget\\packages\\livecharts.wpf\\0.9.7\\livecharts.wpf.0.9.7.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\system.codedom\\9.0.0-preview.2.24128.5\\system.codedom.9.0.0-preview.2.24128.5.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\system.management\\9.0.0-preview.2.24128.5\\system.management.9.0.0-preview.2.24128.5.nupkg.sha512",
-    "C:\\Users\\agpan\\.nuget\\packages\\wpf-ui\\3.0.3\\wpf-ui.3.0.3.nupkg.sha512",
+    "C:\\Users\\agpan\\.nuget\\packages\\wpf-ui\\3.0.1\\wpf-ui.3.0.1.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22621.31\\microsoft.windows.sdk.net.ref.10.0.22621.31.nupkg.sha512"
   ],
   "logs": [
