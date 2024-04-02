@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zyWsZnCysCF2tZ+I5TYpp2wUzOkU4lXpAxPGGGunEg5wD8R2zWau3uiivrRsSOhGJvfpdllds2q1ZTK833qIHw==",
+  "dgSpecHash": "AhplwTAb0r+jXWbPBhybmVomIszskRVJ550l8MUaOiH9KK80wlCeHCfJA7Do0D29pT8hH5Xf1R4EcTZgBKfWHg==",
   "success": true,
   "projectFilePath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
   "expectedPackageFiles": [
@@ -11,9 +11,6 @@
     "C:\\Users\\agpan\\.nuget\\packages\\system.codedom\\9.0.0-preview.2.24128.5\\system.codedom.9.0.0-preview.2.24128.5.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\system.management\\9.0.0-preview.2.24128.5\\system.management.9.0.0-preview.2.24128.5.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\wpf-ui\\3.0.1\\wpf-ui.3.0.1.nupkg.sha512",
-    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.3\\microsoft.netcore.app.runtime.win-x64.8.0.3.nupkg.sha512",
-    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.3\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.3.nupkg.sha512",
-    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.3\\microsoft.aspnetcore.app.runtime.win-x64.8.0.3.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22621.31\\microsoft.windows.sdk.net.ref.10.0.22621.31.nupkg.sha512"
   ],
   "logs": [

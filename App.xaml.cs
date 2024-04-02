@@ -366,8 +366,8 @@ namespace PowerTray
 
                 
                 int timetemp = (int)timeDelta;
-                calcChargeRateGraph.Add(new ObservablePoint(timetemp, calcChargeRateMw));
-                chargeRateGraph.Add(new ObservablePoint(timetemp, chargeRateMw));
+                calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw));
+                chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw));
 
             }
             // ---

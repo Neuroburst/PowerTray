@@ -11,8 +11,7 @@ namespace PowerTray
     /// </summary>
     public partial class Settings : FluentWindow
     {
-        public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(
-            ConfigurationUserLevel.None);
+        public Configuration AppConfig = ConfigurationManager.OpenMachineConfiguration();
 
         public Settings()
         {

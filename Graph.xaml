@@ -32,7 +32,7 @@
             </lvc:CartesianChart.DataTooltip>
             
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                <lvc:Axis Title="Power Draw (Watts)" MinValue="0"  LabelFormatter="{Binding YFormatter}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Time (seconds)" Labels="{Binding Labels}"></lvc:Axis>

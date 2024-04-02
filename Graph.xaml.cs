@@ -36,19 +36,19 @@ namespace PowerTray
             {
                 new LineSeries
                 {
-                    Title = "Reported Charge Rate",
+                    Title = "Reported Discharge/Charge Rate",
                     Values = App.chargeRateGraph,
                     StrokeThickness = 5,
-                    LineSmoothness = 1,
+                    LineSmoothness = 0.5,
                     PointGeometrySize = 15,
                 },
 
                 new LineSeries
                 {
-                    Title = "Calculated Charge Rate",
+                    Title = "Calculated Discharge/Charge Rate",
                     Values = App.calcChargeRateGraph,
                     StrokeThickness = 5,
-                    LineSmoothness = 1,
+                    LineSmoothness = 0.5,
                     PointGeometrySize = 15,
                 },
             };
