@@ -24,7 +24,7 @@ namespace PowerTray
             set { this["fontSize"] = value; }
         }
 
-        [ConfigurationProperty("buffersize", DefaultValue = 60000)]
+        [ConfigurationProperty("buffersize", DefaultValue = 60)]
         public int BufferSize
         {
             get { return (int)this["buffersize"]; }

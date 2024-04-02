@@ -9,12 +9,18 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Graph.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Settings.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="BatInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Graph.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings.xaml">

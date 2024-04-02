@@ -22,12 +22,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Interop;
 
 using System.Configuration;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 /// TODO NOW:
-// graph calcDischarge rate and other things
 
-/// LATER:
-/// // make tooltip stay open somehow
+// make tooltip stay open somehow
 // make icon auto-darkmode (doesn't work on publish)
 // scroll is too sensitive
 
@@ -53,7 +54,7 @@ namespace PowerTray
         public static String trayFontType = "Segoe UI";
         static float trayFontQualityMultiplier = 2.0f;
 
-        public static int maxChargeHistoryLength = 60000; // in milliseconds (CHANGEABLE)
+        public static int maxChargeHistoryLength = 60; // in seconds (CHANGEABLE)
 
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
         public static int batInfoRefreshRate = 500; // in milliseconds (CHANGEABLE)
@@ -72,14 +73,21 @@ namespace PowerTray
         public static SafeFileHandle batteryHandle = null;
 
         public static bool firstTime = false;
-        public static List<int>remainChargeHistory = new List<int>();
+        public static List<int> remainChargeHistory = new List<int>();
         public static List<long> chargeHistoryTime = new List<long>();
+
+        public static long graphCreatedTimeStamp = -1;
+        public static ChartValues<ObservablePoint> calcChargeRateGraph = new ChartValues<ObservablePoint>();
+        public static ChartValues<ObservablePoint> chargeRateGraph = new ChartValues<ObservablePoint>();
+
+
         public static long calcChargeRateMw = 0;
         public static long calcTimeDelta = 0;
 
         public static bool windowDarkMode = false;
 
         public static BatInfo batteryInfoWindow;
+        public static Graph graphWindow;
         public static Settings settingsWindow;
         
         public static bool aot = true; // always on top
@@ -95,9 +103,14 @@ namespace PowerTray
         private static ICommand SettingsOpen = new RelayCommand<dynamic>(action => CreateSettingsWindow(), canExecute => true);
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
+        private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
         public static void ResetBuffer()
         {
+            calcChargeRateGraph.Clear();
+            chargeRateGraph.Clear();
+            graphCreatedTimeStamp = -1;
+
             firstTime = true;
             remainChargeHistory = new List<int>();
             chargeHistoryTime = new List<long>();
@@ -176,6 +189,8 @@ namespace PowerTray
 
             batteryInfoWindow = new BatInfo();
             batteryInfoWindow.Topmost = aot;
+            graphWindow = new Graph();
+            graphWindow.Topmost = aot;
             settingsWindow = new Settings();
 
             LoadSettings();
@@ -193,19 +208,26 @@ namespace PowerTray
             batteryHandle = info[0];
             batteryTag = info[1];
 
-            var switchInfo = new Wpf.Ui.Controls.MenuItem()
-            {
-                Header = "Switch Tray Data",
-                Icon = new SymbolIcon(SymbolRegular.DataBarVertical20, 14, false),
-                ToolTip = "Switch the information displayed on the tray",
-                Command = TraySwitch,
-            };
-
             var batteryInfo = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Battery Info",
                 Icon = new SymbolIcon(SymbolRegular.Info20, 14, false),
                 Command = BatInfoOpen,
+            };
+
+            var graphs = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Graphs",
+                Icon = new SymbolIcon(SymbolRegular.DataUsage20, 14, false),
+                Command = GraphsOpen,
+            };
+
+            var switchInfo = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Switch Tray Data",
+                Icon = new SymbolIcon(SymbolRegular.ArrowRepeatAll20, 14, false),
+                ToolTip = "Switch the information displayed on the tray icon",
+                Command = TraySwitch,
             };
 
             var settings = new Wpf.Ui.Controls.MenuItem()
@@ -224,7 +246,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = { switchInfo, batteryInfo, settings, exit }
+                Items = {batteryInfo, graphs, switchInfo, settings, exit }
             };
 
             toolTip = new ToolTip();
@@ -309,13 +331,28 @@ namespace PowerTray
                 {
                     calcChargeRateMw = charge_delta_Mws * 1000 / calcTimeDelta;
 
-                    while (calcTimeDelta > maxChargeHistoryLength)
+                    while (calcTimeDelta > maxChargeHistoryLength * 1000)
                     {
                         remainChargeHistory.RemoveAt(0);
                         chargeHistoryTime.RemoveAt(0);
+                        calcChargeRateGraph.RemoveAt(0);
+                        chargeRateGraph.RemoveAt(0);
+
                         calcTimeDelta = (timeStamp - chargeHistoryTime[0]) / 10000; // milliseconds
                     }
                 }
+
+                if (graphCreatedTimeStamp == -1)
+                {
+                    graphCreatedTimeStamp = timeStamp;
+                }
+
+                long timeDelta = (long)((timeStamp - graphCreatedTimeStamp) / 10000000);
+                
+                int timetemp = (int)timeDelta;
+                calcChargeRateGraph.Add(new ObservablePoint(timetemp, Math.Abs(calcChargeRateMw)));
+                chargeRateGraph.Add(new ObservablePoint(timetemp, Math.Abs(chargeRateMw)));
+
             }
             // ---
 
@@ -504,7 +541,7 @@ namespace PowerTray
                 
                 "\n\nReported Data:\n" + 
                 reported_charge_time_text + 
-                "\n" + (chargeRateMw > 0 ? "Reported Charge Rate: " : "Reported Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
+                "\n" + (chargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(chargeRateMw).ToString() + " mW" +
 
                 "\n\nCalulated Data:\n" +
                 calculated_charge_time_text +
@@ -521,6 +558,12 @@ namespace PowerTray
             batteryInfoWindow.Show();
         }
 
+        public static void CreateGraphWindow()
+        {
+            graphWindow = new Graph();
+            graphWindow.Topmost = aot;
+            graphWindow.Show();
+        }
         public static void CreateSettingsWindow()
         {
             settingsWindow = new Settings();

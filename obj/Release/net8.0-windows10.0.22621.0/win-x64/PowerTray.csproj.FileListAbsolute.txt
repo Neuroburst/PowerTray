@@ -32,6 +32,11 @@ C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\PowerTray.sourcelink.json
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\PowerTray.Resources.resources
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.GenerateResource.cache
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\System.CodeDom.dll
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\LiveCharts.dll
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\LiveCharts.Wpf.dll
+C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\Graph.g.cs
+C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\Graph.baml
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.CSharp.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.VisualBasic.Core.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.Win32.Primitives.dll
@@ -218,7 +223,6 @@ C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\PresentationFramework.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\PresentationUI.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\ReachFramework.dll
-C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\System.CodeDom.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\System.Configuration.ConfigurationManager.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\System.Design.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\System.Diagnostics.EventLog.Messages.dll

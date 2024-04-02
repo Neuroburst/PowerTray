@@ -24,10 +24,9 @@ namespace PowerTray
             this.Close();
         }
 
-        private void OpenSettings(object sender, RoutedEventArgs e)
+        private void OpenGraph(object sender, RoutedEventArgs e)
         {
-            App.CreateSettingsWindow();
-            CloseWindow(null, null);
+            App.CreateGraphWindow();
         }
 
         private static void ResetBuffer(object sender, RoutedEventArgs e)
@@ -41,7 +40,7 @@ namespace PowerTray
             InitializeComponent();
             This = this;
             this.CloseButton.Click += CloseWindow;
-            this.SettingsButton.Click += OpenSettings;
+            this.GraphButton.Click += OpenGraph;
             this.ResetButton.Click += ResetBuffer;
         }
 

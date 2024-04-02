@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[1.1.0, )"
             },
+            "LiveCharts.Wpf": {
+              "target": "Package",
+              "version": "[0.9.7, )"
+            },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
@@ -61,11 +65,11 @@
             },
             "System.Management": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[9.0.0-preview.2.24128.5, )"
             },
             "WPF-UI": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.3, )"
             }
           },
           "imports": [

@@ -10,9 +10,10 @@
       "PowerTray/1.0.0": {
         "dependencies": {
           "Hardcodet.NotifyIcon.Wpf": "1.1.0",
+          "LiveCharts.Wpf": "0.9.7",
           "Microsoft.NET.ILLink.Tasks": "8.0.3",
-          "System.Management": "8.0.0",
-          "WPF-UI": "3.0.0",
+          "System.Management": "9.0.0-preview.2.24128.5",
+          "WPF-UI": "3.0.3",
           "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "8.0.3",
           "runtimepack.Microsoft.WindowsDesktop.App.Runtime.win-x64": "8.0.3",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22621.31"
@@ -771,10 +772,6 @@
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.324.11606"
           },
-          "System.CodeDom.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
           "System.Configuration.ConfigurationManager.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.324.11423"
@@ -942,24 +939,50 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.3": {},
-      "System.CodeDom/8.0.0": {},
-      "System.Management/8.0.0": {
-        "dependencies": {
-          "System.CodeDom": "8.0.0"
-        },
+      "LiveCharts/0.9.7": {
         "runtime": {
-          "runtimes/win/lib/net8.0/System.Management.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.23.53103"
+          "lib/net45/LiveCharts.dll": {
+            "assemblyVersion": "0.9.7.0",
+            "fileVersion": "0.9.7.0"
           }
         }
       },
-      "WPF-UI/3.0.0": {
+      "LiveCharts.Wpf/0.9.7": {
+        "dependencies": {
+          "LiveCharts": "0.9.7"
+        },
+        "runtime": {
+          "lib/net45/LiveCharts.Wpf.dll": {
+            "assemblyVersion": "0.9.7.0",
+            "fileVersion": "0.9.7.0"
+          }
+        }
+      },
+      "Microsoft.NET.ILLink.Tasks/8.0.3": {},
+      "System.CodeDom/9.0.0-preview.2.24128.5": {
+        "runtime": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.12805"
+          }
+        }
+      },
+      "System.Management/9.0.0-preview.2.24128.5": {
+        "dependencies": {
+          "System.CodeDom": "9.0.0-preview.2.24128.5"
+        },
+        "runtime": {
+          "runtimes/win/lib/net8.0/System.Management.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.12805"
+          }
+        }
+      },
+      "WPF-UI/3.0.3": {
         "runtime": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.0.0.0"
+            "assemblyVersion": "3.0.3.0",
+            "fileVersion": "3.0.3.0"
           }
         }
       }
@@ -993,6 +1016,20 @@
       "path": "hardcodet.notifyicon.wpf/1.1.0",
       "hashPath": "hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512"
     },
+    "LiveCharts/0.9.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-p4xyBrUaNNfkWZSNsIle0r51cyVyFg0Yi0uBRZM5GQtdFiA/7guZHlffFyNUILIdux10Ch2hUaJpcZENVU9aaQ==",
+      "path": "livecharts/0.9.7",
+      "hashPath": "livecharts.0.9.7.nupkg.sha512"
+    },
+    "LiveCharts.Wpf/0.9.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lv6YZoK0B4yWykMq5b9grZXtIbTj+OWu4sVN9GDpdgV6zffu64m4d5CW8KSjfSl9rB8VU649x1NZvhoU67hCDg==",
+      "path": "livecharts.wpf/0.9.7",
+      "hashPath": "livecharts.wpf.0.9.7.nupkg.sha512"
+    },
     "Microsoft.NET.ILLink.Tasks/8.0.3": {
       "type": "package",
       "serviceable": true,
@@ -1000,26 +1037,26 @@
       "path": "microsoft.net.illink.tasks/8.0.3",
       "hashPath": "microsoft.net.illink.tasks.8.0.3.nupkg.sha512"
     },
-    "System.CodeDom/8.0.0": {
+    "System.CodeDom/9.0.0-preview.2.24128.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WTlRjL6KWIMr/pAaq3rYqh0TJlzpouaQ/W1eelssHgtlwHAH25jXTkUphTYx9HaIIf7XA6qs/0+YhtLEQRkJ+Q==",
-      "path": "system.codedom/8.0.0",
-      "hashPath": "system.codedom.8.0.0.nupkg.sha512"
+      "sha512": "sha512-pZzX+icZoMvuCFpuqYmIdY6Gg5Ezyji1g7/JlZy/DsAmgZchglj8iMqkdv1++yBpsxT1uUTqSy9200LcAqVC4Q==",
+      "path": "system.codedom/9.0.0-preview.2.24128.5",
+      "hashPath": "system.codedom.9.0.0-preview.2.24128.5.nupkg.sha512"
     },
-    "System.Management/8.0.0": {
+    "System.Management/9.0.0-preview.2.24128.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jrK22i5LRzxZCfGb+tGmke2VH7oE0DvcDlJ1HAKYU8cPmD8XnpUT0bYn2Gy98GEhGjtfbR/sxKTVb+dE770pfA==",
-      "path": "system.management/8.0.0",
-      "hashPath": "system.management.8.0.0.nupkg.sha512"
+      "sha512": "sha512-IuuZE+/KkSFg+60wwF/AwKNm4BkBQXh0AT0y1QG3TO3ijj1PG7NPSp6z7yjOxqUE5uIqpFWb4vvEUDM22SEX5g==",
+      "path": "system.management/9.0.0-preview.2.24128.5",
+      "hashPath": "system.management.9.0.0-preview.2.24128.5.nupkg.sha512"
     },
-    "WPF-UI/3.0.0": {
+    "WPF-UI/3.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YM4GtOJVRp90x6i4C8PhQc6Ic8zQz/1tt+Wrh5qNBm87jLBq/1LAB812sAlZtiVz5gLN74ERdihKI+/azElPqw==",
-      "path": "wpf-ui/3.0.0",
-      "hashPath": "wpf-ui.3.0.0.nupkg.sha512"
+      "sha512": "sha512-Nm6Q5StLWxs74eFcqTwNJTGpA6xbTF1BXLniy5HMwnowvjiEa6Wa26/eI3e4/KbD56YF4nZidn69G/lY7t+aNg==",
+      "path": "wpf-ui/3.0.3",
+      "hashPath": "wpf-ui.3.0.3.nupkg.sha512"
     }
   },
   "runtimes": {

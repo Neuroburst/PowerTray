@@ -30,7 +30,7 @@ namespace PowerTray
 
             int remainChargeCapMwh = 0;
             int chargeRate = 0;
-            int voltage = 0;
+            float voltage = 0;
             if (Kernel32.DeviceIoControl(batteryHandle,
                                          Kernel32.IOCTL.IOCTL_BATTERY_QUERY_STATUS,
                                          ref bws,
@@ -42,7 +42,7 @@ namespace PowerTray
             {
                 remainChargeCapMwh = (int)batteryStatus.Capacity;
                 chargeRate = (int)batteryStatus.Rate;
-                voltage = (int)batteryStatus.Voltage / 1000;
+                voltage = (float)batteryStatus.Voltage / 1000f;
             }
             dataDict.Add("Status", batteryReport.Status);
             dataDict.Add("Percent Remaining", ((double)remainChargeCapMwh / (double)batteryReport.FullChargeCapacityInMilliwattHours) * 100);

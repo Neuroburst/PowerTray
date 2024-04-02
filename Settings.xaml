@@ -39,7 +39,7 @@
                 <StackPanel x:Name="Names" Margin="10" Grid.Column="0" HorizontalAlignment="Center" Orientation="Vertical">
                     <Label Height="35" Margin="0,8,0,0">Always on Top</Label>
                     <Label Height="35" Margin="0,10,0,0">Tray Font Size</Label>
-                    <Label Height="35" Margin="0,10,0,0">Calc Charge Rate Buffer (ms)</Label>
+                    <Label Height="35" Margin="0,10,0,0">Calc Charge Rate Buffer (sec)</Label>
                     <Label Height="35" Margin="0,10,0,0">Tray Info Refresh Rate (ms)</Label>
                     <Label Height="35" Margin="0,10,0,0">Battery Info Refresh Rate (ms)</Label>
                     <Label Height="35" Margin="0,10,0,0">Medium Battery Charge</Label>
