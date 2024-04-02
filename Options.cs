@@ -31,6 +31,13 @@ namespace PowerTray
             set { this["buffersize"] = value; }
         }
 
+        [ConfigurationProperty("historylength", DefaultValue = 120)]
+        public int HistoryLength
+        {
+            get { return (int)this["historylength"]; }
+            set { this["historylength"] = value; }
+        }
+
         [ConfigurationProperty("trayrefreshrate", DefaultValue = 1000)]
         public int TrayRefreshRate
         {

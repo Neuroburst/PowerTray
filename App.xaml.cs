@@ -55,6 +55,7 @@ namespace PowerTray
         static float trayFontQualityMultiplier = 2.0f;
 
         public static int maxChargeHistoryLength = 60; // in seconds (CHANGEABLE)
+        public static int graphsHistoryLength = 120; // in seconds (CHANGEABLE)
 
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
         public static int batInfoRefreshRate = 500; // in milliseconds (CHANGEABLE)
@@ -105,12 +106,15 @@ namespace PowerTray
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
-        public static void ResetBuffer()
+        public static void ResetGraphs()
         {
             calcChargeRateGraph.Clear();
             chargeRateGraph.Clear();
             graphCreatedTimeStamp = -1;
+        }
 
+        public static void ResetBuffer()
+        {
             firstTime = true;
             remainChargeHistory = new List<int>();
             chargeHistoryTime = new List<long>();
@@ -167,6 +171,7 @@ namespace PowerTray
             batteryInfoWindow.Topmost = aot;
             trayFontSize = settings.FontSize;
             maxChargeHistoryLength = settings.BufferSize;
+            graphsHistoryLength = settings.HistoryLength;
 
             trayRefreshRate = settings.TrayRefreshRate;
             tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
@@ -267,7 +272,6 @@ namespace PowerTray
             info_timer.Tick += new EventHandler(BatInfo.UpdateData);
             info_timer.Start();
 
-            
         }
 
         private void UpdateTray(object sender, EventArgs e)
@@ -335,12 +339,11 @@ namespace PowerTray
                     {
                         remainChargeHistory.RemoveAt(0);
                         chargeHistoryTime.RemoveAt(0);
-                        calcChargeRateGraph.RemoveAt(0);
-                        chargeRateGraph.RemoveAt(0);
 
                         calcTimeDelta = (timeStamp - chargeHistoryTime[0]) / 10000; // milliseconds
                     }
                 }
+
 
                 if (graphCreatedTimeStamp == -1)
                 {
@@ -348,10 +351,23 @@ namespace PowerTray
                 }
 
                 long timeDelta = (long)((timeStamp - graphCreatedTimeStamp) / 10000000);
+
+
+                var keys = chargeRateGraph.Select(p => p.X).ToArray();
+                if (keys.Length > 0)
+                {
+                    while (timeDelta - keys[0] > graphsHistoryLength)
+                    {
+                        calcChargeRateGraph.RemoveAt(0);
+                        chargeRateGraph.RemoveAt(0);
+                        keys = chargeRateGraph.Select(p => p.X).ToArray();
+                    }
+                }
+
                 
                 int timetemp = (int)timeDelta;
-                calcChargeRateGraph.Add(new ObservablePoint(timetemp, Math.Abs(calcChargeRateMw)));
-                chargeRateGraph.Add(new ObservablePoint(timetemp, Math.Abs(chargeRateMw)));
+                calcChargeRateGraph.Add(new ObservablePoint(timetemp, calcChargeRateMw));
+                chargeRateGraph.Add(new ObservablePoint(timetemp, chargeRateMw));
 
             }
             // ---
@@ -537,7 +553,7 @@ namespace PowerTray
             String toolTipText =
                 Math.Round(batteryPercent, 3).ToString() + "% " + 
                 (isCharging ? "connected to AC" : "on battery\n") +
-                "\n" + "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
+                "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
                 
                 "\n\nReported Data:\n" + 
                 reported_charge_time_text + 

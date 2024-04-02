@@ -77,5 +77,15 @@ namespace PowerTray
         {
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.ResetGraphs();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

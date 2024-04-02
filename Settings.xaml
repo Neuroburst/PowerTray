@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="PowerTray Settings" Height="550" Width="400" MinHeight="160" MinWidth="195"
+        Title="PowerTray Settings" Height="600" Width="400" MinHeight="160" MinWidth="195"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -40,6 +40,7 @@
                     <Label Height="35" Margin="0,8,0,0">Always on Top</Label>
                     <Label Height="35" Margin="0,10,0,0">Tray Font Size</Label>
                     <Label Height="35" Margin="0,10,0,0">Calc Charge Rate Buffer (sec)</Label>
+                    <Label Height="35" Margin="0,10,0,0">Graphs History Length (sec)</Label>
                     <Label Height="35" Margin="0,10,0,0">Tray Info Refresh Rate (ms)</Label>
                     <Label Height="35" Margin="0,10,0,0">Battery Info Refresh Rate (ms)</Label>
                     <Label Height="35" Margin="0,10,0,0">Medium Battery Charge</Label>
@@ -54,6 +55,8 @@
                     <ui:TextBox Height="35" ClearButtonEnabled="False" Text="{Binding FontSize}" Margin="0,10,0,0">
                     </ui:TextBox>
                     <ui:TextBox ClearButtonEnabled="False" Text="{Binding BufferSize}" Margin="0,10,0,0">
+                    </ui:TextBox>
+                    <ui:TextBox ClearButtonEnabled="False" Text="{Binding HistoryLength}" Margin="0,10,0,0">
                     </ui:TextBox>
                     <ui:TextBox ClearButtonEnabled="False" Text="{Binding TrayRefreshRate}" Margin="0,10,0,0">
                     </ui:TextBox>

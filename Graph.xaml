@@ -26,7 +26,7 @@
             Height="30"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
-        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
+        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" LegendLocation="Top" >
             <lvc:CartesianChart.DataTooltip>
                 <lvc:DefaultTooltip CornerRadius="10" Background="Gray"/>
             </lvc:CartesianChart.DataTooltip>
@@ -38,5 +38,15 @@
                 <lvc:Axis Title="Time (seconds)" Labels="{Binding Labels}"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
+
+        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,5,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="ResetButton" Grid.Column="0" Width ="100" Click = "ResetButton_Click"  HorizontalAlignment="Center">Clear Data</Button>
+            <Button x:Name="CloseButton" Grid.Column="2" Width ="100" Click ="CloseButton_Click" HorizontalAlignment="Center">Close</Button>
+        </Grid>
     </Grid>
 </ui:FluentWindow>
