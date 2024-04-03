@@ -552,7 +552,7 @@ namespace PowerTray
 
             String toolTipText =
                 Math.Round(batteryPercent, 3).ToString() + "% " + 
-                (isCharging ? "connected to AC" : "on battery\n") +
+                (isCharging ? "connected to AC\n" : "on battery\n") +
                 "Current Charge: " + remainChargeCapMwh.ToString() + " mWh" +
                 
                 "\n\nReported Data:\n" + 
