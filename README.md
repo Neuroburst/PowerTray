@@ -12,6 +12,17 @@ You can also right click on the icon>Click "Battery Info" to see even more infor
 - Tray, tooltip, and battery information updates frequently
 - Customizable tray display
 
+## Installation
+
+1. Make sure you have .NET 8.0 installed! (or use the self contained version of powertray)
+2. Download the latest release
+3. To get to your startup folder, press Windows+R, type "shell:startup", then press enter
+4. Put PowerTray.exe in that folder
+5. It will now run every time your computer starts up!
+
+(Admin access is required to graph CPU and GPU power usage, so you can make a shortcut in the startup folder that runs Powertray as admin)
+
+
 ## Creation
 This is an open-source project created with Visual Studio.
 It was made using the .NET framework and WPF.
@@ -19,11 +30,3 @@ It was made using the .NET framework and WPF.
 Support for Windows 10 & 11
 
 I used some components from LibreHardware Monitor to detect more battery information.
-
-## Installation
-
-1. Make sure you have .NET 8.0 installed!
-2. Download the latest release
-3. To get to your startup folder, press Windows+R, type "shell:startup", then press enter
-4. Put PowerTray.exe in that folder
-5. It will now run every time your computer starts up!

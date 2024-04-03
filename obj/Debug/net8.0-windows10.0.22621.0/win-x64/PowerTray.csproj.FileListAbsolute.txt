@@ -37,3 +37,9 @@ C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x6
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.g.cs
 C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.baml
 C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.CodeDom.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\HidSharp.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LibreHardwareMonitorLib.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Mono.Posix.NETStandard.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.IO.Ports.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\MonoPosixHelper.dll
+C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\libMonoPosixHelper.dll

@@ -10,913 +10,15 @@
       "PowerTray/1.0.0": {
         "dependencies": {
           "Hardcodet.NotifyIcon.Wpf": "1.1.0",
+          "LibreHardwareMonitorLib": "0.9.3",
           "LiveCharts.Wpf": "0.9.7",
           "Microsoft.NET.ILLink.Tasks": "8.0.3",
           "System.Management": "9.0.0-preview.2.24128.5",
           "WPF-UI": "3.0.1",
-          "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "8.0.3",
-          "runtimepack.Microsoft.WindowsDesktop.App.Runtime.win-x64": "8.0.3",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22621.31"
         },
         "runtime": {
           "PowerTray.dll": {}
-        }
-      },
-      "runtimepack.Microsoft.NETCore.App.Runtime.win-x64/8.0.3": {
-        "runtime": {
-          "Microsoft.CSharp.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "Microsoft.VisualBasic.Core.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.324.11423"
-          },
-          "Microsoft.Win32.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "Microsoft.Win32.Registry.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.AppContext.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Buffers.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Collections.Concurrent.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Collections.Immutable.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Collections.NonGeneric.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Collections.Specialized.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Collections.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.Annotations.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.DataAnnotations.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.EventBasedAsync.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.TypeConverter.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ComponentModel.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Configuration.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Console.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Core.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Data.Common.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Data.DataSetExtensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Data.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.Contracts.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.Debug.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.DiagnosticSource.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.FileVersionInfo.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.Process.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.StackTrace.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.TextWriterTraceListener.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.Tools.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.TraceSource.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.Tracing.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Drawing.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Dynamic.Runtime.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Formats.Asn1.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Formats.Tar.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Globalization.Calendars.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Globalization.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Globalization.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Compression.Brotli.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Compression.FileSystem.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Compression.ZipFile.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Compression.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.FileSystem.AccessControl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.FileSystem.DriveInfo.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.FileSystem.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.FileSystem.Watcher.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.FileSystem.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.IsolatedStorage.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.MemoryMappedFiles.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Pipes.AccessControl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.Pipes.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.UnmanagedMemoryStream.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.IO.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Linq.Expressions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Linq.Parallel.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Linq.Queryable.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Linq.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Memory.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Http.Json.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Http.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.HttpListener.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Mail.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.NameResolution.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.NetworkInformation.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Ping.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Quic.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Requests.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Security.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.ServicePoint.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.Sockets.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.WebClient.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.WebHeaderCollection.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.WebProxy.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.WebSockets.Client.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.WebSockets.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Net.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Numerics.Vectors.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Numerics.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ObjectModel.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Private.CoreLib.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Private.DataContractSerialization.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Private.Uri.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Private.Xml.Linq.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Private.Xml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.DispatchProxy.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Emit.ILGeneration.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Emit.Lightweight.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Emit.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Metadata.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.TypeExtensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Reflection.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Resources.Reader.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Resources.ResourceManager.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Resources.Writer.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.CompilerServices.Unsafe.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.CompilerServices.VisualC.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Handles.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.InteropServices.JavaScript.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.InteropServices.RuntimeInformation.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.InteropServices.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Intrinsics.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Loader.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Numerics.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Serialization.Formatters.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Serialization.Json.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Serialization.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Serialization.Xml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.Serialization.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Runtime.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.AccessControl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Claims.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Algorithms.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Cng.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Csp.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Encoding.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.OpenSsl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.X509Certificates.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Principal.Windows.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Principal.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.SecureString.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ServiceModel.Web.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ServiceProcess.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.Encoding.CodePages.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.Encoding.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.Encoding.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.Encodings.Web.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.Json.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Text.RegularExpressions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Channels.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Overlapped.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Tasks.Dataflow.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Tasks.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Tasks.Parallel.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Tasks.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Thread.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.ThreadPool.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.Timer.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Transactions.Local.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Transactions.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.ValueTuple.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Web.HttpUtility.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Web.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Windows.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.Linq.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.ReaderWriter.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.Serialization.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.XDocument.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.XPath.XDocument.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.XPath.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.XmlDocument.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.XmlSerializer.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Xml.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "mscorlib.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "netstandard.dll": {
-            "assemblyVersion": "2.1.0.0",
-            "fileVersion": "8.0.324.11423"
-          }
-        }
-      },
-      "runtimepack.Microsoft.WindowsDesktop.App.Runtime.win-x64/8.0.3": {
-        "runtime": {
-          "Accessibility.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "DirectWriteForwarder.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "Microsoft.VisualBasic.Forms.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "Microsoft.VisualBasic.dll": {
-            "assemblyVersion": "10.1.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "Microsoft.Win32.Registry.AccessControl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "Microsoft.Win32.SystemEvents.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "PresentationCore.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework-SystemCore.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework-SystemData.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework-SystemDrawing.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework-SystemXml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework-SystemXmlLinq.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.Aero.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.Aero2.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.AeroLite.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.Classic.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.Luna.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.Royale.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationFramework.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationUI.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "ReachFramework.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Design.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Diagnostics.EventLog.Messages.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "0.0.0.0"
-          },
-          "System.Diagnostics.EventLog.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Diagnostics.PerformanceCounter.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.DirectoryServices.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Drawing.Common.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Drawing.Design.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Drawing.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.IO.Packaging.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Printing.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "System.Resources.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Pkcs.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Cryptography.Xml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Security.Permissions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Threading.AccessControl.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Windows.Controls.Ribbon.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "System.Windows.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11423"
-          },
-          "System.Windows.Forms.Design.Editors.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Windows.Forms.Design.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Windows.Forms.Primitives.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Windows.Forms.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11603"
-          },
-          "System.Windows.Input.Manipulations.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "System.Windows.Presentation.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "System.Xaml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "UIAutomationClient.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "UIAutomationClientSideProviders.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "UIAutomationProvider.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "UIAutomationTypes.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "WindowsBase.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          },
-          "WindowsFormsIntegration.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.324.11606"
-          }
-        },
-        "native": {
-          "D3DCompiler_47_cor3.dll": {
-            "fileVersion": "10.0.22621.2428"
-          },
-          "PenImc_cor3.dll": {
-            "fileVersion": "8.0.324.11606"
-          },
-          "PresentationNative_cor3.dll": {
-            "fileVersion": "8.0.23.56901"
-          },
-          "vcruntime140_cor3.dll": {
-            "fileVersion": "14.38.33130.0"
-          },
-          "wpfgfx_cor3.dll": {
-            "fileVersion": "8.0.324.11606"
-          }
         }
       },
       "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.22621.31": {
@@ -936,6 +38,30 @@
           "lib/net5.0-windows7.0/Hardcodet.NotifyIcon.Wpf.dll": {
             "assemblyVersion": "1.1.0.0",
             "fileVersion": "1.1.0.17"
+          }
+        }
+      },
+      "HidSharp/2.1.0": {
+        "runtime": {
+          "lib/netstandard2.0/HidSharp.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.0.0"
+          }
+        }
+      },
+      "LibreHardwareMonitorLib/0.9.3": {
+        "dependencies": {
+          "HidSharp": "2.1.0",
+          "Microsoft.Win32.Registry": "5.0.0",
+          "Mono.Posix.NETStandard": "1.0.0",
+          "System.IO.FileSystem.AccessControl": "5.0.0",
+          "System.IO.Ports": "8.0.0",
+          "System.Management": "9.0.0-preview.2.24128.5"
+        },
+        "runtime": {
+          "lib/net7.0/LibreHardwareMonitorLib.dll": {
+            "assemblyVersion": "0.9.3.0",
+            "fileVersion": "0.9.3.0"
           }
         }
       },
@@ -959,11 +85,65 @@
         }
       },
       "Microsoft.NET.ILLink.Tasks/8.0.3": {},
+      "Microsoft.NETCore.Platforms/5.0.0": {},
+      "Microsoft.Win32.Registry/5.0.0": {
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
+      },
+      "Mono.Posix.NETStandard/1.0.0": {
+        "runtime": {
+          "runtimes/win-x64/lib/netstandard2.0/Mono.Posix.NETStandard.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "native": {
+          "runtimes/win-x64/native/MonoPosixHelper.dll": {
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libMonoPosixHelper.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "runtime.linux-arm.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.linux-arm64.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.linux-x64.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.native.System.IO.Ports/8.0.0": {
+        "dependencies": {
+          "runtime.linux-arm.runtime.native.System.IO.Ports": "8.0.0",
+          "runtime.linux-arm64.runtime.native.System.IO.Ports": "8.0.0",
+          "runtime.linux-x64.runtime.native.System.IO.Ports": "8.0.0",
+          "runtime.osx-arm64.runtime.native.System.IO.Ports": "8.0.0",
+          "runtime.osx-x64.runtime.native.System.IO.Ports": "8.0.0"
+        }
+      },
+      "runtime.osx-arm64.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.osx-x64.runtime.native.System.IO.Ports/8.0.0": {},
       "System.CodeDom/9.0.0-preview.2.24128.5": {
         "runtime": {
           "lib/net8.0/System.CodeDom.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.24.12805"
+          }
+        }
+      },
+      "System.IO.FileSystem.AccessControl/5.0.0": {
+        "dependencies": {
+          "System.Security.AccessControl": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
+      },
+      "System.IO.Ports/8.0.0": {
+        "dependencies": {
+          "runtime.native.System.IO.Ports": "8.0.0"
+        },
+        "runtime": {
+          "runtimes/win/lib/net8.0/System.IO.Ports.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
@@ -978,6 +158,13 @@
           }
         }
       },
+      "System.Security.AccessControl/5.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "5.0.0",
+          "System.Security.Principal.Windows": "5.0.0"
+        }
+      },
+      "System.Security.Principal.Windows/5.0.0": {},
       "WPF-UI/3.0.1": {
         "runtime": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
@@ -994,16 +181,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.NETCore.App.Runtime.win-x64/8.0.3": {
-      "type": "runtimepack",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "runtimepack.Microsoft.WindowsDesktop.App.Runtime.win-x64/8.0.3": {
-      "type": "runtimepack",
-      "serviceable": false,
-      "sha512": ""
-    },
     "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.22621.31": {
       "type": "runtimepack",
       "serviceable": false,
@@ -1015,6 +192,20 @@
       "sha512": "sha512-FFEkdRSidMrbMfQVwhCzq6KtSyR1qQojqtiUrkCyjnOOuMf7W3TNQkzFnBBxYxFe7uLk5mz7M38wFh1qdWyfvg==",
       "path": "hardcodet.notifyicon.wpf/1.1.0",
       "hashPath": "hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512"
+    },
+    "HidSharp/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UTdxWvbgp2xzT1Ajaa2va+Qi3oNHJPasYmVhbKI2VVdu1VYP6yUG+RikhsHvpD7iM0S8e8UYb5Qm/LTWxx9QAA==",
+      "path": "hidsharp/2.1.0",
+      "hashPath": "hidsharp.2.1.0.nupkg.sha512"
+    },
+    "LibreHardwareMonitorLib/0.9.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ruMkk48T0j4bX55iAlM5qvT37klYXBTrDVBFaz/RZkX3/72+wcioSKGfjSNX8UN6t0cjq8FW+sR5eNU9mpL3RA==",
+      "path": "librehardwaremonitorlib/0.9.3",
+      "hashPath": "librehardwaremonitorlib.0.9.3.nupkg.sha512"
     },
     "LiveCharts/0.9.7": {
       "type": "package",
@@ -1037,12 +228,89 @@
       "path": "microsoft.net.illink.tasks/8.0.3",
       "hashPath": "microsoft.net.illink.tasks.8.0.3.nupkg.sha512"
     },
+    "Microsoft.NETCore.Platforms/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VyPlqzH2wavqquTcYpkIIAQ6WdenuKoFN0BdYBbCWsclXacSOHNQn66Gt4z5NBqEYW0FAPm5rlvki9ZiCij5xQ==",
+      "path": "microsoft.netcore.platforms/5.0.0",
+      "hashPath": "microsoft.netcore.platforms.5.0.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.Registry/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
+      "path": "microsoft.win32.registry/5.0.0",
+      "hashPath": "microsoft.win32.registry.5.0.0.nupkg.sha512"
+    },
+    "Mono.Posix.NETStandard/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vSN/L1uaVwKsiLa95bYu2SGkF0iY3xMblTfxc8alSziPuVfJpj3geVqHGAA75J7cZkMuKpFVikz82Lo6y6LLdA==",
+      "path": "mono.posix.netstandard/1.0.0",
+      "hashPath": "mono.posix.netstandard.1.0.0.nupkg.sha512"
+    },
+    "runtime.linux-arm.runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gK720fg6HemDg8sXcfy+xCMZ9+hF78Gc7BmREbmkS4noqlu1BAr9qZtuWGhLzFjBfgecmdtl4+SYVwJ1VneZBQ==",
+      "path": "runtime.linux-arm.runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.linux-arm.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
+    "runtime.linux-arm64.runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KYG6/3ojhEWbb3FwQAKgGWPHrY+HKUXXdVjJlrtyCLn3EMcNTaNcPadb2c0ndQzixZSmAxZKopXJr0nLwhOrpQ==",
+      "path": "runtime.linux-arm64.runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.linux-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
+    "runtime.linux-x64.runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Wnw5vhA4mgGbIFoo6l9Fk3iEcwRSq49a1aKwJgXUCUtEQLCSUDjTGSxqy/oMUuOyyn7uLHsH8KgZzQ1y3lReiQ==",
+      "path": "runtime.linux-x64.runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.linux-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
+    "runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ee7Sz5llLpTgyKIWzKI/GeuRSbFkOABgJRY00SqTY0OkTYtkB+9l5rFZfE7fxPA3c22RfytCBYkUdAkcmwMjQg==",
+      "path": "runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
+    "runtime.osx-arm64.runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rbUBLAaFW9oVkbsb0+XSrAo2QdhBeAyzLl5KQ6Oci9L/u626uXGKInsVJG6B9Z5EO8bmplC8tsMiaHK8wOBZ+w==",
+      "path": "runtime.osx-arm64.runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.osx-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
+    "runtime.osx-x64.runtime.native.System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IcfB4jKtM9pkzP9OpYelEcUX1MiDt0IJPBh3XYYdEISFF+6Mc+T8WWi0dr9wVh1gtcdVjubVEIBgB8BHESlGfQ==",
+      "path": "runtime.osx-x64.runtime.native.system.io.ports/8.0.0",
+      "hashPath": "runtime.osx-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+    },
     "System.CodeDom/9.0.0-preview.2.24128.5": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-pZzX+icZoMvuCFpuqYmIdY6Gg5Ezyji1g7/JlZy/DsAmgZchglj8iMqkdv1++yBpsxT1uUTqSy9200LcAqVC4Q==",
       "path": "system.codedom/9.0.0-preview.2.24128.5",
       "hashPath": "system.codedom.9.0.0-preview.2.24128.5.nupkg.sha512"
+    },
+    "System.IO.FileSystem.AccessControl/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+      "path": "system.io.filesystem.accesscontrol/5.0.0",
+      "hashPath": "system.io.filesystem.accesscontrol.5.0.0.nupkg.sha512"
+    },
+    "System.IO.Ports/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MaiPbx2/QXZc62gm/DrajRrGPG1lU4m08GWMoWiymPYM+ba4kfACp2PbiYpqJ4QiFGhHD00zX3RoVDTucjWe9g==",
+      "path": "system.io.ports/8.0.0",
+      "hashPath": "system.io.ports.8.0.0.nupkg.sha512"
     },
     "System.Management/9.0.0-preview.2.24128.5": {
       "type": "package",
@@ -1051,6 +319,20 @@
       "path": "system.management/9.0.0-preview.2.24128.5",
       "hashPath": "system.management.9.0.0-preview.2.24128.5.nupkg.sha512"
     },
+    "System.Security.AccessControl/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
+      "path": "system.security.accesscontrol/5.0.0",
+      "hashPath": "system.security.accesscontrol.5.0.0.nupkg.sha512"
+    },
+    "System.Security.Principal.Windows/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t0MGLukB5WAVU9bO3MGzvlGnyJPgUlcwerXn1kzBRjwLKixT96XV0Uza41W49gVd8zEMFu9vQEFlv0IOrytICA==",
+      "path": "system.security.principal.windows/5.0.0",
+      "hashPath": "system.security.principal.windows.5.0.0.nupkg.sha512"
+    },
     "WPF-UI/3.0.1": {
       "type": "package",
       "serviceable": true,
@@ -1058,12 +340,5 @@
       "path": "wpf-ui/3.0.1",
       "hashPath": "wpf-ui.3.0.1.nupkg.sha512"
     }
-  },
-  "runtimes": {
-    "win-x64": [
-      "win",
-      "any",
-      "base"
-    ]
   }
 }

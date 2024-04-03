@@ -31,6 +31,11 @@ namespace PowerTray
         public Graph()
         {
             InitializeComponent();
+            if (App.IsAdministrator())
+            {
+                AdminWarning.Height = 0;
+                AdminWarning.Margin = new Thickness(0, 0, 0, 0);
+            }
 
             SeriesCollection = new SeriesCollection
             {
@@ -51,10 +56,28 @@ namespace PowerTray
                     LineSmoothness = 0.5,
                     PointGeometrySize = 15,
                 },
+
+                new LineSeries
+                {
+                    Title = "CPU Package Power",
+                    Values = App.cpuWattageGraph,
+                    StrokeThickness = 5,
+                    LineSmoothness = 0.5,
+                    PointGeometrySize = 15,
+                },
+
+                new LineSeries
+                {
+                    Title = "GPU Power",
+                    Values = App.gpuWattageGraph,
+                    StrokeThickness = 5,
+                    LineSmoothness = 0.5,
+                    PointGeometrySize = 15,
+                },
             };
 
             XFormatter = val => val.ToString();
-            YFormatter = val => (val/1000).ToString() + " W";
+            YFormatter = val => val.ToString() + " W";
 
             DataContext = this;
         }

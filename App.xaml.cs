@@ -26,6 +26,9 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
 
+using LibreHardwareMonitor.Hardware;
+using System.Security.Principal;
+
 /// TODO NOW:
 
 // make tooltip stay open somehow
@@ -73,13 +76,23 @@ namespace PowerTray
         public static uint batteryTag = 0;
         public static SafeFileHandle batteryHandle = null;
 
-        public static bool firstTime = false;
+        public static bool firstTime = true;
+        public static bool graphFirstTime = true;
         public static List<int> remainChargeHistory = new List<int>();
         public static List<long> chargeHistoryTime = new List<long>();
 
         public static long graphCreatedTimeStamp = -1;
         public static ChartValues<ObservablePoint> calcChargeRateGraph = new ChartValues<ObservablePoint>();
         public static ChartValues<ObservablePoint> chargeRateGraph = new ChartValues<ObservablePoint>();
+        public static ChartValues<ObservablePoint> cpuWattageGraph = new ChartValues<ObservablePoint>();
+        public static ChartValues<ObservablePoint> gpuWattageGraph = new ChartValues<ObservablePoint>();
+
+        // use open hardware to get info about computertron
+        static Computer c = new Computer()
+        {
+            IsGpuEnabled = true,
+            IsCpuEnabled = true,
+        };
 
 
         public static long calcChargeRateMw = 0;
@@ -106,13 +119,59 @@ namespace PowerTray
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
+        public static float[] GetHardwareInfo()
+        {
+            float cpuWattage = 0;
+            float gpuWattage = 0;
+
+            foreach (var hardware in c.Hardware)
+            {
+
+                if (hardware.HardwareType == HardwareType.Cpu)
+                {
+                    // only fire the update when found
+                    hardware.Update();
+
+                    // loop through the data
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("CPU Package"))
+                        {
+                            // store
+                            cpuWattage = sensor.Value.GetValueOrDefault();
+                        }
+                    }
+                }
+                // Targets AMD & Nvidia GPUS
+                if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuIntel)
+                {
+                    // only fire the update when found
+                    hardware.Update();
+
+                    // loop through the data
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("GPU Power"))
+                        {
+                            // store
+                            gpuWattage = sensor.Value.GetValueOrDefault();
+                        }
+                    }
+                }
+            }
+
+            return [cpuWattage, gpuWattage];
+        }
+
         public static void ResetGraphs()
         {
             calcChargeRateGraph.Clear();
             chargeRateGraph.Clear();
+            cpuWattageGraph.Clear();
+            gpuWattageGraph.Clear();
             graphCreatedTimeStamp = -1;
         }
-
+        
         public static void ResetBuffer()
         {
             firstTime = true;
@@ -191,6 +250,8 @@ namespace PowerTray
         {
             // debug
             SetupUnhandledExceptionHandling();
+
+            c.Open(); // open hardware for inspection
 
             batteryInfoWindow = new BatInfo();
             batteryInfoWindow.Topmost = aot;
@@ -310,7 +371,6 @@ namespace PowerTray
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
             int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
 
-
             // update remainChargeHistory ---
             var historyLength = remainChargeHistory.Count;
             if (historyLength == 0 || remainChargeHistory[historyLength - 1] != remainChargeCapMwh)
@@ -318,7 +378,7 @@ namespace PowerTray
                 long timeStamp = DateTime.Now.Ticks;
                 remainChargeHistory.Add(remainChargeCapMwh);
                 chargeHistoryTime.Add(timeStamp);
-                
+
                 // cleanup yucky slurpy paste (misleading data point)
                 if (firstTime && historyLength == 1)
                 {
@@ -353,22 +413,36 @@ namespace PowerTray
                 long timeDelta = (long)((timeStamp - graphCreatedTimeStamp) / 10000000);
 
 
+
                 var keys = chargeRateGraph.Select(p => p.X).ToArray();
-                if (keys.Length > 0)
+                while (keys.Length > 0 && timeDelta - keys[0] > graphsHistoryLength)
                 {
-                    while (timeDelta - keys[0] > graphsHistoryLength)
-                    {
-                        calcChargeRateGraph.RemoveAt(0);
-                        chargeRateGraph.RemoveAt(0);
-                        keys = chargeRateGraph.Select(p => p.X).ToArray();
-                    }
+                    calcChargeRateGraph.RemoveAt(0);
+                    chargeRateGraph.RemoveAt(0);
+                    cpuWattageGraph.RemoveAt(0);
+                    gpuWattageGraph.RemoveAt(0);
+                    keys = chargeRateGraph.Select(p => p.X).ToArray();
                 }
 
-                
-                int timetemp = (int)timeDelta;
-                calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw));
-                chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw));
 
+                int timetemp = (int)timeDelta;
+                calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw / 1000));
+                chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw / 1000));
+
+                var hwinfo = GetHardwareInfo();
+
+                cpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[0]));
+                gpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[1]));
+
+                if (graphFirstTime && keys.Length == 1)
+                {
+                    graphFirstTime = false;
+                    calcChargeRateGraph.RemoveAt(0);
+                    chargeRateGraph.RemoveAt(0);
+                    cpuWattageGraph.RemoveAt(0);
+                    gpuWattageGraph.RemoveAt(0);
+
+                }
             }
             // ---
 
@@ -627,6 +701,11 @@ namespace PowerTray
                 time = "Unknown";
             }
             return time;
+        }
+        public static bool IsAdministrator()
+        {
+            return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+                      .IsInRole(WindowsBuiltInRole.Administrator);
         }
         T ExecuteWithRetry<T>(Func<T> function, bool throwWhenFail = true)
         {

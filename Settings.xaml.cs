@@ -3,6 +3,7 @@ using System.Configuration;
 using Wpf.Ui.Controls;
 
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace PowerTray
 {
@@ -11,6 +12,8 @@ namespace PowerTray
     /// </summary>
     public partial class Settings : FluentWindow
     {
+        bool can_reset = true;
+
         public Configuration AppConfig = ConfigurationManager.OpenMachineConfiguration();
 
         public Settings()
@@ -21,15 +24,18 @@ namespace PowerTray
             Load();
         }
 
-        private void Load()
+        private void Load(bool update = true)
         {
             if (AppConfig.Sections["Options"] is null)
             {
                 AppConfig.Sections.Add("Options", new Options());
             }
 
-            var OptionsSettingsSection = AppConfig.GetSection("Options");
-            DataContext = OptionsSettingsSection;
+            if (update)
+            {
+                var OptionsSettingsSection = AppConfig.GetSection("Options");
+                DataContext = OptionsSettingsSection;
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -42,12 +48,11 @@ namespace PowerTray
         {
             AppConfig.Sections.Remove("Options");
             AppConfig.Save();
-            Load();
+            Load(false);
 
             App.LoadSettings();
-            
-            App.CreateSettingsWindow();
-            Close();
+            DataContext = null;
+            Load(true);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

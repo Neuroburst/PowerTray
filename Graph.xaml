@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ui:TitleBar
@@ -39,7 +40,11 @@
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
 
-        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,5,0,5">
+        <ui:Badge x:Name="AdminWarning" Grid.Row="2" Margin="10,10,10,10" Content="⚠️ Admin rights are required to graph CPU and GPU power" HorizontalAlignment="Center" Height="30">
+            
+        </ui:Badge>
+        
+        <Grid x:Name="BottomControls" Grid.Row ="3" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
