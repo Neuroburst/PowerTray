@@ -30,6 +30,7 @@ using LibreHardwareMonitor.Hardware;
 using System.Security.Principal;
 
 /// TODO NOW:
+// cpu and gpu power is not working in any other devices ;_;
 
 // make tooltip stay open somehow
 // make icon auto-darkmode (doesn't work on publish)
@@ -61,7 +62,9 @@ namespace PowerTray
         public static int graphsHistoryLength = 120; // in seconds (CHANGEABLE)
 
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
-        public static int batInfoRefreshRate = 500; // in milliseconds (CHANGEABLE)
+        public static int batInfoRefreshRate = 1000; // in milliseconds (CHANGEABLE)
+
+        public static int graphRefreshRate = 500; // in milliseconds (CHANGEABLE)
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -108,6 +111,7 @@ namespace PowerTray
 
         static System.Windows.Threading.DispatcherTimer tray_timer = new System.Windows.Threading.DispatcherTimer();
         static System.Windows.Threading.DispatcherTimer info_timer = new System.Windows.Threading.DispatcherTimer();
+        static System.Windows.Threading.DispatcherTimer graph_timer = new System.Windows.Threading.DispatcherTimer();
 
         static TaskbarIcon trayIcon;
         static ToolTip toolTip;
@@ -237,6 +241,9 @@ namespace PowerTray
             batInfoRefreshRate = settings.BatInfoRefreshRate;
             info_timer.Interval = new TimeSpan(0, 0, 0, 0, batInfoRefreshRate);
 
+            graphRefreshRate = settings.GraphRefreshRate;
+            graph_timer.Interval = new TimeSpan(0, 0, 0, 0, graphRefreshRate);
+
             highAmount = settings.MediumCharge;
             mediumAmount = settings.LowCharge;
 
@@ -333,6 +340,56 @@ namespace PowerTray
             info_timer.Tick += new EventHandler(BatInfo.UpdateData);
             info_timer.Start();
 
+            graph_timer.Interval = new TimeSpan(0, 0, 0, 0, graphRefreshRate);
+            graph_timer.Tick += new EventHandler(UpdateGraphs);
+            graph_timer.Start();
+
+        }
+
+        private void UpdateGraphs(object sedner, EventArgs e)
+        {
+            long timeStamp = DateTime.Now.Ticks;
+            var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
+            int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
+            int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
+            int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
+
+            if (graphCreatedTimeStamp == -1)
+            {
+                graphCreatedTimeStamp = timeStamp;
+            }
+
+            long timeDelta = (long)((timeStamp - graphCreatedTimeStamp) / 10000000);
+
+            var keys = chargeRateGraph.Select(p => p.X).ToArray();
+            while (keys.Length > 0 && timeDelta - keys[0] > graphsHistoryLength)
+            {
+                calcChargeRateGraph.RemoveAt(0);
+                chargeRateGraph.RemoveAt(0);
+                cpuWattageGraph.RemoveAt(0);
+                gpuWattageGraph.RemoveAt(0);
+                keys = chargeRateGraph.Select(p => p.X).ToArray();
+            }
+
+
+            int timetemp = (int)timeDelta;
+            calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw / 1000));
+            chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw / 1000));
+
+            var hwinfo = GetHardwareInfo();
+
+            cpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[0]));
+            gpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[1]));
+
+            if (graphFirstTime && keys.Length == 1)
+            {
+                graphFirstTime = false;
+                calcChargeRateGraph.RemoveAt(0);
+                chargeRateGraph.RemoveAt(0);
+                cpuWattageGraph.RemoveAt(0);
+                gpuWattageGraph.RemoveAt(0);
+
+            }
         }
 
         private void UpdateTray(object sender, EventArgs e)
@@ -367,7 +424,6 @@ namespace PowerTray
             // ---
 
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
-            int fullChargeCapMwh = (int)bat_info["Battery Capacity mWh"];
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
             int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
 
@@ -402,46 +458,6 @@ namespace PowerTray
 
                         calcTimeDelta = (timeStamp - chargeHistoryTime[0]) / 10000; // milliseconds
                     }
-                }
-
-
-                if (graphCreatedTimeStamp == -1)
-                {
-                    graphCreatedTimeStamp = timeStamp;
-                }
-
-                long timeDelta = (long)((timeStamp - graphCreatedTimeStamp) / 10000000);
-
-
-
-                var keys = chargeRateGraph.Select(p => p.X).ToArray();
-                while (keys.Length > 0 && timeDelta - keys[0] > graphsHistoryLength)
-                {
-                    calcChargeRateGraph.RemoveAt(0);
-                    chargeRateGraph.RemoveAt(0);
-                    cpuWattageGraph.RemoveAt(0);
-                    gpuWattageGraph.RemoveAt(0);
-                    keys = chargeRateGraph.Select(p => p.X).ToArray();
-                }
-
-
-                int timetemp = (int)timeDelta;
-                calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw / 1000));
-                chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw / 1000));
-
-                var hwinfo = GetHardwareInfo();
-
-                cpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[0]));
-                gpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[1]));
-
-                if (graphFirstTime && keys.Length == 1)
-                {
-                    graphFirstTime = false;
-                    calcChargeRateGraph.RemoveAt(0);
-                    chargeRateGraph.RemoveAt(0);
-                    cpuWattageGraph.RemoveAt(0);
-                    gpuWattageGraph.RemoveAt(0);
-
                 }
             }
             // ---
@@ -487,18 +503,34 @@ namespace PowerTray
             // Tray Icon ---
             String trayIconText = "!!";
 
-            
+            dynamic decimalMode = null;
             if (tray_display == DisplayedInfo.percentage)
             {
                 trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
             }else if (tray_display == DisplayedInfo.chargeRate)
             {
                 trayIconText = string.Format("{0:F" + (Math.Abs(chargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(chargeRateMw / 1000f));
+
+                decimalMode = chargeRateMw;
             }
             else if (tray_display == DisplayedInfo.calcChargeRate)
             {
                 trayIconText = string.Format("{0:F" + (Math.Abs(calcChargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(calcChargeRateMw / 1000f));
+
+                decimalMode = calcChargeRateMw;
             }
+
+            if (trayFontSize > 8.5 && decimalMode != null)
+            {
+                var font_size = trayFontSize;
+                if (Math.Abs(decimalMode / 1000) < 10)
+                {
+                    font_size = 8.5f;
+                }
+                var settings = (Options)settingsWindow.AppConfig.Sections["Options"];
+                trayFont = new Font(trayFontType, font_size * trayFontQualityMultiplier, settings.FontStyle);
+            }
+
 
 
             SolidBrush trayFontColor = new SolidBrush(statusColor);

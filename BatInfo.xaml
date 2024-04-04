@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="Battery Info" Height="470" Width="320" MinHeight="160" MinWidth="195"
+        Title="Battery Info" Height="480" Width="320" MinHeight="115" MinWidth="300"
         Topmost="True"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
@@ -23,6 +23,8 @@
         
         <ui:TitleBar
             Title="Battery Info"
+            FontSize="15"
+            FontWeight="Bold"
             Grid.Row="0"
             Height="30"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
@@ -41,12 +43,12 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ui:Badge Height="40" Margin="10,5,5,5" Appearance="Transparent">
-                                <Label Content="{Binding Name}" VerticalAlignment="Center"/>
+                            <ui:Badge Height="35" Margin="10,5,5,5" Appearance="Transparent">
+                                <Label Content="{Binding Name}" VerticalAlignment="Bottom"/>
                             </ui:Badge>
 
-                            <ui:Badge Height="40" Margin="10,5,5,5" Grid.Column="1" Appearance="Transparent">
-                                <Label Content="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold"/>
+                            <ui:Badge Height="35" Margin="5,5,10,5" Grid.Column="1" Appearance="Transparent">
+                                <Label Content="{Binding Value}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold"/>
                             </ui:Badge>
                         </Grid>
                     </DataTemplate>

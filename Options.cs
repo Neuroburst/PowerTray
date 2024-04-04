@@ -45,6 +45,13 @@ namespace PowerTray
             set { this["trayrefreshrate"] = value; }
         }
 
+        [ConfigurationProperty("graphrefreshrate", DefaultValue = 1000)]
+        public int GraphRefreshRate
+        {
+            get { return (int)this["graphrefreshrate"]; }
+            set { this["graphrefreshrate"] = value; }
+        }
+
         [ConfigurationProperty("batrefreshrate", DefaultValue = 500)]
         public int BatInfoRefreshRate
         {

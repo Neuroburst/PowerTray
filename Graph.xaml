@@ -8,7 +8,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         
         mc:Ignorable="d"
-        Title="PowerTray Graphs" Height="400" Width="600" MinHeight="160" MinWidth="195"
+        Title="PowerTray Graphs" Height="400" Width="700" MinHeight="350" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -18,39 +18,37 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ui:TitleBar
             Title="PowerTray Graphs"
+            FontWeight="Bold"
+            FontSize="20"
             Grid.Row="0"
-            Height="30"
+            Height="35"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
+        <ui:Card Margin="10,5,10,0" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1">
+            <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Top" >
+                <lvc:CartesianChart.DataTooltip>
+                    <lvc:DefaultTooltip CornerRadius="10" Background="Gray"/>
+                </lvc:CartesianChart.DataTooltip>
 
-        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}" LegendLocation="Top" >
-            <lvc:CartesianChart.DataTooltip>
-                <lvc:DefaultTooltip CornerRadius="10" Background="Gray"/>
-            </lvc:CartesianChart.DataTooltip>
-            
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Power Draw (Watts)" MinValue="0"  LabelFormatter="{Binding YFormatter}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Time (seconds)" Labels="{Binding Labels}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
-
-        <ui:Badge x:Name="AdminWarning" Grid.Row="2" Margin="10,10,10,10" Content="⚠️ Admin rights are required to graph CPU and GPU power" HorizontalAlignment="Center" Height="30">
-            
-        </ui:Badge>
-        
-        <Grid x:Name="BottomControls" Grid.Row ="3" Margin="0,5,0,5">
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Power Draw (Watts)" MinValue="0"  LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Time (seconds)" Labels="{Binding Labels}"></lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
+        </ui:Card>
+        <Grid x:Name="BottomControls" Grid.Row = "2" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="ResetButton" Grid.Column="0" Width ="100" Click = "ResetButton_Click"  HorizontalAlignment="Center">Clear Data</Button>
+            <ui:Badge x:Name="AdminWarning" Grid.Column="1" Content="⚠️ Admin rights are required to graph CPU and GPU power" HorizontalAlignment="Center" Height="30"/>
             <Button x:Name="CloseButton" Grid.Column="2" Width ="100" Click ="CloseButton_Click" HorizontalAlignment="Center">Close</Button>
         </Grid>
     </Grid>
