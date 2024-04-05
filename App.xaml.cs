@@ -64,7 +64,7 @@ namespace PowerTray
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
         public static int batInfoRefreshRate = 1000; // in milliseconds (CHANGEABLE)
 
-        public static int graphRefreshRate = 500; // in milliseconds (CHANGEABLE)
+        public static int graphRefreshRate = 4000; // in milliseconds (CHANGEABLE)
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -373,8 +373,8 @@ namespace PowerTray
 
 
             int timetemp = (int)timeDelta;
-            calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw / 1000));
-            chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw / 1000));
+            calcChargeRateGraph.Add(new ObservablePoint(timetemp, -calcChargeRateMw / 1000d));
+            chargeRateGraph.Add(new ObservablePoint(timetemp, -chargeRateMw / 1000d));
 
             var hwinfo = GetHardwareInfo();
 

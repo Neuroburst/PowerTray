@@ -45,7 +45,7 @@ namespace PowerTray
             set { this["trayrefreshrate"] = value; }
         }
 
-        [ConfigurationProperty("graphrefreshrate", DefaultValue = 1000)]
+        [ConfigurationProperty("graphrefreshrate", DefaultValue = 4000)]
         public int GraphRefreshRate
         {
             get { return (int)this["graphrefreshrate"]; }

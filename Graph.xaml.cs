@@ -41,7 +41,7 @@ namespace PowerTray
             {
                 new LineSeries
                 {
-                    Title = "Reported Discharge/Charge Rate",
+                    Title = "Reported Discharge Rate",
                     Values = App.chargeRateGraph,
                     StrokeThickness = 5,
                     LineSmoothness = 0.5,
@@ -50,7 +50,7 @@ namespace PowerTray
 
                 new LineSeries
                 {
-                    Title = "Calculated Discharge/Charge Rate",
+                    Title = "Calculated Discharge Rate",
                     Values = App.calcChargeRateGraph,
                     StrokeThickness = 5,
                     LineSmoothness = 0.5,
