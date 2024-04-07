@@ -29,12 +29,12 @@ using LiveCharts.Defaults;
 using LibreHardwareMonitor.Hardware;
 using System.Security.Principal;
 
-/// TODO NOW:
-// cpu and gpu power is not working in any other devices ;_;
+/// TODO:
 
-// make tooltip stay open somehow
+// font is unreadable in light mode :(
 // make icon auto-darkmode (doesn't work on publish)
 // scroll is too sensitive
+// make tooltip stay open somehow
 
 // INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
@@ -88,7 +88,6 @@ namespace PowerTray
         public static ChartValues<ObservablePoint> calcChargeRateGraph = new ChartValues<ObservablePoint>();
         public static ChartValues<ObservablePoint> chargeRateGraph = new ChartValues<ObservablePoint>();
         public static ChartValues<ObservablePoint> cpuWattageGraph = new ChartValues<ObservablePoint>();
-        public static ChartValues<ObservablePoint> gpuWattageGraph = new ChartValues<ObservablePoint>();
 
         // use open hardware to get info about computertron
         static Computer c = new Computer()
@@ -101,7 +100,7 @@ namespace PowerTray
         public static long calcChargeRateMw = 0;
         public static long calcTimeDelta = 0;
 
-        public static bool windowDarkMode = false;
+        public static bool windowDarkMode = true;
 
         public static BatInfo batteryInfoWindow;
         public static Graph graphWindow;
@@ -123,10 +122,10 @@ namespace PowerTray
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
-        public static float[] GetHardwareInfo()
+        public static float GetHardwareInfo()
         {
             float cpuWattage = 0;
-            float gpuWattage = 0;
+            //float gpuWattage = 0;
 
             foreach (var hardware in c.Hardware)
             {
@@ -139,32 +138,32 @@ namespace PowerTray
                     // loop through the data
                     foreach (var sensor in hardware.Sensors)
                     {
-                        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("CPU Package"))
+                        if (sensor.SensorType == SensorType.Power && sensor.Name.ToLower().Contains("pack"))
                         {
-                            // store
                             cpuWattage = sensor.Value.GetValueOrDefault();
                         }
                     }
                 }
-                // Targets AMD & Nvidia GPUS
-                if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuIntel)
-                {
-                    // only fire the update when found
-                    hardware.Update();
+                //// Targets AMD & Nvidia GPUS
+                //if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuIntel)
+                //{
+                //    // only fire the update when found
+                //    hardware.Update();
 
-                    // loop through the data
-                    foreach (var sensor in hardware.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("GPU Power"))
-                        {
-                            // store
-                            gpuWattage = sensor.Value.GetValueOrDefault();
-                        }
-                    }
-                }
+                //    // loop through the data
+                //    foreach (var sensor in hardware.Sensors)
+                //    {
+                //        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("Power"))
+                //        {
+                //            Debug.Print(sensor.Name);
+                //            // store
+                //            gpuWattage = sensor.Value.GetValueOrDefault();
+                //        }
+                //    }
+                //}
             }
 
-            return [cpuWattage, gpuWattage];
+            return cpuWattage;
         }
 
         public static void ResetGraphs()
@@ -172,7 +171,6 @@ namespace PowerTray
             calcChargeRateGraph.Clear();
             chargeRateGraph.Clear();
             cpuWattageGraph.Clear();
-            gpuWattageGraph.Clear();
             graphCreatedTimeStamp = -1;
         }
         
@@ -346,7 +344,7 @@ namespace PowerTray
 
         }
 
-        private void UpdateGraphs(object sedner, EventArgs e)
+        private void UpdateGraphs(object sender, EventArgs e)
         {
             long timeStamp = DateTime.Now.Ticks;
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
@@ -367,7 +365,6 @@ namespace PowerTray
                 calcChargeRateGraph.RemoveAt(0);
                 chargeRateGraph.RemoveAt(0);
                 cpuWattageGraph.RemoveAt(0);
-                gpuWattageGraph.RemoveAt(0);
                 keys = chargeRateGraph.Select(p => p.X).ToArray();
             }
 
@@ -378,8 +375,7 @@ namespace PowerTray
 
             var hwinfo = GetHardwareInfo();
 
-            cpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[0]));
-            gpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo[1]));
+            cpuWattageGraph.Add(new ObservablePoint(timetemp, hwinfo));
 
             if (graphFirstTime && keys.Length == 1)
             {
@@ -387,14 +383,13 @@ namespace PowerTray
                 calcChargeRateGraph.RemoveAt(0);
                 chargeRateGraph.RemoveAt(0);
                 cpuWattageGraph.RemoveAt(0);
-                gpuWattageGraph.RemoveAt(0);
 
             }
         }
 
         private void UpdateTray(object sender, EventArgs e)
         {
-            var info = BatteryManagement.GetBatteryTag(); // prevent data 
+            var info = BatteryManagement.GetBatteryTag(); // prevent data from expiring
             batteryHandle = info[0];
             batteryTag = info[1];
 
@@ -407,6 +402,8 @@ namespace PowerTray
                 windowDarkMode = appdarkMode;
                 ApplicationThemeManager.Apply(
                       (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
+                
+                //Style style = (Style)Resources["Style"];
             }
 
             // switch between dark and light icons (for taskbar)
@@ -414,11 +411,13 @@ namespace PowerTray
             {
                 batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
                 settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                graphWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
             }
             else
             {
                 batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
                 settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                graphWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
             }
 
             // ---

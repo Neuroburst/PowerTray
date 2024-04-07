@@ -5,12 +5,12 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Startup="App_Startup"
              ShutdownMode="OnExplicitShutdown">
-    
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemesDictionary Theme="Dark" />
-                <ui:ControlsDictionary />
+                <ui:ControlsDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

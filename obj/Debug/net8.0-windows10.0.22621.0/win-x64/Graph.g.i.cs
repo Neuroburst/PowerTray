@@ -91,7 +91,7 @@ namespace PowerTray {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PowerTray;component/graph.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PowerTray;V1.0.0.0;component/graph.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Graph.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

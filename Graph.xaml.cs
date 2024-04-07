@@ -65,19 +65,10 @@ namespace PowerTray
                     LineSmoothness = 0.5,
                     PointGeometrySize = 15,
                 },
-
-                new LineSeries
-                {
-                    Title = "GPU Power",
-                    Values = App.gpuWattageGraph,
-                    StrokeThickness = 5,
-                    LineSmoothness = 0.5,
-                    PointGeometrySize = 15,
-                },
             };
 
             XFormatter = val => val.ToString();
-            YFormatter = val => val.ToString() + " W";
+            YFormatter = val => string.Format("{0:F3}", val) + " W";
 
             DataContext = this;
         }

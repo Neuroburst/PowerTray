@@ -70,7 +70,7 @@ namespace PowerTray
                 {
                     if (item.Value.ToString().Length > 5)
                     {
-                        value = item.Value.ToString().Substring(0, 5);
+                        value = item.Value.ToString().Substring(0, 6);
                     }
                     else
                     {

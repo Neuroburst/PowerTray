@@ -13,7 +13,7 @@
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
         WindowStartupLocation="CenterScreen">
-    
+
     <Grid x:Name="Window">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

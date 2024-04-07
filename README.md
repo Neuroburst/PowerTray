@@ -28,8 +28,8 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
     4. Open the startup folder by pressing Windows+R, typing "shell:startup", then pressing enter
     5. Create a shortcut of PowerTray in that folder
     6. Right click the shortcut and click properties
-    7. Go to the Compatibility section and check "Run this program as administrator"
-    8. Click OK
+    7. Click "Advanced..." and check the "Run as administrator" box
+    8. Click OK in that window, as well as the properties window
     9. It will now run as admin every time your computer starts up!
 
 
