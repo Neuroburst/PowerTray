@@ -1,5 +1,7 @@
+![Alt text](Image.png?raw=true "")
+
 # PowerTray
-Welcome! PowerTray is a simple battery monitor that sits in your system tray!
+Welcome! PowerTray is a powerful battery monitor that sits in your system tray!
 The tooltip also displays useful information.
 You can also right click on the icon > Click "Battery Info" to see even more information!
 

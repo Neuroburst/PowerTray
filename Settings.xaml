@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="PowerTray Settings" Height="715" Width="420" MinHeight="500" MinWidth="350"
+        Title="PowerTray Settings" Height="720" Width="420" MinHeight="500" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -184,7 +184,7 @@
             </Grid>
         </ui:DynamicScrollViewer>
         
-        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,5,0,5">
+        <Grid x:Name="BottomControls" Grid.Row ="2" Margin="0,8,0,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />

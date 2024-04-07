@@ -12,7 +12,6 @@
           "Hardcodet.NotifyIcon.Wpf": "1.1.0",
           "LibreHardwareMonitorLib": "0.9.3",
           "LiveCharts.Wpf": "0.9.7",
-          "Microsoft.NET.ILLink.Tasks": "8.0.3",
           "System.Management": "9.0.0-preview.2.24128.5",
           "WPF-UI": "3.0.1",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22621.31"
@@ -84,7 +83,6 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.3": {},
       "Microsoft.NETCore.Platforms/5.0.0": {},
       "Microsoft.Win32.Registry/5.0.0": {
         "dependencies": {
@@ -220,13 +218,6 @@
       "sha512": "sha512-lv6YZoK0B4yWykMq5b9grZXtIbTj+OWu4sVN9GDpdgV6zffu64m4d5CW8KSjfSl9rB8VU649x1NZvhoU67hCDg==",
       "path": "livecharts.wpf/0.9.7",
       "hashPath": "livecharts.wpf.0.9.7.nupkg.sha512"
-    },
-    "Microsoft.NET.ILLink.Tasks/8.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-0kwNg0LBIvVTx9A2mo9Mnw4wLGtaeQgjSz5P13bOOwdWPPLe9HzI+XTkwiMhS7iQCM6X4LAbFR76xScaMw0MrA==",
-      "path": "microsoft.net.illink.tasks/8.0.3",
-      "hashPath": "microsoft.net.illink.tasks.8.0.3.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/5.0.0": {
       "type": "package",

@@ -41,7 +41,7 @@
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </ui:Card>
-        <Grid x:Name="BottomControls" Grid.Row = "2" Margin="0,5,0,5">
+        <Grid x:Name="BottomControls" Grid.Row = "2" Margin="0,8,0,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
