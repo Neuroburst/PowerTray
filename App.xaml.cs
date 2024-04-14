@@ -21,27 +21,44 @@ using System.Windows.Media.Imaging;
 
 using System.Windows.Interop;
 
-using System.Configuration;
 using LiveCharts;
-using LiveCharts.Wpf;
 using LiveCharts.Defaults;
 
 using LibreHardwareMonitor.Hardware;
 using System.Security.Principal;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.UI.Notifications;
+using LibreHardwareMonitor.Hardware.Cpu;
 
 /// TODO:
+// make sure special power plan still works with usb devices
 
+// NOTIFICAITON HAPPENS WHEN SWITCHING FROM CHARGIN TO IDLE (BAD)
+// create BatteryBoost Profile if doesn't exist (make sure to add max processor state and usb savings)
+
+
+/// SUFFERING:
 // font is unreadable in light mode :(
 // make icon auto-darkmode (doesn't work on publish)
 // scroll is too sensitive
 // make tooltip stay open somehow
-
-// INFORMATION GATHERING
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
 
 namespace PowerTray
 {
+    public class PowerPlan
+    {
+        public readonly string Name;
+        public Guid Guid;
+
+        public PowerPlan(string name, Guid guid)
+        {
+            Name = name;
+            Guid = guid;
+        }
+    }
+
     public partial class App : System.Windows.Application
     {
 
@@ -51,7 +68,29 @@ namespace PowerTray
 
         public enum DisplayedInfo { percentage, chargeRate, calcChargeRate };
 
+
+        // PowerPlans
+        [DllImport("PowrProf.dll")]
+        public static extern UInt32 PowerEnumerate(IntPtr RootPowerKey, IntPtr SchemeGuid, IntPtr SubGroupOfPowerSettingGuid, UInt32 AcessFlags, UInt32 Index, ref Guid Buffer, ref UInt32 BufferSize);
+        private const uint ACCESS_SCHEME = 16;
+        [DllImport("PowrProf.dll")]
+        public static extern UInt32 PowerReadFriendlyName(IntPtr RootPowerKey, ref Guid SchemeGuid, IntPtr SubGroupOfPowerSettingGuid, IntPtr PowerSettingGuid, IntPtr Buffer, ref UInt32 BufferSize);
+
+        [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActiveScheme")]
+        public static extern uint PowerGetActiveScheme(IntPtr UserPowerKey, out IntPtr ActivePolicyGuid);
+        [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveScheme")]
+        public static extern uint PowerSetActiveScheme(IntPtr UserPowerKey, ref Guid ActivePolicyGuid);
+
+        public static Wpf.Ui.Controls.MenuItem pwrPlans;
+
         // Params ---
+        public static List<PowerPlan> plans = new List<PowerPlan>();
+
+        public static BatteryStatus? charging = null;
+        public static string acplanName = "Balanced";
+        public static string batteryPlanName = "Balanced";
+        public static bool notifs = true;
+
         public static DisplayedInfo tray_display = DisplayedInfo.percentage; // (CHANGEABLE)
 
         static float trayFontSize = 11f; // (CHANGEABLE)
@@ -64,7 +103,7 @@ namespace PowerTray
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
         public static int batInfoRefreshRate = 1000; // in milliseconds (CHANGEABLE)
 
-        public static int graphRefreshRate = 4000; // in milliseconds (CHANGEABLE)
+        public static int graphRefreshRate = 2000; // in milliseconds (CHANGEABLE)
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -78,6 +117,8 @@ namespace PowerTray
         // ---
         public static uint batteryTag = 0;
         public static SafeFileHandle batteryHandle = null;
+
+        public static bool auto_switch = false;
 
         public static bool firstTime = true;
         public static bool graphFirstTime = true;
@@ -234,6 +275,11 @@ namespace PowerTray
             maxChargeHistoryLength = settings.BufferSize;
             graphsHistoryLength = settings.HistoryLength;
 
+            auto_switch = settings.AutoSwitch;
+            notifs = settings.Notifs;
+            acplanName = settings.ACPlan;
+            batteryPlanName = settings.BatteryPlan;
+
             trayRefreshRate = settings.TrayRefreshRate;
             tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
             batInfoRefreshRate = settings.BatInfoRefreshRate;
@@ -251,8 +297,114 @@ namespace PowerTray
             trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, settings.FontStyle);
         }
 
+
+        // Power Plans
+        public static string ReadFriendlyName(Guid schemeGuid)
+        {
+            uint sizeName = 1024;
+            IntPtr pSizeName = Marshal.AllocHGlobal((int)sizeName);
+
+            string friendlyName;
+            try
+            {
+                PowerReadFriendlyName(IntPtr.Zero, ref schemeGuid, IntPtr.Zero, IntPtr.Zero, pSizeName, ref sizeName);
+                friendlyName = Marshal.PtrToStringUni(pSizeName);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(pSizeName);
+            }
+            return (friendlyName);
+        }
+
+        public static void GeneratePowerPlanList()
+        {
+            plans.Clear();
+            foreach (Guid guidPlan in GetPlans())
+            {
+                PowerPlan plan = new PowerPlan(ReadFriendlyName(guidPlan), guidPlan);
+                plans.Add(plan);
+            }
+            plans = plans.OrderBy(i => i.Name).ToList();
+        }
+
+        private static IEnumerable<Guid> GetPlans()
+        {
+            Guid schemeGuid = Guid.Empty;
+            uint sizeSchemeGuid = (uint)Marshal.SizeOf(typeof(Guid));
+            uint schemeIndex = 0;
+
+            while (PowerEnumerate(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero,
+                ACCESS_SCHEME, schemeIndex,
+                ref schemeGuid, ref sizeSchemeGuid) == 0)
+            {
+                yield return schemeGuid;
+                schemeIndex++;
+            }
+        }
+
+
+        public static Guid GetActivePlanGuid()
+        {
+            Guid ActiveScheme = Guid.Empty;
+            if (PowerGetActiveScheme((IntPtr)null, out IntPtr ptr) == 0)
+            {
+                ActiveScheme = (Guid)Marshal.PtrToStructure(ptr, typeof(Guid));
+                Marshal.FreeHGlobal(ptr);
+            }
+            return (ActiveScheme);
+        }
+        public static void RefreshPowerPlans()
+        {
+            GeneratePowerPlanList();
+            if (pwrPlans != null)
+            {
+                pwrPlans.Items.Clear();
+                foreach (PowerPlan plan in plans)
+                {
+                    Guid active_plan = GetActivePlanGuid();
+
+                    var item = new Wpf.Ui.Controls.MenuItem()
+                    {
+                        Header = plan.Name,
+                        IsCheckable = true,
+                        IsChecked = plan.Guid == active_plan,
+                        //Icon = new SymbolIcon(SymbolRegular.Settings20, 14, false),
+                    };
+                    item.Command = new RelayCommand<dynamic>(action => SetPlan(plan.Guid, plan.Name), canExecute => true);
+
+                    pwrPlans.Items.Add(item);
+                }
+            }
+            if (settingsWindow != null)
+            {
+                settingsWindow.UpdatePlansList();
+            }
+                
+        }        
+
+        public static void SetPlan(Guid guid, string name)
+        {
+            if (notifs)
+            {
+                ToastContentBuilder toast = new ToastContentBuilder();
+                toast.AddText("Power Plan Switched");
+                toast.AddText("Switched to " + name + " plan");
+                toast.SetToastDuration(ToastDuration.Short);
+                toast.Show();
+            }
+            PowerSetActiveScheme(IntPtr.Zero, ref guid);
+            RefreshPowerPlans();
+            //foreach (Wpf.Ui.Controls.MenuItem menu in pwrPlans.Items)
+            //{
+            //    menu.IsChecked = false;
+            //}
+            //item.IsChecked = true;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+
             // debug
             SetupUnhandledExceptionHandling();
 
@@ -301,6 +453,14 @@ namespace PowerTray
                 Command = TraySwitch,
             };
 
+            pwrPlans = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Power Plans",
+                Icon = new SymbolIcon(SymbolRegular.BatterySaver20, 14, false),
+            };
+
+            RefreshPowerPlans();
+
             var settings = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Settings",
@@ -317,7 +477,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = {batteryInfo, graphs, switchInfo, settings, exit }
+                Items = {batteryInfo, graphs, switchInfo, pwrPlans, settings, exit }
             };
 
             toolTip = new ToolTip();
@@ -402,7 +562,7 @@ namespace PowerTray
                 windowDarkMode = appdarkMode;
                 ApplicationThemeManager.Apply(
                       (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
-                
+
                 //Style style = (Style)Resources["Style"];
             }
 
@@ -425,6 +585,30 @@ namespace PowerTray
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
             int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
+
+            // plans
+            if (auto_switch && charging != (BatteryStatus)bat_info["Status"])
+            {
+                charging = (BatteryStatus)bat_info["Status"];
+                var ac = charging != BatteryStatus.Discharging;
+
+                string name = batteryPlanName;
+                if (ac)
+                {
+                    name = acplanName;
+                }
+
+                Guid guid = plans[0].Guid;
+                foreach (PowerPlan plan in plans)
+                {
+                    if (plan.Name == name)
+                    {
+                        guid = plan.Guid;
+                    }
+                }
+
+                SetPlan(guid, name);
+            }
 
             // update remainChargeHistory ---
             var historyLength = remainChargeHistory.Count;
@@ -615,7 +799,7 @@ namespace PowerTray
         private static void Quit() // check if the exit button was pressed
         {
             trayIcon.Dispose();
-            System.Windows.Application.Current.Shutdown();
+            Current.Shutdown();
         }
 
         public static string GetCalculatedTimeLeft(int remainChargeCapMwh, int fullChargeCapMwh)

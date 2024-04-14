@@ -8,7 +8,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         
         mc:Ignorable="d"
-        Title="PowerTray Graphs" Height="400" Width="700" MinHeight="350" MinWidth="350"
+        Title="PowerTray Graphs" Height="420" Width="680" MinHeight="350" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"

@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="PowerTray Settings" Height="720" Width="420" MinHeight="500" MinWidth="350"
+        Title="PowerTray Settings" Height="580" Width="420" MinHeight="500" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -59,7 +59,63 @@
                             </Grid>
                         </StackPanel>
                     </ui:CardExpander>
-                    <ui:CardExpander Header="Refresh Rates" IsExpanded="True" Margin="0,5,0,0">
+                    <ui:CardExpander Header="Power Plans" IsExpanded="False" Margin="0,5,0,0">
+                        <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
+                            <Grid Margin="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Automatically Switch Plans</Label>
+                                <ui:ToggleSwitch x:Name="Auto" Grid.Column="1" Height="35" Click="AutoSwitch_Click" IsChecked="{Binding AutoSwitch}"></ui:ToggleSwitch>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Height="35" x:Name="NotifLabel" VerticalContentAlignment="Center" IsEnabled="{Binding AutoSwitch}">Show Notifications</Label>
+                                <ui:ToggleSwitch x:Name="Notif" Grid.Column="1" Height="35" IsEnabled="{Binding AutoSwitch}" IsChecked="{Binding Notifs}"></ui:ToggleSwitch>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" x:Name="ACPlanLabel" Height="35" VerticalContentAlignment="Center" IsEnabled="{Binding AutoSwitch}" >Default AC Power Plan</Label>
+                                <ComboBox Grid.Column="1" x:Name = "ACPlan" Text="{Binding ACPlan}" IsEnabled="{Binding AutoSwitch}" Width="180"></ComboBox>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" x:Name="BatteryPlanLabel" Height="35" VerticalContentAlignment="Center" IsEnabled="{Binding AutoSwitch}">Default Battery Power Plan</Label>
+                                <ComboBox Grid.Column="1" x:Name = "BatteryPlan" Text="{Binding BatteryPlan}" IsEnabled="{Binding AutoSwitch}" Width="180"></ComboBox>
+                            </Grid>
+                        </StackPanel>
+                    </ui:CardExpander>
+                    <ui:CardExpander Header="Buffers" IsExpanded="False" Margin="0,5,0,0">
+                        <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
+                            <Grid Margin="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Calc Charge Rate Buffer (sec)</Label>
+                                <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding BufferSize}"></ui:TextBox>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Graphs History Length (sec)</Label>
+                                <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding HistoryLength}"></ui:TextBox>
+                            </Grid>
+                        </StackPanel>
+                    </ui:CardExpander>
+                    <ui:CardExpander Header="Refresh Rates" IsExpanded="False" Margin="0,5,0,0">
                         <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
                             <Grid Margin="0">
                                 <Grid.ColumnDefinitions>
@@ -87,26 +143,6 @@
                             </Grid>
                         </StackPanel>
                     </ui:CardExpander>
-                    <ui:CardExpander Header="Buffers" IsExpanded="True" Margin="0,5,0,0">
-                        <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
-                            <Grid Margin="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Calc Charge Rate Buffer (sec)</Label>
-                                <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding BufferSize}"></ui:TextBox>
-                            </Grid>
-                            <Grid Margin="0,10,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Graphs History Length (sec)</Label>
-                                <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding HistoryLength}"></ui:TextBox>
-                            </Grid>
-                        </StackPanel>
-                    </ui:CardExpander>
                     <ui:CardExpander Header="Other" IsExpanded="False" Margin="0,5,0,0">
                         <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
                             <Grid Margin="0">
@@ -125,7 +161,7 @@
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Medium Battery Charge</Label>
                                 <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding MediumCharge}"></ui:TextBox>
                             </Grid>
-                            <Grid Margin="0,20,0,0">
+                            <Grid Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>

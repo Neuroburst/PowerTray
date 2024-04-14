@@ -12,7 +12,6 @@ namespace PowerTray
     /// </summary>
     public partial class Settings : FluentWindow
     {
-        bool can_reset = true;
 
         public Configuration AppConfig = ConfigurationManager.OpenMachineConfiguration();
 
@@ -22,6 +21,15 @@ namespace PowerTray
             DefaultTray.ItemsSource = Enum.GetNames(typeof(App.DisplayedInfo));
             TrayFontStyle.ItemsSource = Enum.GetNames(typeof(System.Drawing.FontStyle));
             Load();
+
+            App.RefreshPowerPlans();
+            UpdatePlansList();
+        }
+
+        public void UpdatePlansList()
+        {
+            ACPlan.ItemsSource = App.plans.Select(o => o.Name).ToList();
+            BatteryPlan.ItemsSource = App.plans.Select(o => o.Name).ToList();
         }
 
         private void Load(bool update = true)
@@ -58,6 +66,16 @@ namespace PowerTray
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void AutoSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            Notif.IsEnabled = (bool)Auto.IsChecked;
+            NotifLabel.IsEnabled = (bool)Auto.IsChecked;
+            ACPlan.IsEnabled = (bool)Auto.IsChecked;
+            BatteryPlan.IsEnabled = (bool)Auto.IsChecked;
+            ACPlanLabel.IsEnabled = (bool)Auto.IsChecked;
+            BatteryPlanLabel.IsEnabled = (bool)Auto.IsChecked;
         }
     }
 }

@@ -17,6 +17,34 @@ namespace PowerTray
             set { this["alwaysontop"] = value; }
         }
 
+        [ConfigurationProperty("autoswitch", DefaultValue = false)]
+        public bool AutoSwitch
+        {
+            get { return (bool)this["autoswitch"]; }
+            set { this["autoswitch"] = value; }
+        }
+
+        [ConfigurationProperty("notifs", DefaultValue = true)]
+        public bool Notifs
+        {
+            get { return (bool)this["notifs"]; }
+            set { this["notifs"] = value; }
+        }
+
+        [ConfigurationProperty("acplan", DefaultValue = "Balanced")]
+        public string ACPlan
+        {
+            get { return (string)this["acplan"]; }
+            set { this["acplan"] = value; }
+        }
+
+        [ConfigurationProperty("bplan", DefaultValue = "Balanced")]
+        public string BatteryPlan
+        {
+            get { return (string)this["bplan"]; }
+            set { this["bplan"] = value; }
+        }
+
         [ConfigurationProperty("fontSize", DefaultValue = 11f)]
         public float FontSize
         {
@@ -45,7 +73,7 @@ namespace PowerTray
             set { this["trayrefreshrate"] = value; }
         }
 
-        [ConfigurationProperty("graphrefreshrate", DefaultValue = 4000)]
+        [ConfigurationProperty("graphrefreshrate", DefaultValue = 2000)]
         public int GraphRefreshRate
         {
             get { return (int)this["graphrefreshrate"]; }

@@ -45,7 +45,7 @@ namespace PowerTray
                     Values = App.chargeRateGraph,
                     StrokeThickness = 5,
                     LineSmoothness = 0.5,
-                    PointGeometrySize = 5,
+                    PointGeometrySize = 9,
                 },
 
                 new LineSeries
@@ -54,7 +54,7 @@ namespace PowerTray
                     Values = App.calcChargeRateGraph,
                     StrokeThickness = 5,
                     LineSmoothness = 0.5,
-                    PointGeometrySize = 5,
+                    PointGeometrySize = 9,
                 },
 
                 new LineSeries
@@ -63,7 +63,7 @@ namespace PowerTray
                     Values = App.cpuWattageGraph,
                     StrokeThickness = 5,
                     LineSmoothness = 0.5,
-                    PointGeometrySize = 5,
+                    PointGeometrySize = 9,
                 },
             };
 
