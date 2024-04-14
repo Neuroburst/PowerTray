@@ -4,6 +4,7 @@ using Wpf.Ui.Controls;
 
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 
 namespace PowerTray
 {
@@ -76,6 +77,17 @@ namespace PowerTray
             BatteryPlan.IsEnabled = (bool)Auto.IsChecked;
             ACPlanLabel.IsEnabled = (bool)Auto.IsChecked;
             BatteryPlanLabel.IsEnabled = (bool)Auto.IsChecked;
+        }
+
+        private void DefaultClick(object sender, RoutedEventArgs e)
+        {
+            Reset.IsEnabled = false;
+            App.ResetPlans();
+        }
+
+        private void BatteryBoostClick(object sender, RoutedEventArgs e)
+        {
+            Boost.IsEnabled = false;
         }
     }
 }

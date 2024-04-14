@@ -64,10 +64,32 @@
                             <Grid Margin="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Reset"  Click="DefaultClick" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                    <Grid>
+                                        <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Wrench20" FontSize="24"/>
+                                        <Label HorizontalContentAlignment="Center">Add default power plans</Label>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Boost"  Click="BatteryBoostClick" ToolTip="BatteryBoost is a custom profile that can improve battery life" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                    <Grid>
+                                        <ui:SymbolIcon HorizontalAlignment="Left" Symbol="BatterySaver20" FontSize="24"/>
+                                        <Label HorizontalContentAlignment="Center">Add BatteryBoost profile</Label>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Automatically Switch Plans</Label>
-                                <ui:ToggleSwitch x:Name="Auto" Grid.Column="1" Height="35" Click="AutoSwitch_Click" IsChecked="{Binding AutoSwitch}"></ui:ToggleSwitch>
+                                <CheckBox x:Name="Auto" Grid.Column="1" Height="35" Click="AutoSwitch_Click" IsChecked="{Binding AutoSwitch}"></CheckBox>
                             </Grid>
                             <Grid Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>

@@ -33,8 +33,10 @@ using LibreHardwareMonitor.Hardware.Cpu;
 /// TODO:
 // make sure special power plan still works with usb devices
 
-// NOTIFICAITON HAPPENS WHEN SWITCHING FROM CHARGIN TO IDLE (BAD)
-// create BatteryBoost Profile if doesn't exist (make sure to add max processor state and usb savings)
+// shortcut in startup folder cannot be admin? (task scheduler perhaps?)
+
+// create default profiles (TEST)
+// create BatteryBoost Profile if doesn't exist (make sure to add max processor state and usb savings) POWERCFG /IMPORT /EXPORT
 
 
 /// SUFFERING:
@@ -84,6 +86,7 @@ namespace PowerTray
         public static Wpf.Ui.Controls.MenuItem pwrPlans;
 
         // Params ---
+        public static bool err = false; // for default plan thingy
         public static List<PowerPlan> plans = new List<PowerPlan>();
 
         public static BatteryStatus? charging = null;
@@ -343,6 +346,109 @@ namespace PowerTray
             }
         }
 
+        private static bool FindPlan(string strPlanName)
+        {
+            foreach (PowerPlan p in plans)
+            {
+                if (p.Name == strPlanName) { return (true); }
+            }
+            return (false);
+        }
+        private static List<String> AddPowerPlan(string strPowerPlan, string strGuid)
+        {
+            var messages = new List<String>();
+            try
+            {
+                // Check if we need to add the Plan
+                //
+                if (FindPlan(strPowerPlan) == true)
+                {
+                    messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
+                    return messages;
+                }
+
+                // Use ProcessStartInfo class
+                //
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "powercfg.exe",
+                    Arguments = $"-duplicatescheme {strGuid}"
+                };
+
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using statement will close.
+                //
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+
+                // Check it succeeded
+                //
+                if (FindPlan(strPowerPlan))
+                {
+                    messages.Add($"- '{strPowerPlan}' Power Plan successfully created.\n");
+                }
+                else
+                {
+                    messages.Add($"- Failed creating '{strPowerPlan}' Power Plan.\n");
+                    err = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show exception details.
+                messages.Add($"- Exception creating '{strPowerPlan}' Power Plan. [{ex.Message}]\n");
+                err = true;
+            }
+
+            return (messages);
+        }
+
+        public static void ResetPlans()
+        {
+            RefreshPowerPlans();
+            if (IsAdministrator() == false)
+            {
+                System.Windows.MessageBox.Show(
+                    "Adding default power plans requires admin access",
+                    "THE CAKE IS A LIE", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var messages = new List<String>();
+            err = false;
+            messages.AddRange(AddPowerPlan("Power saver",
+                            "a1841308-3541-4fab-bc81-f71556f20b4a"));
+            messages.AddRange(AddPowerPlan("Balanced",
+                            "381b4222-f694-41f0-9685-ff5bb260df2e"));
+            messages.AddRange(AddPowerPlan("High performance",
+                            "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"));
+            messages.AddRange(AddPowerPlan("Ultimate Performance",
+                            "e9a42b02-d5df-448d-aa00-03f14749eb61"));
+
+            if (messages.Count > 0 && err)
+            {
+                string strMessage = String.Concat(messages);
+                foreach (String message in messages)
+                {
+                    strMessage.Concat(message);
+                }
+                System.Windows.MessageBox.Show(
+                    $"Adding default power plans failed.\n{strMessage}",
+                    "blob slime :(", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            if (messages.Count > 0 && !err)
+            {
+                string strMessage = String.Concat(messages);
+                System.Windows.MessageBox.Show(
+                    $"Success!\n{strMessage}",
+                    "42 is the answer", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        // End Power Plans
 
         public static Guid GetActivePlanGuid()
         {
@@ -369,7 +475,6 @@ namespace PowerTray
                         Header = plan.Name,
                         IsCheckable = true,
                         IsChecked = plan.Guid == active_plan,
-                        //Icon = new SymbolIcon(SymbolRegular.Settings20, 14, false),
                     };
                     item.Command = new RelayCommand<dynamic>(action => SetPlan(plan.Guid, plan.Name), canExecute => true);
 
@@ -590,24 +695,33 @@ namespace PowerTray
             if (auto_switch && charging != (BatteryStatus)bat_info["Status"])
             {
                 charging = (BatteryStatus)bat_info["Status"];
-                var ac = charging != BatteryStatus.Discharging;
 
-                string name = batteryPlanName;
-                if (ac)
+                if ((charging == BatteryStatus.Idle && (BatteryStatus)bat_info["Status"] == BatteryStatus.Charging) ||
+                    (charging == BatteryStatus.Charging && (BatteryStatus)bat_info["Status"] == BatteryStatus.Idle))
                 {
-                    name = acplanName;
+                    // since it's still plugged in, don't do anything (idle is when it's not charging but stil connected to AC)
                 }
-
-                Guid guid = plans[0].Guid;
-                foreach (PowerPlan plan in plans)
+                else // switch plan
                 {
-                    if (plan.Name == name)
+                    var ac = charging != BatteryStatus.Discharging;
+
+                    string name = batteryPlanName;
+                    if (ac)
                     {
-                        guid = plan.Guid;
+                        name = acplanName;
                     }
-                }
 
-                SetPlan(guid, name);
+                    Guid guid = plans[0].Guid;
+                    foreach (PowerPlan plan in plans)
+                    {
+                        if (plan.Name == name)
+                        {
+                            guid = plan.Guid;
+                        }
+                    }
+
+                    SetPlan(guid, name);
+                }
             }
 
             // update remainChargeHistory ---
@@ -921,25 +1035,6 @@ namespace PowerTray
         {
             return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
                       .IsInRole(WindowsBuiltInRole.Administrator);
-        }
-        T ExecuteWithRetry<T>(Func<T> function, bool throwWhenFail = true)
-        {
-            for (var i = 0; ;)
-            {
-                try
-                {
-                    return function();
-                }
-                catch when (i++ < 5)
-                {
-                    // Swallow exception if retry is possible.
-                }
-                catch when (!throwWhenFail)
-                {
-                    // Return default value if not throwing exception.
-                    return default;
-                }
-            }
         }
     }
 }
