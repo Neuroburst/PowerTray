@@ -65,7 +65,8 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Reset"  Click="DefaultClick" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                <Button x:Name="Reset" ToolTip="Add back the default power plans if you don't have them:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Recomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
+                                        Click="DefaultClick"  Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Wrench20" FontSize="24"/>
                                         <Label HorizontalContentAlignment="Center">Add default power plans</Label>
@@ -76,7 +77,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Boost"  Click="BatteryBoostClick" ToolTip="BatteryBoost is a custom profile that can improve battery life" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                <Button x:Name="Boost"  Click="BatteryBoostClick" ToolTip="BatteryBoost is a custom power plan that can improve battery life" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="BatterySaver20" FontSize="24"/>
                                         <Label HorizontalContentAlignment="Center">Add BatteryBoost profile</Label>

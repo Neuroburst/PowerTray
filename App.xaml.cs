@@ -29,14 +29,12 @@ using System.Security.Principal;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using LibreHardwareMonitor.Hardware.Cpu;
+using System.IO;
 
 /// TODO:
 // make sure special power plan still works with usb devices
 
 // shortcut in startup folder cannot be admin? (task scheduler perhaps?)
-
-// create default profiles (TEST)
-// create BatteryBoost Profile if doesn't exist (make sure to add max processor state and usb savings) POWERCFG /IMPORT /EXPORT
 
 
 /// SUFFERING:
@@ -346,11 +344,21 @@ namespace PowerTray
             }
         }
 
-        private static bool FindPlan(string strPlanName)
+        private static bool FindPlan(Guid guid)
         {
+            RefreshPowerPlans();
             foreach (PowerPlan p in plans)
             {
-                if (p.Name == strPlanName) { return (true); }
+                if (p.Guid == guid) { return (true); }
+            }
+            return (false);
+        }
+        private static bool FindPlanByName(string name)
+        {
+            RefreshPowerPlans();
+            foreach (PowerPlan p in plans)
+            {
+                if (p.Name == name) { return (true); }
             }
             return (false);
         }
@@ -361,7 +369,7 @@ namespace PowerTray
             {
                 // Check if we need to add the Plan
                 //
-                if (FindPlan(strPowerPlan) == true)
+                if (FindPlanByName(strPowerPlan) == true)
                 {
                     messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
                     return messages;
@@ -388,7 +396,7 @@ namespace PowerTray
 
                 // Check it succeeded
                 //
-                if (FindPlan(strPowerPlan))
+                if (FindPlanByName(strPowerPlan))
                 {
                     messages.Add($"- '{strPowerPlan}' Power Plan successfully created.\n");
                 }
@@ -407,45 +415,118 @@ namespace PowerTray
 
             return (messages);
         }
+        private static List<String> ImportPowerPlan(string planpath, string strPowerPlan)
+        {
+            var messages = new List<String>();
+            try
+            {
+                // Check if we need to add the Plan
+                //
+                if (FindPlanByName(strPowerPlan) == true)
+                {
+                    messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
+                    return messages;
+                }
 
-        public static void ResetPlans()
+                // Use ProcessStartInfo class
+                //
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "powercfg.exe",
+                    Arguments = $"-import {planpath}"
+                };
+
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using statement will close.
+                //
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+
+                // Check it succeeded
+                //
+                if (FindPlanByName(strPowerPlan))
+                {
+                    messages.Add($"- '{strPowerPlan}' Power Plan successfully created.\n");
+                }
+                else
+                {
+                    messages.Add($"- Failed creating '{strPowerPlan}' Power Plan.\n");
+                    err = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show exception details.
+                messages.Add($"- Exception creating '{strPowerPlan}' Power Plan. [{ex.Message}]\n");
+                err = true;
+            }
+
+            return (messages);
+        }
+        public static void ManagePlans(bool boost)
         {
             RefreshPowerPlans();
-            if (IsAdministrator() == false)
-            {
-                System.Windows.MessageBox.Show(
-                    "Adding default power plans requires admin access",
-                    "THE CAKE IS A LIE", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            //if (IsAdministrator() == false)
+            //{
+            //    System.Windows.MessageBox.Show(
+            //        "This action requires admin access",
+            //        "THE CAKE IS A LIE", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
             var messages = new List<String>();
             err = false;
-            messages.AddRange(AddPowerPlan("Power saver",
-                            "a1841308-3541-4fab-bc81-f71556f20b4a"));
-            messages.AddRange(AddPowerPlan("Balanced",
-                            "381b4222-f694-41f0-9685-ff5bb260df2e"));
-            messages.AddRange(AddPowerPlan("High performance",
-                            "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"));
-            messages.AddRange(AddPowerPlan("Ultimate Performance",
-                            "e9a42b02-d5df-448d-aa00-03f14749eb61"));
+            if (!boost)
+            {
+                messages.AddRange(AddPowerPlan("Power saver",
+                                "a1841308-3541-4fab-bc81-f71556f20b4a"));
+                messages.AddRange(AddPowerPlan("Balanced",
+                                "381b4222-f694-41f0-9685-ff5bb260df2e"));
+                messages.AddRange(AddPowerPlan("High performance",
+                                "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"));
+                messages.AddRange(AddPowerPlan("Ultimate Performance",
+                                "e9a42b02-d5df-448d-aa00-03f14749eb61"));
+            }
+            else
+            {
+                var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\BatteryBoost.pow";
+                File.WriteAllBytes(path, PowerTray.Resources.BatteryBoost);
+                messages.AddRange(ImportPowerPlan(path, "BatteryBoost"));
+                File.Delete(path);
+            }
+
 
             if (messages.Count > 0 && err)
             {
                 string strMessage = String.Concat(messages);
-                foreach (String message in messages)
-                {
-                    strMessage.Concat(message);
-                }
-                System.Windows.MessageBox.Show(
-                    $"Adding default power plans failed.\n{strMessage}",
-                    "blob slime :(", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+
+                var popup = new Wpf.Ui.Controls.MessageBox();
+                popup.Title = "PowerTray";
+                popup.Content = $"Failure.\n{strMessage}";
+                //popup.Icon = //MessageBoxImage.Error;// new SymbolIcon(SymbolRegular.Error48, 14, false)
+                popup.ShowDialogAsync();
+
+                //System.Windows.MessageBox.Show(
+                //    $"Failure.\n{strMessage}",
+                //    "PowerTray", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
             }
             if (messages.Count > 0 && !err)
             {
                 string strMessage = String.Concat(messages);
-                System.Windows.MessageBox.Show(
-                    $"Success!\n{strMessage}",
-                    "42 is the answer", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+
+                var popup = new Wpf.Ui.Controls.MessageBox();
+                popup.Title = "PowerTray";
+                popup.Content = $"Success!\n{strMessage}";
+                //popup.Icon = //MessageBoxImage.Information;// new SymbolIcon(SymbolRegular.Info48, 14, false)
+                popup.ShowDialogAsync();
+
+                //System.Windows.MessageBox.Show(
+                //    $"Success!\n{strMessage}",
+                //    "PowerTray", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         // End Power Plans
@@ -486,25 +567,40 @@ namespace PowerTray
                 settingsWindow.UpdatePlansList();
             }
                 
-        }        
+        }
 
         public static void SetPlan(Guid guid, string name)
         {
-            if (notifs)
+            if (FindPlan(guid))
             {
-                ToastContentBuilder toast = new ToastContentBuilder();
-                toast.AddText("Power Plan Switched");
-                toast.AddText("Switched to " + name + " plan");
-                toast.SetToastDuration(ToastDuration.Short);
-                toast.Show();
+                if (notifs)
+                {
+                    ToastContentBuilder toast = new ToastContentBuilder();
+                    toast.AddText("Power Plan Switched");
+                    toast.AddText("Switched to " + name + " plan");
+                    toast.SetToastDuration(ToastDuration.Short);
+                    toast.Show();
+                }
+
+                PowerSetActiveScheme(IntPtr.Zero, ref guid);
+                RefreshPowerPlans();
+                //foreach (Wpf.Ui.Controls.MenuItem menu in pwrPlans.Items)
+                //{
+                //    menu.IsChecked = false;
+                //}
+                //item.IsChecked = true;
             }
-            PowerSetActiveScheme(IntPtr.Zero, ref guid);
-            RefreshPowerPlans();
-            //foreach (Wpf.Ui.Controls.MenuItem menu in pwrPlans.Items)
-            //{
-            //    menu.IsChecked = false;
-            //}
-            //item.IsChecked = true;
+            else
+            {
+                if (notifs)
+                {
+                    ToastContentBuilder toast = new ToastContentBuilder();
+                    toast.AddText("Failed to Switch Power Plans");
+                    toast.AddText("Tried to Switch to " + name + " plan, but it does not exist");
+                    toast.SetToastDuration(ToastDuration.Short);
+                    toast.Show();
+                }
+            }
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
@@ -719,7 +815,6 @@ namespace PowerTray
                             guid = plan.Guid;
                         }
                     }
-
                     SetPlan(guid, name);
                 }
             }
@@ -966,7 +1061,7 @@ namespace PowerTray
                 calculated_charge_time_text +
                 "\n" + (calcChargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW" +
                 "\n" + "Buffer Size: " + ((int)(calcTimeDelta / 1000)).ToString() + " sec" + 
-                "\n\n(The tray is currently displaying " + tray_display.ToString() + ")";
+                "\n\n(The tray is currently\ndisplaying " + tray_display.ToString() + ")";
             return toolTipText;
         }
 

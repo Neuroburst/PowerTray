@@ -82,12 +82,13 @@ namespace PowerTray
         private void DefaultClick(object sender, RoutedEventArgs e)
         {
             Reset.IsEnabled = false;
-            App.ResetPlans();
+            App.ManagePlans(false);
         }
 
         private void BatteryBoostClick(object sender, RoutedEventArgs e)
         {
             Boost.IsEnabled = false;
+            App.ManagePlans(true);
         }
     }
 }
