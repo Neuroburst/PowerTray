@@ -32,15 +32,23 @@ using LibreHardwareMonitor.Hardware.Cpu;
 using System.IO;
 
 /// TODO:
-// make sure special power plan still works with usb devices
 
+// POWERTRAY 2.0 GOALS:
+// when adding defaults, run following command: reg add HKLM\System\CurrentControlSet\Control\Power /v PlatformAoAcOverride /t REG_DWORD /d 0
+// update thingy with info about power plan switching
 // shortcut in startup folder cannot be admin? (task scheduler perhaps?)
+// remove errors when no battery is present (for power plans) GIT CLONE?
+// add another option to display power plan (first two letters)
 
 
 /// SUFFERING:
-// font is unreadable in light mode :(
+
 // make icon auto-darkmode (doesn't work on publish)
+
+// card expanders have annoyingly small click area
+// font is unreadable in light mode :(
 // scroll is too sensitive
+
 // make tooltip stay open somehow
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
@@ -1040,13 +1048,13 @@ namespace PowerTray
 
             string rtimeLeft = (string)bat_info["Reported Time Left"];
 
-            string reported_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + rtimeLeft
-                + " until fully charged" : "\nnot charging") + "" : rtimeLeft + " remaining");
+            string reported_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "Charging: " + rtimeLeft
+                + " until fully charged" : "Not charging") + "" : rtimeLeft + " remaining");
 
             string ctimeLeft = GetCalculatedTimeLeft(remainChargeCapMwh, fullChargeCapMwh);
 
-            string calculated_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "\nCharging: " + ctimeLeft
-                + " until fully charged" : "\nnot charging") + "" : ctimeLeft + " remaining");
+            string calculated_charge_time_text = (chargeRateMw > 0 ? (isCharging ? "Charging: " + ctimeLeft
+                + " until fully charged" : "Not charging") + "" : ctimeLeft + " remaining");
 
             String toolTipText =
                 Math.Round(batteryPercent, 3).ToString() + "% " + 

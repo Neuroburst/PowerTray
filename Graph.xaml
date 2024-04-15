@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="ResetButton" Grid.Column="0" Width ="100" Click = "ResetButton_Click"  HorizontalAlignment="Center">Clear Data</Button>
-            <ui:Badge x:Name="AdminWarning" Grid.Column="1" Content="⚠️ Admin rights are required to graph CPU and GPU power" HorizontalAlignment="Center" Height="30"/>
+            <ui:Badge x:Name="AdminWarning" Grid.Column="1" Content="⚠️ Admin rights might be required to graph CPU power" HorizontalAlignment="Center" Height="30"/>
             <Button x:Name="CloseButton" Grid.Column="2" Width ="100" Click ="CloseButton_Click" HorizontalAlignment="Center">Close</Button>
         </Grid>
     </Grid>
