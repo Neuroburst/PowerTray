@@ -6,6 +6,8 @@ The tooltip also displays useful information.
 You can also right click on the icon > Click "Battery Info" to see even more information!
 
 ## Features
+- Power Plan management and switching from taskbar
+- Special BatteryBoost profile to optimize battery life
 - Displays battery capacity, charge, lifetime, and status
 - Allows you to see more advanced information, like voltage, design capacity, and battery health
 - Calculates discharge and charge rate manually for a more accurate reading than the system

@@ -32,7 +32,6 @@ using System.Windows.Media.Animation;
 
 
 /// TODO:
-// for power plan, make ALL improvements take action even when PLUGGED IN!
 
 /// SUFFERING:
 // make icon auto-darkmode (doesn't work on publish)
