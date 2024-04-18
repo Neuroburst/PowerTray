@@ -10,6 +10,20 @@ namespace PowerTray
 {
     internal class Options:ConfigurationSection
     {
+        [ConfigurationProperty("startup", DefaultValue = false)]
+        public bool Startup
+        {
+            get { return (bool)this["startup"]; }
+            set { this["startup"] = value; }
+        }
+
+        [ConfigurationProperty("adminstartup", DefaultValue = false)]
+        public bool AdminStartup
+        {
+            get { return (bool)this["adminstartup"]; }
+            set { this["adminstartup"] = value; }
+        }
+
         [ConfigurationProperty("alwaysontop", DefaultValue = true)]
         public bool AlwaysOnTop
         {
@@ -101,7 +115,7 @@ namespace PowerTray
             set { this["lowbatcharge"] = value; }
         }
 
-        [ConfigurationProperty("traytext", DefaultValue = App.DisplayedInfo.percentage)]
+        [ConfigurationProperty("traytext", DefaultValue = App.DisplayedInfo.Percentage)]
         public App.DisplayedInfo TrayText
         {
             get { return (App.DisplayedInfo)this["traytext"]; }

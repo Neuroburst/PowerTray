@@ -51,36 +51,38 @@ namespace PowerTray
                 return;
             }
             var data = BatteryManagement.GetBatteryInfo(PowerTray.App.batteryTag, PowerTray.App.batteryHandle);
-
-            data.Insert(5, "Calculated Time Left", App.GetCalculatedTimeLeft((int)data["Remaining Charge mWh"], (int)data["Battery Capacity mWh"]));
-            data.Insert(6, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
-            data.Insert(7, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
-
-            DataCollection = new ObservableCollection<Info> { };
-            foreach (DictionaryEntry item in data)
+            if (data != null)
             {
-                string key = (string)item.Key;
+                data.Insert(5, "Calculated Time Left", App.GetCalculatedTimeLeft((int)data["Remaining Charge mWh"], (int)data["Battery Capacity mWh"]));
+                data.Insert(6, "Calculated Charge Rate mW", PowerTray.App.calcChargeRateMw);
+                data.Insert(7, "Calculated Time Delta sec", PowerTray.App.calcTimeDelta / 1000);
 
-                string name = DeleteInString(key.ToString(), ["mWh", "mW", "sec"]);
-
-                string value = item.Value.ToString() + ((key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "") + (key.Contains("Volt") ? " volts" : "") + 
-                    (key.EndsWith("sec") ? " sec" : ""));
-
-                if (key.Contains("Health") || key.Contains("Percent"))
+                DataCollection = new ObservableCollection<Info> { };
+                foreach (DictionaryEntry item in data)
                 {
-                    if (item.Value.ToString().Length > 5)
+                    string key = (string)item.Key;
+
+                    string name = DeleteInString(key.ToString(), ["mWh", "mW", "sec"]);
+
+                    string value = item.Value.ToString() + ((key.ToString().EndsWith("mWh") ? " mWh" : "") + (key.ToString().EndsWith("mW") ? " mW" : "") + (key.Contains("Volt") ? " volts" : "") +
+                        (key.EndsWith("sec") ? " sec" : ""));
+
+                    if (key.Contains("Health") || key.Contains("Percent"))
                     {
-                        value = item.Value.ToString().Substring(0, 6);
+                        if (item.Value.ToString().Length > 5)
+                        {
+                            value = item.Value.ToString().Substring(0, 6);
+                        }
+                        else
+                        {
+                            value = item.Value.ToString();
+                        }
+                        value += "%";
                     }
-                    else
-                    {
-                        value = item.Value.ToString();
-                    }
-                    value += "%";
+                    DataCollection.Add(new Info { Name = name, Value = value });
                 }
-                DataCollection.Add(new Info { Name = name, Value = value });
+                This.Data.ItemsSource = DataCollection;
             }
-            This.Data.ItemsSource = DataCollection;
         }
 
         public static string DeleteInString(string source, string[] strings)

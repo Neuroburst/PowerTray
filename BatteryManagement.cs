@@ -10,7 +10,24 @@ namespace PowerTray
     {
         public static OrderedDictionary GetBatteryInfo(uint batteryTag, SafeFileHandle batteryHandle) // MOVE TO BATTERY MANAGEMENTTNTIT
         {
+            var dataDict = new OrderedDictionary {};
             var batteryReport = Battery.AggregateBattery.GetReport(); // get battery info (slow)
+
+            if (batteryHandle == null)
+            {
+                dataDict = new OrderedDictionary {
+                { "Status", 0 },
+                { "Percent Remaining", 0.0 },
+                { "Remaining Charge mWh", 0 },
+                { "Reported Time Left", "0" },
+                { "Reported Charge Rate mW", 0 },
+                { "Battery Health", 0 },
+                { "Battery Capacity mWh", 0 },
+                { "Design Capacity mWh", 0 },
+                { "Voltage", 0 } };
+                return dataDict;
+            }
+            
 
             //var batteries = new ManagementObjectSearcher("SELECT * FROM CIM_Battery").Get(); //get advanced battery info
             //ManagementObject main_battery = new ManagementObject();
@@ -21,8 +38,6 @@ namespace PowerTray
             //    main_battery = battery;
             //    break;
             //};
-
-            var dataDict = new OrderedDictionary { };
             
             Kernel32.BATTERY_WAIT_STATUS bws = default;
             bws.BatteryTag = batteryTag;

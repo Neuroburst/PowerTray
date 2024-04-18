@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PowerTray
-build_property.ProjectDir = C:\Users\agpan\Programming\PowerTray\
+build_property.ProjectDir = C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

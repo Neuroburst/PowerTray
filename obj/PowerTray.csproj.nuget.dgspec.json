@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj": {}
+    "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\PowerTray.csproj": {}
   },
   "projects": {
-    "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj": {
+    "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\PowerTray.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
+        "projectUniqueName": "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\PowerTray.csproj",
         "projectName": "PowerTray",
-        "projectPath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
+        "projectPath": "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\PowerTray.csproj",
         "packagesPath": "C:\\Users\\agpan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\agpan\\Programming\\PowerTray\\obj\\",
+        "outputPath": "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\agpan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -72,6 +68,10 @@
             "System.Management": {
               "target": "Package",
               "version": "[9.0.0-preview.2.24128.5, )"
+            },
+            "TaskScheduler": {
+              "target": "Package",
+              "version": "[2.10.1, )"
             },
             "WPF-UI": {
               "target": "Package",

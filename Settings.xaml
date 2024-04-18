@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="PowerTray Settings" Height="580" Width="420" MinHeight="500" MinWidth="350"
+        Title="PowerTray Settings" Height="600" Width="420" MinHeight="500" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -33,7 +33,7 @@
                 <StackPanel Margin="10,0,10,0" HorizontalAlignment="Stretch" Orientation="Vertical">
                     <ui:CardExpander Header="General Settings" IsExpanded="True">
                         <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
-                            <Grid Margin="0">
+                            <Grid Margin="0" ToolTip="This puts the PowerTray windows on top of all others">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -41,7 +41,23 @@
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Always on Top</Label>
                                 <ui:ToggleSwitch Grid.Column="1" Height="35" IsChecked="{Binding AlwaysOnTop}"></ui:ToggleSwitch>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0" ToolTip="This option does nothing when Admin Startup is enabled">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Run on Startup</Label>
+                                <ui:ToggleSwitch Grid.Column="1" Height="35" IsChecked="{Binding Startup}"></ui:ToggleSwitch>
+                            </Grid>
+                            <Grid Margin="0,10,0,0" ToolTip="Running the program as Administrator is required to change this setting">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="AdminLabel" Grid.Column="0" Height="35" VerticalContentAlignment="Center">Run as Administrator on Startup</Label>
+                                <ui:ToggleSwitch x:Name="Admin" Grid.Column="1" Height="35" IsChecked="{Binding AdminStartup}"></ui:ToggleSwitch>
+                            </Grid>
+                            <Grid Margin="0,10,0,0" ToolTip="Values that are too large could cause the tray text to clip">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -49,7 +65,7 @@
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Tray Font Size</Label>
                                 <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding FontSize}"></ui:TextBox>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0" ToolTip="The default information displayed on the tray icon">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -65,11 +81,11 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Reset" ToolTip="Add back the default power plans if you don't have them:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Recomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
+                                <Button x:Name="Reset" ToolTip="This option adds back the default power plans if you don't have them, and applies a registry fix that disables Modern Standby, which breaks all power plans. Here are the descriptions of the power plans:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Reccomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
                                         Click="DefaultClick"  Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Wrench20" FontSize="24"/>
-                                        <Label HorizontalContentAlignment="Center">Add default power plans</Label>
+                                        <Label HorizontalContentAlignment="Center">Repair and restore default power plans</Label>
                                     </Grid>
                                 </Button>
                             </Grid>
@@ -77,7 +93,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Boost"  Click="BatteryBoostClick" ToolTip="BatteryBoost is a custom power plan that can improve battery life" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                <Button x:Name="Boost"  Click="BatteryBoostClick" ToolTip="This option adds BatteryBoost; a custom power plan that can improve battery life, especially when using USB devices" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="BatterySaver20" FontSize="24"/>
                                         <Label HorizontalContentAlignment="Center">Add BatteryBoost profile</Label>
@@ -120,15 +136,15 @@
                     </ui:CardExpander>
                     <ui:CardExpander Header="Buffers" IsExpanded="False" Margin="0,5,0,0">
                         <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
-                            <Grid Margin="0">
+                            <Grid Margin="0" ToolTip="The size of the buffer for the calculated charge statistic (it is averaged over this interval)" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Calc Charge Rate Buffer (sec)</Label>
+                                <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Calculated Charge Rate Buffer (sec)</Label>
                                 <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding BufferSize}"></ui:TextBox>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0" ToolTip="The amount of history for the graph">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -176,7 +192,7 @@
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Tray Font Style</Label>
                                 <ComboBox Grid.Column="1" x:Name = "TrayFontStyle" Text="{Binding FontStyle}" Width="120"></ComboBox>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0" ToolTip="The amount of battery charge considered to be medium (changes the tray icon to be orange)">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -184,7 +200,7 @@
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Medium Battery Charge</Label>
                                 <ui:TextBox Grid.Column="1" Width="120" Height="35" ClearButtonEnabled="False" Text="{Binding MediumCharge}"></ui:TextBox>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0" ToolTip="The amount of battery charge considered to be low (changes the tray icon to be red)">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>

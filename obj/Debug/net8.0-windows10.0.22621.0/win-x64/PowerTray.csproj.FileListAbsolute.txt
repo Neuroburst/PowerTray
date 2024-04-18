@@ -1,47 +1,56 @@
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.exe
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.deps.json
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.runtimeconfig.json
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.pdb
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.Management.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Wpf.Ui.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Microsoft.Windows.SDK.NET.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\WinRT.Runtime.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.AssemblyReference.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\BatInfo.g.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\App.g.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_Content.g.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_MarkupCompile.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_MarkupCompile.lref
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\App.baml
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\BatInfo.baml
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.g.resources
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.AssemblyInfoInputs.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.AssemblyInfo.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.CoreCompileInputs.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.Up2Date
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\refint\PowerTray.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.pdb
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.genruntimeconfig.cache
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\ref\PowerTray.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Hardcodet.NotifyIcon.Wpf.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Settings.g.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Settings.baml
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.sourcelink.json
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.Resources.resources
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.GenerateResource.cache
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LiveCharts.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LiveCharts.Wpf.dll
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.g.cs
-C:\Users\agpan\Programming\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.baml
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.CodeDom.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\HidSharp.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LibreHardwareMonitorLib.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Mono.Posix.NETStandard.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.IO.Ports.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\MonoPosixHelper.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\libMonoPosixHelper.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Microsoft.Toolkit.Uwp.Notifications.dll
-C:\Users\agpan\Programming\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.Drawing.Common.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.exe
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.deps.json
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.runtimeconfig.json
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.pdb
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Hardcodet.NotifyIcon.Wpf.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\HidSharp.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LibreHardwareMonitorLib.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LiveCharts.Wpf.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\LiveCharts.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Microsoft.Toolkit.Uwp.Notifications.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Mono.Posix.NETStandard.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.CodeDom.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.Drawing.Common.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.IO.Ports.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\System.Management.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Wpf.Ui.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\MonoPosixHelper.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\libMonoPosixHelper.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Microsoft.Windows.SDK.NET.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\WinRT.Runtime.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.AssemblyReference.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\BatInfo.g.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.g.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Settings.g.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\App.g.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_Content.g.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_MarkupCompile.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray_MarkupCompile.lref
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\App.baml
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\BatInfo.baml
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Graph.baml
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\Settings.baml
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.g.resources
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.Resources.resources
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.GenerateResource.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.AssemblyInfoInputs.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.AssemblyInfo.cs
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.CoreCompileInputs.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.sourcelink.json
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.csproj.Up2Date
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\refint\PowerTray.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.pdb
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\PowerTray.genruntimeconfig.cache
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\obj\Debug\net8.0-windows10.0.22621.0\win-x64\ref\PowerTray.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\Microsoft.Win32.TaskScheduler.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\de\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\es\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\fr\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\it\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\pl\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\ru\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\zh-CN\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Debug\net8.0-windows10.0.22621.0\win-x64\zh-Hant\Microsoft.Win32.TaskScheduler.resources.dll

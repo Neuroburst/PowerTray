@@ -23,7 +23,10 @@ namespace PowerTray
             TrayFontStyle.ItemsSource = Enum.GetNames(typeof(System.Drawing.FontStyle));
             Load();
 
-            App.RefreshPowerPlans();
+            AdminLabel.IsEnabled = App.IsAdministrator();
+            Admin.IsEnabled = App.IsAdministrator();
+
+            PowerPlans.RefreshPowerPlans();
             UpdatePlansList();
         }
 
@@ -82,13 +85,13 @@ namespace PowerTray
         private void DefaultClick(object sender, RoutedEventArgs e)
         {
             Reset.IsEnabled = false;
-            App.ManagePlans(false);
+            PowerPlans.ManagePlans(false);
         }
 
         private void BatteryBoostClick(object sender, RoutedEventArgs e)
         {
             Boost.IsEnabled = false;
-            App.ManagePlans(true);
+            PowerPlans.ManagePlans(true);
         }
     }
 }

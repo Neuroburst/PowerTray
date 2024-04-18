@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Drawing.Text;
 
-using Windows.Devices.Power;
 using Windows.System.Power;
 using Microsoft.Win32;
 using Microsoft.Win32.SafeHandles;
@@ -26,27 +25,21 @@ using LiveCharts.Defaults;
 
 using LibreHardwareMonitor.Hardware;
 using System.Security.Principal;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Notifications;
 using LibreHardwareMonitor.Hardware.Cpu;
-using System.IO;
+using Microsoft.Win32.TaskScheduler;
+using System.Threading.Tasks;
+using System.Windows.Media.Animation;
+
 
 /// TODO:
-
-// POWERTRAY 2.0 GOALS:
-// when adding defaults, run following command: reg add HKLM\System\CurrentControlSet\Control\Power /v PlatformAoAcOverride /t REG_DWORD /d 0
-// update thingy with info about power plan switching
-// shortcut in startup folder cannot be admin? (task scheduler perhaps?)
-// remove errors when no battery is present (for power plans) GIT CLONE?
-// add another option to display power plan (first two letters)
-
+// for power plan, make ALL improvements take action even when PLUGGED IN!
 
 /// SUFFERING:
-
 // make icon auto-darkmode (doesn't work on publish)
 
 // card expanders have annoyingly small click area
 // font is unreadable in light mode :(
+// sub-context menu (power plan) broked if not first in the list
 // scroll is too sensitive
 
 // make tooltip stay open somehow
@@ -74,33 +67,26 @@ namespace PowerTray
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern bool DestroyIcon(IntPtr handle);
 
-        public enum DisplayedInfo { percentage, chargeRate, calcChargeRate };
+        public enum DisplayedInfo { Percentage, ReportedChargeRate, CalculatedChargeRate, PowerPlan};
 
 
         // PowerPlans
-        [DllImport("PowrProf.dll")]
-        public static extern UInt32 PowerEnumerate(IntPtr RootPowerKey, IntPtr SchemeGuid, IntPtr SubGroupOfPowerSettingGuid, UInt32 AcessFlags, UInt32 Index, ref Guid Buffer, ref UInt32 BufferSize);
-        private const uint ACCESS_SCHEME = 16;
-        [DllImport("PowrProf.dll")]
-        public static extern UInt32 PowerReadFriendlyName(IntPtr RootPowerKey, ref Guid SchemeGuid, IntPtr SubGroupOfPowerSettingGuid, IntPtr PowerSettingGuid, IntPtr Buffer, ref UInt32 BufferSize);
-
-        [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActiveScheme")]
-        public static extern uint PowerGetActiveScheme(IntPtr UserPowerKey, out IntPtr ActivePolicyGuid);
-        [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveScheme")]
-        public static extern uint PowerSetActiveScheme(IntPtr UserPowerKey, ref Guid ActivePolicyGuid);
-
         public static Wpf.Ui.Controls.MenuItem pwrPlans;
 
+        public static Guid active_plan;
+
         // Params ---
-        public static bool err = false; // for default plan thingy
         public static List<PowerPlan> plans = new List<PowerPlan>();
+
+        public static bool startup = false;
+        public static bool adminstartup = false;
 
         public static BatteryStatus? charging = null;
         public static string acplanName = "Balanced";
         public static string batteryPlanName = "Balanced";
         public static bool notifs = true;
 
-        public static DisplayedInfo tray_display = DisplayedInfo.percentage; // (CHANGEABLE)
+        public static DisplayedInfo tray_display = DisplayedInfo.Percentage; // (CHANGEABLE)
 
         static float trayFontSize = 11f; // (CHANGEABLE)
         public static String trayFontType = "Segoe UI";
@@ -119,6 +105,7 @@ namespace PowerTray
         static Color highDarkColor = Color.White;
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
+        static Color boostColor = Color.Cyan;
 
         public static int highAmount = 40; // (CHANGEABLE)
         public static int mediumAmount = 25; // (CHANGEABLE)
@@ -142,7 +129,6 @@ namespace PowerTray
         // use open hardware to get info about computertron
         static Computer c = new Computer()
         {
-            IsGpuEnabled = true,
             IsCpuEnabled = true,
         };
 
@@ -172,10 +158,65 @@ namespace PowerTray
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
+        private static string GetExecutableLocation()
+        {
+            return Process.GetCurrentProcess().MainModule.FileName;
+        }
+
+        public static void ManageAdminStartup(bool delete)
+        {
+            if (IsAdministrator())
+            {
+                // Get the service on the local machine
+                using (TaskService ts = new TaskService())
+                {
+                    if (delete)
+                    {
+                        if (ts.RootFolder.Tasks.Exists("PowerTray"))
+                        {
+                            ts.RootFolder.DeleteTask("PowerTray");
+                        }
+                    }
+                    else
+                    {
+                        ManageAdminStartup(true);
+                        // Create a new task definition and assign properties
+                        TaskDefinition td = ts.NewTask();
+                        td.RegistrationInfo.Description = "Run PowerTray on Startup";
+                        td.Triggers.Add(new LogonTrigger { });
+                        td.Actions.Add(new ExecAction(GetExecutableLocation()));
+
+                        td.Principal.RunLevel = TaskRunLevel.Highest;
+                        td.Settings.DisallowStartIfOnBatteries = false;
+                        td.Settings.StopIfGoingOnBatteries = false;
+                        td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+                        var registeredTask = ts.RootFolder.RegisterTaskDefinition(@"PowerTray", td);
+                        registeredTask.Enabled = true;
+                    }
+                }
+            }
+        }
+        public static void ManageStartup(bool delete)
+        {
+            var keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+            if (delete)
+            {
+                var key = Registry.CurrentUser.OpenSubKey(keyPath, true);
+                if (key != null && key.GetValue("PowerTray") != null)
+                {
+                    key.DeleteValue("PowerTray");
+                }                    
+            }
+            else
+            {
+                ManageStartup(true);
+                Registry.SetValue(@"HKEY_CURRENT_USER\" + keyPath, "PowerTray", GetExecutableLocation(), RegistryValueKind.String);
+            }
+        }
+
         public static float GetHardwareInfo()
         {
             float cpuWattage = 0;
-            //float gpuWattage = 0;
 
             foreach (var hardware in c.Hardware)
             {
@@ -194,23 +235,6 @@ namespace PowerTray
                         }
                     }
                 }
-                //// Targets AMD & Nvidia GPUS
-                //if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd || hardware.HardwareType == HardwareType.GpuIntel)
-                //{
-                //    // only fire the update when found
-                //    hardware.Update();
-
-                //    // loop through the data
-                //    foreach (var sensor in hardware.Sensors)
-                //    {
-                //        if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("Power"))
-                //        {
-                //            Debug.Print(sensor.Name);
-                //            // store
-                //            gpuWattage = sensor.Value.GetValueOrDefault();
-                //        }
-                //    }
-                //}
             }
 
             return cpuWattage;
@@ -284,6 +308,15 @@ namespace PowerTray
             maxChargeHistoryLength = settings.BufferSize;
             graphsHistoryLength = settings.HistoryLength;
 
+            startup = settings.Startup;
+            adminstartup = settings.AdminStartup;
+
+            // prevent overlap
+            if (startup && adminstartup)
+            {
+                startup = false;
+            }
+
             auto_switch = settings.AutoSwitch;
             notifs = settings.Notifs;
             acplanName = settings.ACPlan;
@@ -304,315 +337,40 @@ namespace PowerTray
 
             // reset trayfont
             trayFont = new Font(trayFontType, trayFontSize * trayFontQualityMultiplier, settings.FontStyle);
-        }
 
-
-        // Power Plans
-        public static string ReadFriendlyName(Guid schemeGuid)
-        {
-            uint sizeName = 1024;
-            IntPtr pSizeName = Marshal.AllocHGlobal((int)sizeName);
-
-            string friendlyName;
-            try
+            // add startup
+            if (startup)
             {
-                PowerReadFriendlyName(IntPtr.Zero, ref schemeGuid, IntPtr.Zero, IntPtr.Zero, pSizeName, ref sizeName);
-                friendlyName = Marshal.PtrToStringUni(pSizeName);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(pSizeName);
-            }
-            return (friendlyName);
-        }
-
-        public static void GeneratePowerPlanList()
-        {
-            plans.Clear();
-            foreach (Guid guidPlan in GetPlans())
-            {
-                PowerPlan plan = new PowerPlan(ReadFriendlyName(guidPlan), guidPlan);
-                plans.Add(plan);
-            }
-            plans = plans.OrderBy(i => i.Name).ToList();
-        }
-
-        private static IEnumerable<Guid> GetPlans()
-        {
-            Guid schemeGuid = Guid.Empty;
-            uint sizeSchemeGuid = (uint)Marshal.SizeOf(typeof(Guid));
-            uint schemeIndex = 0;
-
-            while (PowerEnumerate(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero,
-                ACCESS_SCHEME, schemeIndex,
-                ref schemeGuid, ref sizeSchemeGuid) == 0)
-            {
-                yield return schemeGuid;
-                schemeIndex++;
-            }
-        }
-
-        private static bool FindPlan(Guid guid)
-        {
-            RefreshPowerPlans();
-            foreach (PowerPlan p in plans)
-            {
-                if (p.Guid == guid) { return (true); }
-            }
-            return (false);
-        }
-        private static bool FindPlanByName(string name)
-        {
-            RefreshPowerPlans();
-            foreach (PowerPlan p in plans)
-            {
-                if (p.Name == name) { return (true); }
-            }
-            return (false);
-        }
-        private static List<String> AddPowerPlan(string strPowerPlan, string strGuid)
-        {
-            var messages = new List<String>();
-            try
-            {
-                // Check if we need to add the Plan
-                //
-                if (FindPlanByName(strPowerPlan) == true)
-                {
-                    messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
-                    return messages;
-                }
-
-                // Use ProcessStartInfo class
-                //
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "powercfg.exe",
-                    Arguments = $"-duplicatescheme {strGuid}"
-                };
-
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using statement will close.
-                //
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    exeProcess.WaitForExit();
-                }
-
-                // Check it succeeded
-                //
-                if (FindPlanByName(strPowerPlan))
-                {
-                    messages.Add($"- '{strPowerPlan}' Power Plan successfully created.\n");
-                }
-                else
-                {
-                    messages.Add($"- Failed creating '{strPowerPlan}' Power Plan.\n");
-                    err = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Show exception details.
-                messages.Add($"- Exception creating '{strPowerPlan}' Power Plan. [{ex.Message}]\n");
-                err = true;
-            }
-
-            return (messages);
-        }
-        private static List<String> ImportPowerPlan(string planpath, string strPowerPlan)
-        {
-            var messages = new List<String>();
-            try
-            {
-                // Check if we need to add the Plan
-                //
-                if (FindPlanByName(strPowerPlan) == true)
-                {
-                    messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
-                    return messages;
-                }
-
-                // Use ProcessStartInfo class
-                //
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "powercfg.exe",
-                    Arguments = $"-import {planpath}"
-                };
-
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using statement will close.
-                //
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    exeProcess.WaitForExit();
-                }
-
-                // Check it succeeded
-                //
-                if (FindPlanByName(strPowerPlan))
-                {
-                    messages.Add($"- '{strPowerPlan}' Power Plan successfully created.\n");
-                }
-                else
-                {
-                    messages.Add($"- Failed creating '{strPowerPlan}' Power Plan.\n");
-                    err = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Show exception details.
-                messages.Add($"- Exception creating '{strPowerPlan}' Power Plan. [{ex.Message}]\n");
-                err = true;
-            }
-
-            return (messages);
-        }
-        public static void ManagePlans(bool boost)
-        {
-            RefreshPowerPlans();
-            //if (IsAdministrator() == false)
-            //{
-            //    System.Windows.MessageBox.Show(
-            //        "This action requires admin access",
-            //        "THE CAKE IS A LIE", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
-            var messages = new List<String>();
-            err = false;
-            if (!boost)
-            {
-                messages.AddRange(AddPowerPlan("Power saver",
-                                "a1841308-3541-4fab-bc81-f71556f20b4a"));
-                messages.AddRange(AddPowerPlan("Balanced",
-                                "381b4222-f694-41f0-9685-ff5bb260df2e"));
-                messages.AddRange(AddPowerPlan("High performance",
-                                "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"));
-                messages.AddRange(AddPowerPlan("Ultimate Performance",
-                                "e9a42b02-d5df-448d-aa00-03f14749eb61"));
+                ManageStartup(false);
             }
             else
             {
-                var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\BatteryBoost.pow";
-                File.WriteAllBytes(path, PowerTray.Resources.BatteryBoost);
-                messages.AddRange(ImportPowerPlan(path, "BatteryBoost"));
-                File.Delete(path);
+                ManageStartup(true);
             }
 
-
-            if (messages.Count > 0 && err)
+            if (adminstartup)
             {
-                string strMessage = String.Concat(messages);
-
-                var popup = new Wpf.Ui.Controls.MessageBox();
-                popup.Title = "PowerTray";
-                popup.Content = $"Failure.\n{strMessage}";
-                //popup.Icon = //MessageBoxImage.Error;// new SymbolIcon(SymbolRegular.Error48, 14, false)
-                popup.ShowDialogAsync();
-
-                //System.Windows.MessageBox.Show(
-                //    $"Failure.\n{strMessage}",
-                //    "PowerTray", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            if (messages.Count > 0 && !err)
-            {
-                string strMessage = String.Concat(messages);
-
-                var popup = new Wpf.Ui.Controls.MessageBox();
-                popup.Title = "PowerTray";
-                popup.Content = $"Success!\n{strMessage}";
-                //popup.Icon = //MessageBoxImage.Information;// new SymbolIcon(SymbolRegular.Info48, 14, false)
-                popup.ShowDialogAsync();
-
-                //System.Windows.MessageBox.Show(
-                //    $"Success!\n{strMessage}",
-                //    "PowerTray", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-        // End Power Plans
-
-        public static Guid GetActivePlanGuid()
-        {
-            Guid ActiveScheme = Guid.Empty;
-            if (PowerGetActiveScheme((IntPtr)null, out IntPtr ptr) == 0)
-            {
-                ActiveScheme = (Guid)Marshal.PtrToStructure(ptr, typeof(Guid));
-                Marshal.FreeHGlobal(ptr);
-            }
-            return (ActiveScheme);
-        }
-        public static void RefreshPowerPlans()
-        {
-            GeneratePowerPlanList();
-            if (pwrPlans != null)
-            {
-                pwrPlans.Items.Clear();
-                foreach (PowerPlan plan in plans)
-                {
-                    Guid active_plan = GetActivePlanGuid();
-
-                    var item = new Wpf.Ui.Controls.MenuItem()
-                    {
-                        Header = plan.Name,
-                        IsCheckable = true,
-                        IsChecked = plan.Guid == active_plan,
-                    };
-                    item.Command = new RelayCommand<dynamic>(action => SetPlan(plan.Guid, plan.Name), canExecute => true);
-
-                    pwrPlans.Items.Add(item);
-                }
-            }
-            if (settingsWindow != null)
-            {
-                settingsWindow.UpdatePlansList();
-            }
-                
-        }
-
-        public static void SetPlan(Guid guid, string name)
-        {
-            if (FindPlan(guid))
-            {
-                if (notifs)
-                {
-                    ToastContentBuilder toast = new ToastContentBuilder();
-                    toast.AddText("Power Plan Switched");
-                    toast.AddText("Switched to " + name + " plan");
-                    toast.SetToastDuration(ToastDuration.Short);
-                    toast.Show();
-                }
-
-                PowerSetActiveScheme(IntPtr.Zero, ref guid);
-                RefreshPowerPlans();
-                //foreach (Wpf.Ui.Controls.MenuItem menu in pwrPlans.Items)
-                //{
-                //    menu.IsChecked = false;
-                //}
-                //item.IsChecked = true;
+                ManageAdminStartup(false);
             }
             else
             {
-                if (notifs)
-                {
-                    ToastContentBuilder toast = new ToastContentBuilder();
-                    toast.AddText("Failed to Switch Power Plans");
-                    toast.AddText("Tried to Switch to " + name + " plan, but it does not exist");
-                    toast.SetToastDuration(ToastDuration.Short);
-                    toast.Show();
-                }
+                ManageAdminStartup(true);
             }
         }
+        
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            // repair startup
+            if (startup)
+            {
+                ManageStartup(false);
+            }
+
+            if (startup)
+            {
+                ManageAdminStartup(false);
+            }
 
             // debug
             SetupUnhandledExceptionHandling();
@@ -668,7 +426,7 @@ namespace PowerTray
                 Icon = new SymbolIcon(SymbolRegular.BatterySaver20, 14, false),
             };
 
-            RefreshPowerPlans();
+            PowerPlans.RefreshPowerPlans();
 
             var settings = new Wpf.Ui.Controls.MenuItem()
             {
@@ -686,7 +444,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = {batteryInfo, graphs, switchInfo, pwrPlans, settings, exit }
+                Items = { pwrPlans, batteryInfo, graphs, switchInfo, settings, exit }
             };
 
             toolTip = new ToolTip();
@@ -754,10 +512,17 @@ namespace PowerTray
                 cpuWattageGraph.RemoveAt(0);
 
             }
+            
         }
 
         private void UpdateTray(object sender, EventArgs e)
         {
+            if (active_plan != PowerPlans.GetActivePlanGuid())
+            {
+                PowerPlans.RefreshPowerPlans();
+            }
+
+
             var info = BatteryManagement.GetBatteryTag(); // prevent data from expiring
             batteryHandle = info[0];
             batteryTag = info[1];
@@ -823,7 +588,7 @@ namespace PowerTray
                             guid = plan.Guid;
                         }
                     }
-                    SetPlan(guid, name);
+                    PowerPlans.SetPlan(guid, name);
                 }
             }
 
@@ -869,22 +634,29 @@ namespace PowerTray
 
             Color statusColor = highColor;
 
-            if (chargeRateMw > 0)
-            {
-                statusColor = chargingColor;
+            if (batteryHandle != null) {
+                if (chargeRateMw > 0)
+                {
+                    statusColor = chargingColor;
+                }
+
+                else if (roundPercent >= highAmount)
+                {
+                    statusColor = highColor;
+                }
+                else if (roundPercent >= mediumAmount)
+                {
+                    statusColor = mediumColor;
+                }
+                else if (roundPercent >= lowAmount)
+                {
+                    statusColor = lowColor;
+                }
             }
 
-            else if (roundPercent >= highAmount)
+            if (PowerPlans.ReadFriendlyName(active_plan) == "BatteryBoost")
             {
-                statusColor = highColor;
-            }
-            else if (roundPercent >= mediumAmount)
-            {
-                statusColor = mediumColor;
-            }
-            else if (roundPercent >= lowAmount)
-            {
-                statusColor = lowColor;
+                statusColor = boostColor;
             }
 
             // Lighter text for darkmode
@@ -900,24 +672,31 @@ namespace PowerTray
                 }
             }
             var toolTipText = CreateTooltipText(bat_info);
+                
+                
             // Tray Icon ---
             String trayIconText = "!!";
 
             dynamic decimalMode = null;
-            if (tray_display == DisplayedInfo.percentage)
+            if (tray_display == DisplayedInfo.Percentage)
             {
                 trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
-            }else if (tray_display == DisplayedInfo.chargeRate)
+            }else if (tray_display == DisplayedInfo.ReportedChargeRate)
             {
                 trayIconText = string.Format("{0:F" + (Math.Abs(chargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(chargeRateMw / 1000f));
 
                 decimalMode = chargeRateMw;
             }
-            else if (tray_display == DisplayedInfo.calcChargeRate)
+            else if (tray_display == DisplayedInfo.CalculatedChargeRate)
             {
                 trayIconText = string.Format("{0:F" + (Math.Abs(calcChargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(calcChargeRateMw / 1000f));
 
                 decimalMode = calcChargeRateMw;
+            }
+            else if (tray_display == DisplayedInfo.PowerPlan)
+            {
+                trayIconText = PowerPlans.ReadFriendlyName(active_plan).Substring(0, 2);
+                //decimalMode = 1.1;
             }
 
             if (trayFontSize > 8.5 && decimalMode != null)
