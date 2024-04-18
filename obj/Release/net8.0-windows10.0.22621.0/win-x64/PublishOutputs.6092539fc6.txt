@@ -1,0 +1,2 @@
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\publish\PowerTray.pdb
+C:\Users\agpan\OneDrive\Desktop\Coding\Visual Studio\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\publish\PowerTray.exe
