@@ -26,7 +26,7 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
 5. Run PowerTray.exe, and an icon should appear on your system tray (near bottom right of screen) with a number on it
 (note: if you don't see it, it's likely hidden [Click the '^' icon to reveal the hidden tray icons and drag it down to the system tray])
 6. Right click it, which should show a lot of useful options, but right now, click settings
-7. Choose Run on Startup or Run as Admin on Startup (required administrator to enable)
+7. Choose Run on Startup or Run as Admin on Startup (requires administrator to enable)
 (note: the benefit of running as admin is so that it can graph CPU usage for intel CPUs on the Graphs window)
 
 ## Usage
