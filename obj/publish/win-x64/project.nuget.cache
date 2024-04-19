@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ix6aVgupzrXyX4OB9IfOYy6bcDv+1jXgR816XznU7X3vaaNep7fboCFNHAE8j9LHfbPQ0wpArUVGcxZeClP4Vg==",
+  "dgSpecHash": "cIGqQcGBRTuOz02Uo5jT8PhlOtJ5RMWCWFC/6XmvRteH/HLLt6NjOBHSl5iYiCxKnfSdGn8P51L/V/dwXl2IYQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\agpan\\OneDrive\\Desktop\\Coding\\Visual Studio\\PowerTray\\PowerTray.csproj",
+  "projectFilePath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\agpan\\.nuget\\packages\\hardcodet.notifyicon.wpf\\1.1.0\\hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\hidsharp\\2.1.0\\hidsharp.2.1.0.nupkg.sha512",

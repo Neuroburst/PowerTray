@@ -29,6 +29,7 @@ using LibreHardwareMonitor.Hardware.Cpu;
 using Microsoft.Win32.TaskScheduler;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
+using System.Xml.Linq;
 
 
 /// TODO:
@@ -44,6 +45,14 @@ using System.Windows.Media.Animation;
 // make tooltip stay open somehow
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
+
+
+// Unlock-PowerCfg - v22.05.11
+//# Get Power Settings entries and add/set 'Attributes' to 2 to unhide
+
+//$PowerCfg = (Get - ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerSettings' - Recurse).Name - notmatch '\bDefaultPowerSchemeValues|(\\[0-9]|\b255)$'
+
+//foreach ($item in $PowerCfg) { Set-ItemProperty -Path $item.Replace('HKEY_LOCAL_MACHINE','HKLM:') -Name 'Attributes' -Value 2 -Force }
 
 namespace PowerTray
 {

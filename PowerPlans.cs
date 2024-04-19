@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 using Wpf.Ui.Input;
 using System.IO;
 using System.Data;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace PowerTray
 {
@@ -85,6 +88,16 @@ namespace PowerTray
             }
             return (false);
         }
+
+        private static Guid? FindPlanNameToGuid(string name)
+        {
+            RefreshPowerPlans();
+            foreach (PowerPlan p in App.plans)
+            {
+                if (p.Name == name) { return (p.Guid); }
+            }
+            return (null);
+        }
         private static List<String> AddPowerPlan(string strPowerPlan, string strGuid)
         {
             var messages = new List<String>();
@@ -147,8 +160,8 @@ namespace PowerTray
                 //
                 if (FindPlanByName(strPowerPlan) == true)
                 {
-                    messages.Add($"- '{strPowerPlan}' Power Plan already exists.\n");
-                    return messages;
+                    messages.Add($"- '{strPowerPlan}' Power Plan already exists, deleting\n");
+                    messages.AddRange(DeletePlan(FindPlanNameToGuid(strPowerPlan)));
                 }
 
                 // Use ProcessStartInfo class
@@ -191,6 +204,42 @@ namespace PowerTray
 
             return (messages);
         }
+        public static List<String> DeletePlan(Guid? guid)
+        {
+            var messages = new List<String>();
+            if (guid != null)
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "powercfg.exe",
+                    Arguments = $"-delete {guid}"
+                };
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+
+                if (!FindPlan((Guid)guid))
+                {
+                    messages.Add($"- Power Plan successfully deleted.\n");
+                }
+                else
+                {
+                    messages.Add($"- Failed deleting Power Plan.\n");
+                    err = true;
+                }
+            }
+            else
+            {
+                messages.Add($"- Failed deleting Power Plan.\n");
+                err = true;
+            }
+            return messages;
+        }
+
         public static void ManagePlans(bool boost)
         {
             RefreshPowerPlans();
@@ -207,13 +256,16 @@ namespace PowerTray
             {
                 if (App.IsAdministrator())
                 {
-                    messages.Add("- Applied Registry patch\n");
+                    messages.Add("- Applied Registry patches\n");
                     Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "PlatformAoAcOverride", 0, RegistryValueKind.DWord);
+                    Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "CSEnabled", 0, RegistryValueKind.DWord);
+                    //Set - ItemProperty - Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' - Name 'CSEnabled' - Value 0 - Force
                 }
                 else
                 {
-                    messages.Add("- Admin is required to apply Registry patch!\n");
+                    messages.Add("- Admin is required to apply Registry patch! (recommended if Power Plans are locked)\n");
                 };
+                
 
 
                 messages.AddRange(AddPowerPlan("Power saver",
