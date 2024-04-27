@@ -33,6 +33,15 @@ using System.Xml.Linq;
 
 
 /// TODO:
+// link battery saver with battery boost?
+// batterybooost at certain percantage?
+// AFTER THESE ARE ADDED AND FATHER DOES TESTING, RELEASE 2.0!!!
+
+// ADD THESE FEATURES TOO?
+//# Get Power Settings entries and add/set 'Attributes' to 2 to unhide
+//$PowerCfg = (Get - ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerSettings' - Recurse).Name - notmatch '\bDefaultPowerSchemeValues|(\\[0-9]|\b255)$'
+//foreach ($item in $PowerCfg) { Set-ItemProperty -Path $item.Replace('HKEY_LOCAL_MACHINE','HKLM:') -Name 'Attributes' -Value 2 -Force }
+
 
 /// SUFFERING:
 // make icon auto-darkmode (doesn't work on publish)
@@ -45,14 +54,6 @@ using System.Xml.Linq;
 // make tooltip stay open somehow
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
-
-
-// Unlock-PowerCfg - v22.05.11
-//# Get Power Settings entries and add/set 'Attributes' to 2 to unhide
-
-//$PowerCfg = (Get - ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerSettings' - Recurse).Name - notmatch '\bDefaultPowerSchemeValues|(\\[0-9]|\b255)$'
-
-//foreach ($item in $PowerCfg) { Set-ItemProperty -Path $item.Replace('HKEY_LOCAL_MACHINE','HKLM:') -Name 'Attributes' -Value 2 -Force }
 
 namespace PowerTray
 {
