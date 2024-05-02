@@ -44,6 +44,25 @@ namespace PowerTray
             return (friendlyName);
         }
 
+        public static void Unlock()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Normal,
+                FileName = "powershell.exe",
+                Arguments = "(gci 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerSettings' -Recurse).Name -notmatch '\\bDefaultPowerSchemeValues|(\\\\[0-9]|\\b255)$' | % {sp $_.Replace('HKEY_LOCAL_MACHINE','HKLM:') -Name 'Attributes' -Value 2 -Force}\r\n"
+            };
+
+            // Start the process with the info we specified.
+            // Call WaitForExit and then the using statement will close.
+            using (Process exeProcess = Process.Start(startInfo))
+            {
+                exeProcess.WaitForExit();
+            }
+        }
+
         public static void GeneratePowerPlanList()
         {
             App.plans.Clear();

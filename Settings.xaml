@@ -103,6 +103,17 @@
                             <Grid Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Advanced"  Click="AdvancedClick" ToolTip="This option unlocks hidden power plan settings (Admin required) (not easily reversable)" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                    <Grid>
+                                        <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Key20" FontSize="24"/>
+                                        <Label HorizontalContentAlignment="Center">Unlock Advanced Power Plan Settings</Label>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Automatically Switch Plans</Label>

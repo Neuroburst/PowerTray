@@ -93,5 +93,10 @@ namespace PowerTray
             Boost.IsEnabled = false;
             PowerPlans.ManagePlans(true);
         }
+
+        private void AdvancedClick(object sender ,RoutedEventArgs e)
+        {
+            PowerPlans.Unlock();
+        }
     }
 }

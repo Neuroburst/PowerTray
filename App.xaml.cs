@@ -32,15 +32,8 @@ using System.Windows.Media.Animation;
 using System.Xml.Linq;
 
 
-/// TODO:
-// link battery saver with battery boost?
-// batterybooost at certain percantage?
-// AFTER THESE ARE ADDED AND FATHER DOES TESTING, RELEASE 2.0!!!
-
-// ADD THESE FEATURES TOO?
-//# Get Power Settings entries and add/set 'Attributes' to 2 to unhide
-//$PowerCfg = (Get - ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerSettings' - Recurse).Name - notmatch '\bDefaultPowerSchemeValues|(\\[0-9]|\b255)$'
-//foreach ($item in $PowerCfg) { Set-ItemProperty -Path $item.Replace('HKEY_LOCAL_MACHINE','HKLM:') -Name 'Attributes' -Value 2 -Force }
+/// MAIN TODO:
+// AFTER FATHER DOES TESTING, RELEASE 2.0!!!
 
 
 /// SUFFERING:
@@ -685,40 +678,52 @@ namespace PowerTray
                 
             // Tray Icon ---
             String trayIconText = "!!";
-
             dynamic decimalMode = null;
             if (tray_display == DisplayedInfo.Percentage)
             {
                 trayIconText = roundPercent == 100 ? ":)" : roundPercent.ToString();
-            }else if (tray_display == DisplayedInfo.ReportedChargeRate)
+            }
+            else if (tray_display == DisplayedInfo.ReportedChargeRate)
             {
-                trayIconText = string.Format("{0:F" + (Math.Abs(chargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(chargeRateMw / 1000f));
-
-                decimalMode = chargeRateMw;
+                decimal rate = Math.Round((decimal)Math.Abs(chargeRateMw / 1000f), 1);
+                if (rate >= 10)
+                {
+                    trayIconText = Math.Round(rate).ToString();
+                }
+                else
+                {
+                    trayIconText = rate.ToString();
+                }
+                decimalMode = rate;
             }
             else if (tray_display == DisplayedInfo.CalculatedChargeRate)
             {
-                trayIconText = string.Format("{0:F" + (Math.Abs(calcChargeRateMw / 1000) >= 10 ? 0 : 1) + "}", Math.Abs(calcChargeRateMw / 1000f));
-
-                decimalMode = calcChargeRateMw;
+                decimal rate = Math.Round((decimal)Math.Abs(calcChargeRateMw / 1000f), 1);
+                if (rate >= 10)
+                {
+                    trayIconText = Math.Round(rate).ToString();
+                }
+                else
+                {
+                    trayIconText = rate.ToString();
+                }
+                decimalMode = rate;
             }
             else if (tray_display == DisplayedInfo.PowerPlan)
             {
                 trayIconText = PowerPlans.ReadFriendlyName(active_plan).Substring(0, 2);
                 //decimalMode = 1.1;
             }
-
             if (trayFontSize > 8.5 && decimalMode != null)
             {
                 var font_size = trayFontSize;
-                if (Math.Abs(decimalMode / 1000) < 10)
+                if (decimalMode < 10)
                 {
                     font_size = 8.5f;
                 }
                 var settings = (Options)settingsWindow.AppConfig.Sections["Options"];
                 trayFont = new Font(trayFontType, font_size * trayFontQualityMultiplier, settings.FontStyle);
             }
-
 
 
             SolidBrush trayFontColor = new SolidBrush(statusColor);

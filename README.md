@@ -45,5 +45,7 @@ It was made using the .NET framework and WPF.
 
 Supports Windows 10 & 11
 
-I used some components from LibreHardware Monitor to detect more battery information.
-I also used some code from another PowerTray for Power Plan switching and fixing
+I used some components from other open source softwares:
+- LibreHardware Monitor to detect more battery information.
+- another PowerTray for Power Plan switching and fixing.
+- Unlock-PowerCfg 1.1.0 for unlock power plans command.
