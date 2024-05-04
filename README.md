@@ -18,7 +18,7 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
 - Customizable tray display
 - And so much more!
 
-- 
+
 ## Installation
 1. Make sure you have .NET 8.0 installed! (or use the self contained version of PowerTray)
 2. Go to the Releases section of the Github page (middle right) and click on the latest release
@@ -35,7 +35,7 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
 7. Choose Run on Startup or Run as Admin on Startup (requires administrator to enable)  
 (note: the benefit of running as admin is so that it can graph CPU usage in the Graphs window)
 
-1. 
+
 ## Usage
 Simply right click the Tray Icon to see all of the available windows of PowerTray  
 Battery Info > Information of Battery usage  
