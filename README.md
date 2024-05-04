@@ -24,7 +24,11 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
 3. If your browser blocked it, choose "download anyway"
 4. Put it into a folder and don't move it again (this will be explained later)
 5. Run PowerTray.exe, and an icon should appear on your system tray (near bottom right of screen) with a number on it
-(note: if you don't see the notification icon, it's likely hidden ![Alt text](HiddenTray.png?raw=true "") [Click the arrow icon to reveal the hidden tray icon menu and drag it down to the system tray area])
+
+1. (note: if you don't see the notification icon, it's likely hidden 
+![Alt text](HiddenTray.png?raw=true "") 
+[Click the arrow icon to reveal the hidden tray icon menu and drag it down to the system tray area])
+1. 
 6. Right click it, which should show a lot of useful options, but right now, click settings
 7. Choose Run on Startup or Run as Admin on Startup (requires administrator to enable)
 (note: the benefit of running as admin is so that it can graph CPU usage in the Graphs window)
