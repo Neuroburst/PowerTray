@@ -27,9 +27,9 @@ You can also right click on the icon > Click "Battery Info" to see even more inf
 4. Put it into a folder and don't move it again (this will be explained later)
 5. Run PowerTray.exe, and an icon should appear on your system tray (near bottom right of screen) with a number on it  
 
-(note: if you don't see the notification icon, it's likely hidden  
+(note: if you don't see the notification icon, it's likely hidden)  
 ![Alt text](HiddenTray.png?raw=true "")  
-[Click the arrow icon to reveal the hidden tray icon menu and drag it down to the system tray area])  
+[Click the arrow icon to reveal the hidden tray icon menu and drag it down to the system tray area]  
 
 6. Right click it, which should show a lot of useful options, but right now, click settings
 7. Choose Run on Startup or Run as Admin on Startup (requires administrator to enable)  
@@ -55,4 +55,4 @@ Supports Windows 10 & 11
 I used some components from other open source softwares:  
 - LibreHardware Monitor to detect more battery information
 - another PowerTray for Power Plan switching and fixing
-- Unlock-PowerCfg 1.1.0 for unlock power plans command
+- Unlock-PowerCfg 1.1.0 for unlocking power plans commands

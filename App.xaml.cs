@@ -100,7 +100,7 @@ namespace PowerTray
         public static int trayRefreshRate = 1000; // in milliseconds (CHANGEABLE)
         public static int batInfoRefreshRate = 1000; // in milliseconds (CHANGEABLE)
 
-        public static int graphRefreshRate = 2000; // in milliseconds (CHANGEABLE)
+        public static int graphRefreshRate = 1000; // in milliseconds (CHANGEABLE)
 
         static Color chargingColor = Color.Green;
         static Color highColor = Color.Black;
@@ -418,7 +418,7 @@ namespace PowerTray
             {
                 Header = "Switch Tray Data",
                 Icon = new SymbolIcon(SymbolRegular.ArrowRepeatAll20, 14, false),
-                ToolTip = "Switch the information displayed on the tray icon",
+                ToolTip = "Cycle the information displayed on the tray icon",
                 Command = TraySwitch,
             };
 
@@ -471,6 +471,9 @@ namespace PowerTray
             graph_timer.Tick += new EventHandler(UpdateGraphs);
             graph_timer.Start();
 
+            BatInfo.UpdateData(null, null);
+            UpdateTray(null, null);
+            UpdateGraphs(null, null);
         }
 
         private void UpdateGraphs(object sender, EventArgs e)

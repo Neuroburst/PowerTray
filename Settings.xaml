@@ -7,7 +7,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         
         mc:Ignorable="d"
-        Title="PowerTray Settings" Height="600" Width="420" MinHeight="500" MinWidth="350"
+        Title="PowerTray Settings" Height="620" Width="420" MinHeight="500" MinWidth="350"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -71,18 +71,23 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Height="35" VerticalContentAlignment="Center">Default Tray View</Label>
-                                <ComboBox Grid.Column="1" x:Name = "DefaultTray" Text="{Binding TrayText}" Width="150"></ComboBox>
+                                <ComboBox Grid.Column="1" x:Name = "DefaultTray" Text="{Binding TrayText}"></ComboBox>
                             </Grid>
                         </StackPanel>
                     </ui:CardExpander>
                     <ui:CardExpander Header="Power Plans" IsExpanded="False" Margin="0,5,0,0">
                         <StackPanel Margin="-5" HorizontalAlignment="Stretch" Orientation="Vertical">
-                            <ui:Badge x:Name="AdminWarning" Grid.Column="1" Content="ⓘ hover over buttons for more details" HorizontalAlignment="Center" Height="30"/>
+                            <Grid Margin="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ui:Badge x:Name="Info" Grid.Column="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" Height="30">ⓘ Hover over buttons for more information</ui:Badge>
+                            </Grid>                            
                             <Grid Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Reset" ToolTip="This option adds back the default power plans if you don't have them, and applies a registry fix that disables Modern Standby, which breaks all power plans (RESTART IS REQUIRED FOR REGISTRY HACKS TO TAKE EFFECT). Here are the descriptions of the power plans:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Reccomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
+                                <Button x:Name="Reset" ToolTip="This option adds back the default power plans if you don't have them, and applies a registry fix that disables Modern Standby, which breaks all power plans (RESTART IS REQUIRED FOR REGISTRY CHANGES TO TAKE EFFECT). Here are the descriptions of the power plans:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Reccomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
                                         Click="DefaultClick"  Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Wrench20" FontSize="24"/>
@@ -105,7 +110,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Advanced"  Click="AdvancedClick" ToolTip="This option unlocks hidden power plan settings (Admin required) (not easily reversable)" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
+                                <Button x:Name="Advanced"  Click="AdvancedClick" ToolTip="This option unlocks hidden power plan settings (Admin required) (not easily reversible)" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Key20" FontSize="24"/>
                                         <Label HorizontalContentAlignment="Center">Unlock Advanced Power Plan Settings</Label>
