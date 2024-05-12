@@ -27,8 +27,9 @@
             Grid.Row="0"
             Height="35"
             Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
-        <ui:Card Margin="10,5,10,0" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1">
-            <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Top" >
+
+        <ui:Card Visibility="Visible" Margin="10,5,10,0" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1">
+            <lvc:CartesianChart DisableAnimations="False" Series="{Binding SeriesCollection}" LegendLocation="Top" >
                 <lvc:CartesianChart.DataTooltip>
                     <lvc:DefaultTooltip CornerRadius="10" Background="Gray"/>
                 </lvc:CartesianChart.DataTooltip>
@@ -37,7 +38,7 @@
                     <lvc:Axis Title="Power Draw (Watts)" MinValue="0"  LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Time (seconds)" Labels="{Binding Labels}"></lvc:Axis>
+                    <lvc:Axis Title="Time (seconds)" MinValue="0" Labels="{Binding Labels}"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </ui:Card>

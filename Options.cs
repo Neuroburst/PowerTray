@@ -45,14 +45,14 @@ namespace PowerTray
             set { this["notifs"] = value; }
         }
 
-        [ConfigurationProperty("acplan", DefaultValue = "Balanced")]
+        [ConfigurationProperty("acplan", DefaultValue = "High performance")]
         public string ACPlan
         {
             get { return (string)this["acplan"]; }
             set { this["acplan"] = value; }
         }
 
-        [ConfigurationProperty("bplan", DefaultValue = "Balanced")]
+        [ConfigurationProperty("bplan", DefaultValue = "BatteryBoost")]
         public string BatteryPlan
         {
             get { return (string)this["bplan"]; }

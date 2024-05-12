@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cIGqQcGBRTuOz02Uo5jT8PhlOtJ5RMWCWFC/6XmvRteH/HLLt6NjOBHSl5iYiCxKnfSdGn8P51L/V/dwXl2IYQ==",
+  "dgSpecHash": "+ZF2hnjWT1FYm/qeH60yoz7b35HUqnzE8xWGNtXT60JFFgpFFkIK6iGRXPstTF4XBEvCxcNvEfspY9u+iQOrQw==",
   "success": true,
   "projectFilePath": "C:\\Users\\agpan\\Programming\\PowerTray\\PowerTray.csproj",
   "expectedPackageFiles": [
@@ -33,6 +33,9 @@
     "C:\\Users\\agpan\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\taskscheduler\\2.10.1\\taskscheduler.2.10.1.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\wpf-ui\\3.0.1\\wpf-ui.3.0.1.nupkg.sha512",
+    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.4\\microsoft.netcore.app.runtime.win-x64.8.0.4.nupkg.sha512",
+    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.4\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.4.nupkg.sha512",
+    "C:\\Users\\agpan\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.4\\microsoft.aspnetcore.app.runtime.win-x64.8.0.4.nupkg.sha512",
     "C:\\Users\\agpan\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22621.31\\microsoft.windows.sdk.net.ref.10.0.22621.31.nupkg.sha512"
   ],
   "logs": []

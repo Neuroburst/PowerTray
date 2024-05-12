@@ -379,7 +379,7 @@ namespace PowerTray
         {
             if (FindPlan(guid))
             {
-                if (App.notifs)
+                if (App.notifs && GetActivePlanGuid() != guid)
                 {
                     ToastContentBuilder toast = new ToastContentBuilder();
                     toast.AddText("Power Plan Switched");

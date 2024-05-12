@@ -33,8 +33,6 @@ using System.Xml.Linq;
 
 
 /// MAIN TODO:
-// AFTER FATHER DOES TESTING, RELEASE 2.0!!!
-
 
 /// SUFFERING:
 // make icon auto-darkmode (doesn't work on publish)
