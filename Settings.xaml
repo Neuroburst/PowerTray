@@ -87,7 +87,8 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="Reset" ToolTip="This option adds back the default power plans if you don't have them, and applies a registry fix that disables Modern Standby, which breaks all power plans (RESTART IS REQUIRED FOR REGISTRY CHANGES TO TAKE EFFECT). Here are the descriptions of the power plans:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)&#x0a;&#x0a;- Ultimate Performance: (Not Reccomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"
+                                <!--&#x0a;&#x0a;- Ultimate Performance: (Not Reccomended) Forces the CPU to use the highest clock speed continuously (for P-States AND C-States)"-->
+                                <Button x:Name="Reset" ToolTip="This option adds back the default power plans if you don't have them (Modern Standby blocks all non-Balanced profiles). Here are the descriptions of the power plans:&#x0a;&#x0a;- Balanced: Allows the CPU to have dynamic clock speeds, only using what it needs&#x0a;&#x0a;- Power saver: Saves power. Consider using BatteryBoost instead for more battery life&#x0a;&#x0a;- High Performance: Forces the CPU to use the highest clock speed continuously (for P-States)"
                                         Click="DefaultClick"  Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="35">
                                     <Grid>
                                         <ui:SymbolIcon HorizontalAlignment="Left" Symbol="Wrench20" FontSize="24"/>

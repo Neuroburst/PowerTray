@@ -35,7 +35,9 @@ using System.Xml.Linq;
 /// MAIN TODO:
 
 /// SUFFERING:
-// make icon auto-darkmode (doesn't work on publish)
+// batteryboost cyan is unreadable in light mode
+// fix window flicker in taskview
+// graph high cpu usage?
 
 // card expanders have annoyingly small click area
 // font is unreadable in light mode :(

@@ -273,17 +273,17 @@ namespace PowerTray
             err = false;
             if (!boost)
             {
-                if (App.IsAdministrator())
-                {
-                    messages.Add("- Applied Registry patches\n");
-                    Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "PlatformAoAcOverride", 0, RegistryValueKind.DWord);
-                    Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "CSEnabled", 0, RegistryValueKind.DWord);
-                    //Set - ItemProperty - Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' - Name 'CSEnabled' - Value 0 - Force
-                }
-                else
-                {
-                    messages.Add("- Admin is required to apply Registry patch! (recommended if Power Plans are locked)\n");
-                };
+                //if (App.IsAdministrator())
+                //{
+                //    messages.Add("- Applied Registry patches\n");
+                //    Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "PlatformAoAcOverride", 0, RegistryValueKind.DWord);
+                //    //Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power", "CSEnabled", 0, RegistryValueKind.DWord);
+                //    //Set - ItemProperty - Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' - Name 'CSEnabled' - Value 0 - Force
+                //}
+                //else
+                //{
+                //    messages.Add("- Admin is required to apply Registry patch! (recommended if Power Plans are locked)\n");
+                //};
                 
 
 
@@ -293,8 +293,8 @@ namespace PowerTray
                                 "381b4222-f694-41f0-9685-ff5bb260df2e"));
                 messages.AddRange(AddPowerPlan("High performance",
                                 "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"));
-                messages.AddRange(AddPowerPlan("Ultimate Performance",
-                                "e9a42b02-d5df-448d-aa00-03f14749eb61"));
+                //messages.AddRange(AddPowerPlan("Ultimate Performance",
+                //                "e9a42b02-d5df-448d-aa00-03f14749eb61"));
             }
             else
             {
