@@ -110,6 +110,9 @@ C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\PowerTray.pdb
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\PowerTray.genruntimeconfig.cache
 C:\Users\agpan\Programming\PowerTray\obj\Release\net8.0-windows10.0.22621.0\win-x64\ref\PowerTray.dll
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\ja\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\sv\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\tr\Microsoft.Win32.TaskScheduler.resources.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.CSharp.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.VisualBasic.Core.dll
 C:\Users\agpan\Programming\PowerTray\bin\Release\net8.0-windows10.0.22621.0\win-x64\Microsoft.Win32.Primitives.dll

@@ -73,7 +73,7 @@
             },
             "System.Drawing.Common": {
               "target": "Package",
-              "version": "[8.0.4, )"
+              "version": "[8.0.7, )"
             },
             "System.Management": {
               "target": "Package",
@@ -81,11 +81,11 @@
             },
             "TaskScheduler": {
               "target": "Package",
-              "version": "[2.10.1, )"
+              "version": "[2.11.0, )"
             },
             "WPF-UI": {
               "target": "Package",
-              "version": "[3.0.1, )"
+              "version": "[3.0.4, )"
             }
           },
           "imports": [

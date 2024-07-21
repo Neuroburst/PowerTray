@@ -13,10 +13,10 @@
           "LibreHardwareMonitorLib": "0.9.3",
           "LiveCharts.Wpf.NetCore3": "0.9.8",
           "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
-          "System.Drawing.Common": "8.0.4",
+          "System.Drawing.Common": "8.0.7",
           "System.Management": "9.0.0-preview.2.24128.5",
-          "TaskScheduler": "2.10.1",
-          "WPF-UI": "3.0.1",
+          "TaskScheduler": "2.11.0",
+          "WPF-UI": "3.0.4",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22621.31"
         },
         "runtime": {
@@ -82,11 +82,10 @@
           }
         }
       },
-      "Microsoft.NETCore.Platforms/5.0.0": {},
       "Microsoft.Toolkit.Uwp.Notifications/7.1.3": {
         "dependencies": {
           "Microsoft.Win32.Registry": "5.0.0",
-          "System.Drawing.Common": "8.0.4",
+          "System.Drawing.Common": "8.0.7",
           "System.Reflection.Emit": "4.7.0",
           "System.ValueTuple": "4.5.0"
         },
@@ -99,7 +98,7 @@
       },
       "Microsoft.Win32.Registry/5.0.0": {
         "dependencies": {
-          "System.Security.AccessControl": "5.0.0",
+          "System.Security.AccessControl": "6.0.1",
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
@@ -143,27 +142,21 @@
         }
       },
       "System.Data.DataSetExtensions/4.5.0": {},
-      "System.Diagnostics.EventLog/5.0.0": {
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "5.0.0",
-          "Microsoft.Win32.Registry": "5.0.0",
-          "System.Security.Principal.Windows": "5.0.0"
-        }
-      },
-      "System.Drawing.Common/8.0.4": {
+      "System.Diagnostics.EventLog/8.0.0": {},
+      "System.Drawing.Common/8.0.7": {
         "dependencies": {
           "Microsoft.Win32.SystemEvents": "8.0.0"
         },
         "runtime": {
           "lib/net8.0/System.Drawing.Common.dll": {
             "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.424.16911"
+            "fileVersion": "8.0.724.31308"
           }
         }
       },
       "System.IO.FileSystem.AccessControl/5.0.0": {
         "dependencies": {
-          "System.Security.AccessControl": "5.0.0",
+          "System.Security.AccessControl": "6.0.1",
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
@@ -190,58 +183,62 @@
         }
       },
       "System.Reflection.Emit/4.7.0": {},
-      "System.Security.AccessControl/5.0.0": {
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "5.0.0",
-          "System.Security.Principal.Windows": "5.0.0"
-        }
-      },
+      "System.Security.AccessControl/6.0.1": {},
       "System.Security.Principal.Windows/5.0.0": {},
       "System.ValueTuple/4.5.0": {},
-      "TaskScheduler/2.10.1": {
+      "TaskScheduler/2.11.0": {
         "dependencies": {
           "Microsoft.Win32.Registry": "5.0.0",
-          "System.Diagnostics.EventLog": "5.0.0",
-          "System.Security.AccessControl": "5.0.0"
+          "System.Diagnostics.EventLog": "8.0.0",
+          "System.Security.AccessControl": "6.0.1"
         },
         "runtime": {
-          "lib/net6.0-windows7.0/Microsoft.Win32.TaskScheduler.dll": {
-            "assemblyVersion": "2.10.1.0",
-            "fileVersion": "2.10.1.0"
+          "lib/net8.0-windows7.0/Microsoft.Win32.TaskScheduler.dll": {
+            "assemblyVersion": "2.11.0.0",
+            "fileVersion": "2.11.0.0"
           }
         },
         "resources": {
-          "lib/net6.0-windows7.0/de/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/de/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "de"
           },
-          "lib/net6.0-windows7.0/es/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/es/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "es"
           },
-          "lib/net6.0-windows7.0/fr/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/fr/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "fr"
           },
-          "lib/net6.0-windows7.0/it/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/it/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "it"
           },
-          "lib/net6.0-windows7.0/pl/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/ja/Microsoft.Win32.TaskScheduler.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/net8.0-windows7.0/pl/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "pl"
           },
-          "lib/net6.0-windows7.0/ru/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/ru/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "ru"
           },
-          "lib/net6.0-windows7.0/zh-CN/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/sv/Microsoft.Win32.TaskScheduler.resources.dll": {
+            "locale": "sv"
+          },
+          "lib/net8.0-windows7.0/tr/Microsoft.Win32.TaskScheduler.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/net8.0-windows7.0/zh-CN/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "zh-CN"
           },
-          "lib/net6.0-windows7.0/zh-Hant/Microsoft.Win32.TaskScheduler.resources.dll": {
+          "lib/net8.0-windows7.0/zh-Hant/Microsoft.Win32.TaskScheduler.resources.dll": {
             "locale": "zh-Hant"
           }
         }
       },
-      "WPF-UI/3.0.1": {
+      "WPF-UI/3.0.4": {
         "runtime": {
           "lib/net8.0-windows7.0/Wpf.Ui.dll": {
-            "assemblyVersion": "3.0.1.0",
-            "fileVersion": "3.0.1.0"
+            "assemblyVersion": "3.0.4.0",
+            "fileVersion": "3.0.4.0"
           }
         }
       }
@@ -285,13 +282,6 @@
       "sha512": "sha512-EWwggMrRkWOdt/TdFhcs0LIXzpEuN392zGB+tLcO4UinKV13+V3NyhFoURPVP3GmQXjgrrlMDp+zyuSQeut53w==",
       "path": "livecharts.wpf.netcore3/0.9.8",
       "hashPath": "livecharts.wpf.netcore3.0.9.8.nupkg.sha512"
-    },
-    "Microsoft.NETCore.Platforms/5.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-VyPlqzH2wavqquTcYpkIIAQ6WdenuKoFN0BdYBbCWsclXacSOHNQn66Gt4z5NBqEYW0FAPm5rlvki9ZiCij5xQ==",
-      "path": "microsoft.netcore.platforms/5.0.0",
-      "hashPath": "microsoft.netcore.platforms.5.0.0.nupkg.sha512"
     },
     "Microsoft.Toolkit.Uwp.Notifications/7.1.3": {
       "type": "package",
@@ -377,19 +367,19 @@
       "path": "system.data.datasetextensions/4.5.0",
       "hashPath": "system.data.datasetextensions.4.5.0.nupkg.sha512"
     },
-    "System.Diagnostics.EventLog/5.0.0": {
+    "System.Diagnostics.EventLog/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FHkCwUfsTs+/5tsK+c0egLfacUgbhvcwi3wUFWSEEArSXao343mYqcpOVVFMlcCkdNtjU4YwAWaKYwal6f02og==",
-      "path": "system.diagnostics.eventlog/5.0.0",
-      "hashPath": "system.diagnostics.eventlog.5.0.0.nupkg.sha512"
+      "sha512": "sha512-fdYxcRjQqTTacKId/2IECojlDSFvp7LP5N78+0z/xH7v/Tuw5ZAxu23Y6PTCRinqyu2ePx+Gn1098NC6jM6d+A==",
+      "path": "system.diagnostics.eventlog/8.0.0",
+      "hashPath": "system.diagnostics.eventlog.8.0.0.nupkg.sha512"
     },
-    "System.Drawing.Common/8.0.4": {
+    "System.Drawing.Common/8.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3G4xpa8mUYGzEF0HlswlBArAFywHJIzsZoB5hU4yMlnYHaabj/lg019BwbyyYBxj0aoM7Cz+jdlgUemeno9LOQ==",
-      "path": "system.drawing.common/8.0.4",
-      "hashPath": "system.drawing.common.8.0.4.nupkg.sha512"
+      "sha512": "sha512-DoeBae0gZvxs3mtfoub6F1k28fSkFPzmhFuvblplKMnLYKmTMVy0j4Yxahh96KM532JzHGDxhJn1VpMKSB1pyg==",
+      "path": "system.drawing.common/8.0.7",
+      "hashPath": "system.drawing.common.8.0.7.nupkg.sha512"
     },
     "System.IO.FileSystem.AccessControl/5.0.0": {
       "type": "package",
@@ -419,12 +409,12 @@
       "path": "system.reflection.emit/4.7.0",
       "hashPath": "system.reflection.emit.4.7.0.nupkg.sha512"
     },
-    "System.Security.AccessControl/5.0.0": {
+    "System.Security.AccessControl/6.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
-      "path": "system.security.accesscontrol/5.0.0",
-      "hashPath": "system.security.accesscontrol.5.0.0.nupkg.sha512"
+      "sha512": "sha512-IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw==",
+      "path": "system.security.accesscontrol/6.0.1",
+      "hashPath": "system.security.accesscontrol.6.0.1.nupkg.sha512"
     },
     "System.Security.Principal.Windows/5.0.0": {
       "type": "package",
@@ -440,19 +430,19 @@
       "path": "system.valuetuple/4.5.0",
       "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     },
-    "TaskScheduler/2.10.1": {
+    "TaskScheduler/2.11.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-12b19oq9SOGbBq8745jQVQ08jAjgnsGXidQfclaZ94UZCtJRPkNfM8pz0D7pj04RHcQJQdZZnAUuC93reALqNg==",
-      "path": "taskscheduler/2.10.1",
-      "hashPath": "taskscheduler.2.10.1.nupkg.sha512"
+      "sha512": "sha512-p9wH58XSNIyUtO7PIFAEldaKUzpYmlj+YWAfnUqBKnGxIZRY51I9BrsBGJijUVwlxrgmLLPUigRIv2ZTD4uPJA==",
+      "path": "taskscheduler/2.11.0",
+      "hashPath": "taskscheduler.2.11.0.nupkg.sha512"
     },
-    "WPF-UI/3.0.1": {
+    "WPF-UI/3.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kV42QrpQoWcL0oM5Ke546aqyn/9sHwDK94XpKZShY1tbaGB0dlJz7cNJwUph8GcTblWlqdP7i6j7UeH7zKDoWQ==",
-      "path": "wpf-ui/3.0.1",
-      "hashPath": "wpf-ui.3.0.1.nupkg.sha512"
+      "sha512": "sha512-Jbt8nJ4MSC/WBhqx6iXOW06Rt2UUNVxA8+23AOSM63jlOIhU6e6P4BIw8rL/UnRPycOdA2vntYl5i7k53E0AGg==",
+      "path": "wpf-ui/3.0.4",
+      "hashPath": "wpf-ui.3.0.4.nupkg.sha512"
     }
   }
 }

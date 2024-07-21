@@ -35,16 +35,10 @@ using System.Xml.Linq;
 /// MAIN TODO:
 
 /// SUFFERING:
-// batteryboost cyan is unreadable in light mode
-// fix window flicker in taskview
-// graph high cpu usage?
-
 // card expanders have annoyingly small click area
-// font is unreadable in light mode :(
 // sub-context menu (power plan) broked if not first in the list
 // scroll is too sensitive
 
-// make tooltip stay open somehow
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
 
@@ -107,7 +101,8 @@ namespace PowerTray
         static Color highDarkColor = Color.White;
         static Color mediumColor = Color.FromArgb(255, 220, 100, 20);
         static Color lowColor = Color.FromArgb(255, 232, 17, 35);
-        static Color boostColor = Color.Cyan;
+        static Color boostColor = Color.Blue;
+        static Color boostDarkColor = Color.Cyan;
 
         public static int highAmount = 40; // (CHANGEABLE)
         public static int mediumAmount = 25; // (CHANGEABLE)
@@ -139,6 +134,7 @@ namespace PowerTray
         public static long calcTimeDelta = 0;
 
         public static bool windowDarkMode = true;
+        public static bool taskbarDarkMode = true;
 
         public static BatInfo batteryInfoWindow;
         public static Graph graphWindow;
@@ -157,6 +153,7 @@ namespace PowerTray
         private static ICommand BatInfoOpen = new RelayCommand<dynamic>(action => CreateInfoWindow(), canExecute => true);
         private static ICommand SettingsOpen = new RelayCommand<dynamic>(action => CreateSettingsWindow(), canExecute => true);
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
+        private static ICommand ClearBuffer = new RelayCommand<dynamic>(action => ResetBuffer(), canExecute => true);
         private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
@@ -422,6 +419,13 @@ namespace PowerTray
                 Command = TraySwitch,
             };
 
+            var clearBuffer = new Wpf.Ui.Controls.MenuItem()
+            {
+                Header = "Clear Buffer",
+                Icon = new SymbolIcon(SymbolRegular.Delete20, 14, false),
+                Command = ClearBuffer
+            };
+
             pwrPlans = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Power Plans",
@@ -446,7 +450,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = { pwrPlans, batteryInfo, graphs, switchInfo, settings, exit }
+                Items = { pwrPlans, batteryInfo, graphs, switchInfo, clearBuffer, settings, exit }
             };
 
             toolTip = new ToolTip();
@@ -543,24 +547,28 @@ namespace PowerTray
                       (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
 
                 //Style style = (Style)Resources["Style"];
-            }
 
-            // switch between dark and light icons (for taskbar)
-            if (darkModeEnabled)
-            {
-                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
-                settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
-                graphWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
             }
-            else
+            
+            if (darkModeEnabled != taskbarDarkMode)
             {
-                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
-                settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
-                graphWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                taskbarDarkMode = darkModeEnabled;
+                // switch between dark and light icons (for taskbar)
+                if (darkModeEnabled)
+                {
+                    batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                    settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                    graphWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                }
+                else
+                {
+                    batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                    settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                    graphWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                }
             }
 
             // ---
-
             var bat_info = BatteryManagement.GetBatteryInfo(batteryTag, batteryHandle);
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
             int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
@@ -670,6 +678,10 @@ namespace PowerTray
                 if (statusColor == highColor)
                 {
                     statusColor = highDarkColor;
+                }
+                else if (statusColor == boostColor)
+                {
+                    statusColor = boostDarkColor;
                 }
                 else
                 {
