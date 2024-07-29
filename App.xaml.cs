@@ -35,9 +35,11 @@ using System.Xml.Linq;
 /// MAIN TODO:
 
 /// SUFFERING:
+// graphs weirdly lag other powertray windows and use way too much CPU
 // card expanders have annoyingly small click area
 // sub-context menu (power plan) broked if not first in the list
 // scroll is too sensitive
+
 
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
@@ -357,46 +359,8 @@ namespace PowerTray
             }
         }
         
-
-        private void App_Startup(object sender, StartupEventArgs e)
+        private void RebuildContextMenu()
         {
-            // repair startup
-            if (startup)
-            {
-                ManageStartup(false);
-            }
-
-            if (startup)
-            {
-                ManageAdminStartup(false);
-            }
-
-            // debug
-            SetupUnhandledExceptionHandling();
-
-            c.Open(); // open hardware for inspection
-
-            batteryInfoWindow = new BatInfo();
-            batteryInfoWindow.Topmost = aot;
-            graphWindow = new Graph();
-            graphWindow.Topmost = aot;
-            settingsWindow = new Settings();
-
-            LoadSettings();
-
-            // apply theme
-            ApplicationThemeManager.Apply(
-                  (checkDarkMode()[1] ? ApplicationTheme.Dark : ApplicationTheme.Light), // Theme type
-                  WindowBackdropType.Mica, // Background type
-                  true                    // Whether to change accents automatically
-            );
-            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(batteryInfoWindow);
-
-            // get battery tag from info
-            var info = BatteryManagement.GetBatteryTag();
-            batteryHandle = info[0];
-            batteryTag = info[1];
-
             var batteryInfo = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Battery Info",
@@ -452,15 +416,57 @@ namespace PowerTray
             {
                 Items = { pwrPlans, batteryInfo, graphs, switchInfo, clearBuffer, settings, exit }
             };
+            trayIcon.ContextMenu = contextMenu;
+        }
+
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            // repair startup
+            if (startup)
+            {
+                ManageStartup(false);
+            }
+
+            if (startup)
+            {
+                ManageAdminStartup(false);
+            }
+
+            // debug
+            SetupUnhandledExceptionHandling();
+
+            c.Open(); // open hardware for inspection
+
+            batteryInfoWindow = new BatInfo();
+            batteryInfoWindow.Topmost = aot;
+            graphWindow = new Graph();
+            graphWindow.Topmost = aot;
+            settingsWindow = new Settings();
+            updateWindowIcons();
+
+            LoadSettings();
+
+            // apply theme
+            ApplicationThemeManager.Apply(
+                  (checkDarkMode()[1] ? ApplicationTheme.Dark : ApplicationTheme.Light), // Theme type
+                  WindowBackdropType.Mica, // Background type
+                  true                    // Whether to change accents automatically
+            );
+            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(batteryInfoWindow);
+
+            // get battery tag from info
+            var info = BatteryManagement.GetBatteryTag();
+            batteryHandle = info[0];
+            batteryTag = info[1];
 
             toolTip = new ToolTip();
             trayIcon = new TaskbarIcon()
             {
                 TrayToolTip = toolTip,
-                ContextMenu = contextMenu,
                 LeftClickCommand = BatInfoOpen,
                 DoubleClickCommand = SettingsOpen,
             };
+            RebuildContextMenu();
 
             // Create Update Timer for tray icon
             tray_timer.Interval = new TimeSpan(0, 0, 0, 0, trayRefreshRate);
@@ -478,6 +484,9 @@ namespace PowerTray
             BatInfo.UpdateData(null, null);
             UpdateTray(null, null);
             UpdateGraphs(null, null);
+
+            taskbarDarkMode = checkDarkMode()[0];
+
         }
 
         private void UpdateGraphs(object sender, EventArgs e)
@@ -524,6 +533,23 @@ namespace PowerTray
             
         }
 
+        private static void updateWindowIcons()
+        {
+            // switch between dark and light icons (for taskbar)
+            if (taskbarDarkMode)
+            {
+                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+                graphWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
+            }
+            else
+            {
+                batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+                graphWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
+            }
+        }
+
         private void UpdateTray(object sender, EventArgs e)
         {
             if (active_plan != PowerPlans.GetActivePlanGuid())
@@ -547,25 +573,14 @@ namespace PowerTray
                       (appdarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light));
 
                 //Style style = (Style)Resources["Style"];
+                RebuildContextMenu();
 
             }
             
             if (darkModeEnabled != taskbarDarkMode)
             {
                 taskbarDarkMode = darkModeEnabled;
-                // switch between dark and light icons (for taskbar)
-                if (darkModeEnabled)
-                {
-                    batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
-                    settingsWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
-                    graphWindow.Icon = ToImageSource(PowerTray.Resources.DarkIcon);
-                }
-                else
-                {
-                    batteryInfoWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
-                    settingsWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
-                    graphWindow.Icon = ToImageSource(PowerTray.Resources.LightIcon);
-                }
+                updateWindowIcons();
             }
 
             // ---
@@ -877,7 +892,8 @@ namespace PowerTray
                 calculated_charge_time_text +
                 "\n" + (calcChargeRateMw > 0 ? "Charge Rate: " : "Discharge Rate: ") + Math.Abs(calcChargeRateMw).ToString() + " mW" +
                 "\n" + "Buffer Size: " + ((int)(calcTimeDelta / 1000)).ToString() + " sec" + 
-                "\n\n(The tray is currently\ndisplaying " + tray_display.ToString() + ")";
+                "\n\nCurrent Power Plan: " + PowerPlans.ReadFriendlyName(active_plan).ToString() + 
+                "\n(The tray is currently\ndisplaying " + tray_display.ToString() + ")";
             return toolTipText;
         }
 
@@ -886,6 +902,7 @@ namespace PowerTray
             batteryInfoWindow = new BatInfo();
             batteryInfoWindow.Topmost = aot;
             batteryInfoWindow.Show();
+            updateWindowIcons();
         }
 
         public static void CreateGraphWindow()
@@ -893,11 +910,13 @@ namespace PowerTray
             graphWindow = new Graph();
             graphWindow.Topmost = aot;
             graphWindow.Show();
+            updateWindowIcons();
         }
         public static void CreateSettingsWindow()
         {
             settingsWindow = new Settings();
             settingsWindow.Show();
+            updateWindowIcons();
         }
 
         public static bool[] checkDarkMode()
