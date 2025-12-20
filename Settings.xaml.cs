@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Configuration;
-using Wpf.Ui.Controls;
-
+using System.IO;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
+using Wpf.Ui.Controls;
 
 namespace PowerTray
 {
@@ -14,10 +13,30 @@ namespace PowerTray
     public partial class Settings : FluentWindow
     {
 
-        public Configuration AppConfig = ConfigurationManager.OpenMachineConfiguration();
+        public Configuration AppConfig;
 
         public Settings()
         {
+            string configPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "PowerTray",
+                "PowerTray.config"
+            );
+
+            Directory.CreateDirectory(Path.GetDirectoryName(configPath));
+
+            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap
+            {
+                ExeConfigFilename = configPath
+            };
+
+            AppConfig = ConfigurationManager.OpenMappedExeConfiguration(
+                fileMap,
+                ConfigurationUserLevel.None  // Note: None, not PerUserRoamingAndLocal since we maually set the path
+            );
+
+
+
             InitializeComponent();
             DefaultTray.ItemsSource = Enum.GetNames(typeof(App.DisplayedInfo));
             TrayFontStyle.ItemsSource = Enum.GetNames(typeof(System.Drawing.FontStyle));
@@ -45,21 +64,35 @@ namespace PowerTray
 
             if (update)
             {
-                var OptionsSettingsSection = AppConfig.GetSection("Options");
-                DataContext = OptionsSettingsSection;
+
+                var optionsSection = AppConfig.GetSection("Options");
+                //UnlockSection(optionsSection);
+                DataContext = optionsSection;
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void Save()
         {
             AppConfig.Save();
+        }
+
+        private void ResetOptions()
+        {
+            AppConfig.Sections.Remove("Options");
+            Save();
+        }
+
+
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
             App.LoadSettings();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            AppConfig.Sections.Remove("Options");
-            AppConfig.Save();
+            ResetOptions();
             Load(false);
 
             App.LoadSettings();

@@ -30,16 +30,12 @@ using Microsoft.Win32.TaskScheduler;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Xml.Linq;
+using System.Runtime.Versioning;
 
 
 /// MAIN TODO:
-
-/// SUFFERING:
 // graphs weirdly lag other powertray windows and use way too much CPU
-// card expanders have annoyingly small click area
-// sub-context menu (power plan) broked if not first in the list
-// scroll is too sensitive
-
+// add cycle count and some other nice variables from "Get-WmiObject -Class MSBatteryClass -Namespace ROOT\WMI"
 
 // figure out how to use win32 API to make it give weird information (and use same battery as kernel)
 // make option for multiple batteries besides the auto-selected one
@@ -68,9 +64,9 @@ namespace PowerTray
         public enum DisplayedInfo { Percentage, ReportedChargeRate, CalculatedChargeRate, PowerPlan};
 
 
-        // PowerPlans
+        public static Wpf.Ui.Controls.MenuItem switchInfo;
+        // Power plans
         public static Wpf.Ui.Controls.MenuItem pwrPlans;
-
         public static Guid active_plan;
 
         // Params ---
@@ -79,7 +75,7 @@ namespace PowerTray
         public static bool startup = false;
         public static bool adminstartup = false;
 
-        public static BatteryStatus? charging = null;
+        public static bool? charging = null;
         public static string acplanName = "Balanced";
         public static string batteryPlanName = "Balanced";
         public static bool notifs = true;
@@ -156,7 +152,6 @@ namespace PowerTray
         private static ICommand SettingsOpen = new RelayCommand<dynamic>(action => CreateSettingsWindow(), canExecute => true);
         private static ICommand QuitProgram = new RelayCommand<dynamic>(action => Quit(), canExecute => true);
         private static ICommand ClearBuffer = new RelayCommand<dynamic>(action => ResetBuffer(), canExecute => true);
-        private static ICommand TraySwitch = new RelayCommand<dynamic>(action => SwitchTrayInfo(), canExecute => true);
         private static ICommand GraphsOpen = new RelayCommand<dynamic>(action => CreateGraphWindow(), canExecute => true);
 
         private static string GetExecutableLocation()
@@ -371,17 +366,27 @@ namespace PowerTray
             var graphs = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Graphs",
-                Icon = new SymbolIcon(SymbolRegular.DataUsage20, 14, false),
+                Icon = new SymbolIcon(SymbolRegular.PulseSquare20, 14, false),
                 Command = GraphsOpen,
             };
 
-            var switchInfo = new Wpf.Ui.Controls.MenuItem()
+            switchInfo = new Wpf.Ui.Controls.MenuItem()
             {
-                Header = "Switch Tray Data",
-                Icon = new SymbolIcon(SymbolRegular.ArrowRepeatAll20, 14, false),
-                ToolTip = "Cycle the information displayed on the tray icon",
-                Command = TraySwitch,
+                Header = "Tray Data",
+                Icon = new SymbolIcon(SymbolRegular.Tablet20, 14, false),
             };
+            foreach (DisplayedInfo info in Enum.GetValues(typeof(DisplayedInfo)))
+            {
+                var item = new Wpf.Ui.Controls.MenuItem()
+                {
+                    Header = Enum.GetName(typeof(DisplayedInfo), info),
+                    StaysOpenOnClick = false,
+                };
+                item.Command = new RelayCommand<dynamic>(action => TrayInfoSet(info), canExecute => true);
+
+                switchInfo.Items.Add(item);
+            }
+
 
             var clearBuffer = new Wpf.Ui.Controls.MenuItem()
             {
@@ -393,7 +398,7 @@ namespace PowerTray
             pwrPlans = new Wpf.Ui.Controls.MenuItem()
             {
                 Header = "Power Plans",
-                Icon = new SymbolIcon(SymbolRegular.BatterySaver20, 14, false),
+                Icon = new SymbolIcon(SymbolRegular.TopSpeed20, 14, false),
             };
 
             PowerPlans.RefreshPowerPlans();
@@ -414,7 +419,7 @@ namespace PowerTray
 
             var contextMenu = new ContextMenu()
             {
-                Items = { pwrPlans, batteryInfo, graphs, switchInfo, clearBuffer, settings, exit }
+                Items = {batteryInfo, graphs, pwrPlans, switchInfo, clearBuffer, settings, exit}
             };
             trayIcon.ContextMenu = contextMenu;
         }
@@ -588,36 +593,30 @@ namespace PowerTray
             int remainChargeCapMwh = (int)bat_info["Remaining Charge mWh"];
             int chargeRateMw = (int)bat_info["Reported Charge Rate mW"];
 
-            // plans
-            if (auto_switch && charging != (BatteryStatus)bat_info["Status"])
+            // autoswitch plans 
+            // We're using the windows forms version of powerline status because it is more reliable.
+            bool new_charging = System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus == System.Windows.Forms.PowerLineStatus.Online;
+
+            if (auto_switch && charging != new_charging)
             {
-                charging = (BatteryStatus)bat_info["Status"];
+                charging = new_charging;
 
-                if ((charging == BatteryStatus.Idle && (BatteryStatus)bat_info["Status"] == BatteryStatus.Charging) ||
-                    (charging == BatteryStatus.Charging && (BatteryStatus)bat_info["Status"] == BatteryStatus.Idle))
+                string name = batteryPlanName;
+                if ((bool)charging)
                 {
-                    // since it's still plugged in, don't do anything (idle is when it's not charging but stil connected to AC)
+                    name = acplanName;
                 }
-                else // switch plan
+
+                Guid guid = plans[0].Guid;
+                foreach (PowerPlan plan in plans)
                 {
-                    var ac = charging != BatteryStatus.Discharging;
-
-                    string name = batteryPlanName;
-                    if (ac)
+                    if (plan.Name == name)
                     {
-                        name = acplanName;
+                        guid = plan.Guid;
                     }
-
-                    Guid guid = plans[0].Guid;
-                    foreach (PowerPlan plan in plans)
-                    {
-                        if (plan.Name == name)
-                        {
-                            guid = plan.Guid;
-                        }
-                    }
-                    PowerPlans.SetPlan(guid, name);
                 }
+                PowerPlans.SetPlan(guid, name);
+                
             }
 
             // update remainChargeHistory ---
@@ -816,16 +815,9 @@ namespace PowerTray
             //---
         }
 
-        public static void SwitchTrayInfo()
+        public static void TrayInfoSet(DisplayedInfo info)
         {
-            if ((int)tray_display + 1 > Enum.GetValues(typeof(DisplayedInfo)).Length - 1)
-            {
-                tray_display = (DisplayedInfo)0;
-            }
-            else
-            {
-                tray_display = (DisplayedInfo)((int)tray_display + 1);
-            }
+            tray_display = info;
         }
         private static Color LightenColor(Color color)
         {

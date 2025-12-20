@@ -1,0 +1,1 @@
+dotnet publish "PowerTray.csproj" "/p:PublishProfile=Properties\PublishProfiles\Standard.pubxml"

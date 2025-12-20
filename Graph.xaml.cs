@@ -69,7 +69,7 @@ namespace PowerTray
 
             XFormatter = val => val.ToString();
             YFormatter = val => string.Format("{0:F3}", val) + " W";
-
+            
             DataContext = this;
         }
 

@@ -5,9 +5,6 @@ using System.Runtime.InteropServices;
 using Wpf.Ui.Input;
 using System.IO;
 using System.Data;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace PowerTray
 {
