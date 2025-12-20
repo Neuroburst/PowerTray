@@ -25,12 +25,7 @@ using LiveCharts.Defaults;
 
 using LibreHardwareMonitor.Hardware;
 using System.Security.Principal;
-using LibreHardwareMonitor.Hardware.Cpu;
 using Microsoft.Win32.TaskScheduler;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using System.Xml.Linq;
-using System.Runtime.Versioning;
 
 
 /// MAIN TODO:

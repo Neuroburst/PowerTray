@@ -9,21 +9,21 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Graph.xaml.cs">
+    <Compile Update="scripts\Graph.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Settings.xaml.cs">
+    <Compile Update="scripts\Settings.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="BatInfo.xaml">
+    <Page Update="scripts\BatInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Graph.xaml">
+    <Page Update="scripts\Graph.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Settings.xaml">
+    <Page Update="scripts\Settings.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

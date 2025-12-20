@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-	<ApplicationIcon>BatteryFullFluentDark.ico</ApplicationIcon>
+	<ApplicationIcon>assets\BatteryFullFluentDark.ico</ApplicationIcon>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	<StartupObject>PowerTray.App</StartupObject>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="BatteryFullFluentDark.ico" />
+    <Content Include="assets\BatteryFullFluentDark.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +42,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
   </ItemGroup>
 
 </Project>
