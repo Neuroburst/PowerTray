@@ -56,5 +56,5 @@ Supports Windows 10 & 11
 
 I used some components from other open source softwares:  
 - LibreHardware Monitor for cpu wattage
-- another PowerTray for Power Plan switching and fixing
+- https://github.com/alandoyle/PowerTray for Power Plan switching and fixing
 - Unlock-PowerCfg 1.1.0 for unlocking power plans commands
